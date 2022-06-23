@@ -1,5 +1,6 @@
 package com.moa.moa
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
@@ -41,6 +43,9 @@ class LoginActivity : AppCompatActivity() {
         resources.getString(R.string.naver_client_name)
     }
 
+    private lateinit var gso:GoogleSignInOptions
+    private lateinit var mGoogleSignInClient:GoogleSignInClient
+
     private val RC_SIGN_IN=100
 
 
@@ -63,9 +68,9 @@ class LoginActivity : AppCompatActivity() {
         NaverIdLoginSDK.initialize(this,OAUTH_CLIENT_ID,OAUTH_CLIENT_SECRET,OAUTH_CLIENT_NAME)
         naverLogin.setOAuthLoginCallback(oauthLoginCallback)
 
-        val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
 
-        val mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
+        mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
 
         googleLogin.setSize(SignInButton.SIZE_STANDARD)
         googleLogin.setOnClickListener {
@@ -75,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
         logoutButton.setOnClickListener {
             NaverIdLoginSDK.logout()
+            mGoogleSignInClient.signOut()
         }
     }
 
@@ -130,30 +136,43 @@ class LoginActivity : AppCompatActivity() {
             val account=completedTask.getResult(ApiException::class.java)
 
             //로그인 성공
-            //파이어베이스에 저장
             //회원가입 화면으로 이동
 
+            val intent=Intent(this@LoginActivity,RegisterActivity::class.java)
+            intent.putExtra("userEmail",account.email)
+            startActivity(intent)
         }
         catch(e:ApiException){
+            Log.i("exception",e.toString())
             Toast.makeText(this,"로그인에 실패했습니다",Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onStart() {
         super.onStart()
+        Log.i("start","onstart")
+        //구글 로그인이 되어있는지 확인
+        val account=GoogleSignIn.getLastSignedInAccount(this)
+        if(account!=null){
+            val sharedPreferences=getSharedPreferences("Register", Context.MODE_PRIVATE)
+            if(sharedPreferences.getBoolean("isRegister",false)){
+                val intent= Intent(this,MainActivity::class.java)
+                startActivity(intent)
+            }
 
-//        //구글 로그인이 되어있는지 확인
-//        val account=GoogleSignIn.getLastSignedInAccount(this)
-//        if(account!=null){
-//            val intent= Intent(this,MainActivity::class.java)
-//            startActivity(intent)
-//        }
-//
-//        //네이버 로그인이 되어있는지 확인
-//        if(NidOAuthLoginState.OK.equals(NaverIdLoginSDK.getState())){
-//            val intent= Intent(this,MainActivity::class.java)
-//            startActivity(intent)
-//        }
+
+        }
+
+        //네이버 로그인이 되어있는지 확인
+        if(NidOAuthLoginState.OK.equals(NaverIdLoginSDK.getState())){
+            val sharedPreferences=getSharedPreferences("Register", Context.MODE_PRIVATE)
+            if(sharedPreferences.getBoolean("isRegister",false)){
+                val intent= Intent(this,MainActivity::class.java)
+                startActivity(intent)
+            }
+
+
+        }
     }
 
 }

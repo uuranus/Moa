@@ -1,27 +1,43 @@
 package com.moa.moa
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import de.hdodenhof.circleimageview.CircleImageView
+import android.widget.ImageButton
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : FragmentActivity() {
     private var userEmail:String=""
-    private val editProfileImg:CircleImageView by lazy{
-        findViewById(R.id.editProfileImg)
+
+    private var profilePageAdapter:FragmentStateAdapter?=null
+
+    private val backButton:ImageButton by lazy{
+        findViewById(R.id.registerBackButton)
     }
-    private val editNickname:EditText by lazy{
-        findViewById(R.id.editNickname)
-    }
-    private val profileSaveButton: Button by lazy{
+
+    private val profileSaveButton:Button by lazy{
         findViewById(R.id.profileSaveButton)
     }
-    private var isValid:Boolean=false
+
+    private val viewPager: ViewPager2 by lazy{
+        findViewById(R.id.profileViewPager)
+    }
+
+    private val PAGE_NUM=2
+
+    private var state:Int=0
+        set(value) {
+            field = value
+            if(value==PAGE_NUM-1){
+                profileSaveButton.text= "저장"
+            }
+            else{
+                profileSaveButton.text= "다음"
+            }
+
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,37 +49,61 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun init(){
-        editNickname.setOnEditorActionListener { textView, actionID, keyEvent ->
-            if(actionID==EditorInfo.IME_ACTION_DONE){
-                //닉네임 유효성 검사
-                if(textView.text.isEmpty()){
-                    Toast.makeText(this,"닉네임을 입력해주세요",Toast.LENGTH_SHORT).show()
-                    isValid=false
-                }
-                else if(textView.text.length<2 || textView.text.length>20){
-                    Toast.makeText(this,"닉네임은 2~20자 사이여야 합니다",Toast.LENGTH_SHORT).show()
-                    isValid=false
-                }
-                else{
-                    isValid=true
-                }
+    private fun init() {
+
+        profilePageAdapter = ProfilePageAdapter(this)
+        viewPager.adapter = profilePageAdapter
+
+        //swipe 막기
+        viewPager.isUserInputEnabled=false
+
+        backButton.setOnClickListener {
+            if(viewPager.currentItem!=0){
+                viewPager.currentItem--
+                state=viewPager.currentItem
+            }
+        }
+
+        profileSaveButton.isEnabled=false
+        profileSaveButton.setOnClickListener {
+            if(viewPager.currentItem==PAGE_NUM-1){
 
             }
+            else{
+                viewPager.currentItem++
+                state=viewPager.currentItem
 
-            return@setOnEditorActionListener false
+            }
         }
 
-        profileSaveButton.setOnClickListener {
-            //갤러리로 이동
 
-        }
 
-        profileSaveButton.setOnClickListener {
-            //저장 할 건지 확인 팝업
-
-            //기존 방 생성 화면에다가 값 전달
-        }
     }
+
+    fun isEnabled(isValid:Boolean){
+        profileSaveButton.isEnabled=isValid
+    }
+
+    inner class ProfilePageAdapter(fm: FragmentActivity): FragmentStateAdapter(fm){
+
+
+        override fun getItemCount(): Int {
+            return PAGE_NUM
+        }
+
+        override fun createFragment(position: Int): Fragment {
+            return when(position){
+                0-> ProfileFragment()
+
+                1-> BlankFragment()
+
+                else -> ProfileFragment()
+            }
+        }
+
+
+    }
+
+
 
 }
