@@ -1,5 +1,6 @@
 package com.moa.moa
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -37,6 +38,8 @@ class RegisterActivity : FragmentActivity() {
                 profileSaveButton.text= "다음"
             }
 
+            backButton.isEnabled = value != 0
+
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +52,24 @@ class RegisterActivity : FragmentActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if(state!=0){
+            viewPager.currentItem--
+            state=viewPager.currentItem
+        }
+        else{
+            AlertDialog.Builder(this)
+                .setMessage("회원가입을 그만두시겠습니까?")
+                .setPositiveButton("네"){_,_ ->
+                    super.onBackPressed()
+                }
+                .setNegativeButton("아니오"){_,_ ->
+
+                }
+                .show()
+        }
+
+    }
     private fun init() {
 
         profilePageAdapter = ProfilePageAdapter(this)
@@ -65,6 +86,7 @@ class RegisterActivity : FragmentActivity() {
         }
 
         profileSaveButton.isEnabled=false
+        backButton.isEnabled=false
         profileSaveButton.setOnClickListener {
             if(viewPager.currentItem==PAGE_NUM-1){
 

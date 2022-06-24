@@ -1,5 +1,6 @@
 package com.moa.moa
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,9 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -32,6 +31,8 @@ class ProfileFragment : Fragment() {
             val ra=activity as RegisterActivity
             ra.isEnabled(isValid)
         }
+
+    private var isDefaultImg:Boolean=true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,15 +77,42 @@ class ProfileFragment : Fragment() {
 
         editProfileImg.setOnClickListener {
 
-            //갤러리로 이동
+            if(!isDefaultImg){
 
-            if(ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
-                getProfileImg()
+                val view=LayoutInflater.from(requireContext()).inflate(R.layout.activity_register_profileimg_alertdialog,null)
+
+                val dialog=AlertDialog.Builder(requireContext()).setView(view).create()
+
+                val chooseDefaultTextView:TextView=view.findViewById(R.id.profileChooseDefault)
+                val chooseGalleryTextView:TextView=view.findViewById(R.id.profileChooseGallery)
+
+                chooseDefaultTextView.setOnClickListener {
+                    val uri=Uri.parse("android.resource://"+requireActivity().packageName+"/"+R.drawable.default_img)
+                    editProfileImg.setImageURI(uri)
+                    isDefaultImg=true
+                    dialog.dismiss()
+                }
+
+                chooseGalleryTextView.setOnClickListener {
+                    getProfileImg()
+                    dialog.dismiss()
+                }
+
+                dialog.show()
+
             }
             else{
-                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),200)
+                //갤러리로 이동
+
+                if(ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+                    getProfileImg()
+                }
+                else{
+                    shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),200)
+                }
             }
+
 
 
         }
@@ -114,6 +142,7 @@ class ProfileFragment : Fragment() {
             val selectedImgUri: Uri?=data?.data
             if(selectedImgUri!=null){
                 editProfileImg.setImageURI(selectedImgUri)
+                isDefaultImg=false
             }
         }
 
