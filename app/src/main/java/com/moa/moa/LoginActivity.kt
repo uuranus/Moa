@@ -52,9 +52,6 @@ class LoginActivity : AppCompatActivity() {
     private val logoutButton: Button by lazy{
         findViewById(R.id.logoutButton)
     }
-    private val resultTextView:TextView by lazy{
-        findViewById(R.id.resultTextView)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +106,6 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(result: NidProfileResponse) {
-                    resultTextView.text=result.toString()
                     val intent=Intent(this@LoginActivity,RegisterActivity::class.java)
                     intent.putExtra("userEmail",result.profile?.email)
                     startActivity(intent)
