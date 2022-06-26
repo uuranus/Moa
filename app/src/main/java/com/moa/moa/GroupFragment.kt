@@ -53,7 +53,6 @@ class GroupFragment : Fragment() {
                 registerActivity.isExisting = 0
             }
         }
-
     }
 
     override fun onDestroyView() {

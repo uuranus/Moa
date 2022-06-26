@@ -1,5 +1,6 @@
 package com.moa.moa
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.moa.moa.Home.HomeActivity
 
 class RegisterActivity : FragmentActivity() {
     private var userEmail:String=""
@@ -81,7 +83,8 @@ class RegisterActivity : FragmentActivity() {
         profileSaveButton.isEnabled=false
         profileSaveButton.setOnClickListener {
             if(viewPager.currentItem==PAGE_NUM-1){ //마지막 페이지에서 save버튼 눌렀을 때 HomeActivity로 넘어가면 된다.
-
+                val intent= Intent(this@RegisterActivity,HomeActivity::class.java)
+                startActivity(intent)
             }
             else{
                 if(viewPager.currentItem == 1){ //1번 페이지에서 기존방 입장 or 새로운 그룹 생성 분기
@@ -104,7 +107,6 @@ class RegisterActivity : FragmentActivity() {
                     viewPager.currentItem++
                     state=viewPager.currentItem
                 }
-
             }
         }
 

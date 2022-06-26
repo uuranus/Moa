@@ -5,5 +5,9 @@
     <string name="naver_client_name">모아(Moa)</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_title">집안일</string>
+    <string name="menu_title_home">홈</string>
+    <string name="menu_title_analysis">통계</string>
+    <string name="menu_title_mypage">통계</string>
 
 </resources>
