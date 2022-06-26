@@ -70,7 +70,6 @@ class ProfileFragment : Fragment() {
                 }
 
             }
-
             return@setOnEditorActionListener false
         }
 

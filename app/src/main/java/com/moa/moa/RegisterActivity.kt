@@ -3,6 +3,7 @@ package com.moa.moa
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -25,13 +26,13 @@ class RegisterActivity : FragmentActivity() {
         findViewById(R.id.profileViewPager)
     }
 
-    private val PAGE_NUM=2
+    private val PAGE_NUM=5
 
     private var state:Int=0
         set(value) {
             field = value
             if(value==PAGE_NUM-1){
-                profileSaveButton.text= "저장"
+                profileSaveButton.text= "확인"
             }
             else{
                 profileSaveButton.text= "다음"
@@ -39,11 +40,14 @@ class RegisterActivity : FragmentActivity() {
 
         }
 
+    var isExisting : Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        userEmail=intent.getStringExtra("userEmail")!!
+        // userEmail=intent.getStringExtra("userEmail")!!
+        userEmail="asd123"
 
         init()
 
@@ -58,20 +62,48 @@ class RegisterActivity : FragmentActivity() {
         viewPager.isUserInputEnabled=false
 
         backButton.setOnClickListener {
-            if(viewPager.currentItem!=0){
-                viewPager.currentItem--
-                state=viewPager.currentItem
+            when (viewPager.currentItem) {
+                0 -> {
+                    viewPager.currentItem=0
+                    state=viewPager.currentItem
+                }
+                3 -> {
+                    viewPager.currentItem = 1
+                    state=viewPager.currentItem
+                }
+                else -> {
+                    viewPager.currentItem--
+                    state=viewPager.currentItem
+                }
             }
         }
 
         profileSaveButton.isEnabled=false
         profileSaveButton.setOnClickListener {
-            if(viewPager.currentItem==PAGE_NUM-1){
+            if(viewPager.currentItem==PAGE_NUM-1){ //마지막 페이지에서 save버튼 눌렀을 때 HomeActivity로 넘어가면 된다.
 
             }
             else{
-                viewPager.currentItem++
-                state=viewPager.currentItem
+                if(viewPager.currentItem == 1){ //1번 페이지에서 기존방 입장 or 새로운 그룹 생성 분기
+                    when (isExisting) {
+                        0 -> { //기존방이 존재하지 않는 경우 -> 3번페이지로 SettingGroupNumberFragment
+                            profileSaveButton.isEnabled = true
+                            viewPager.currentItem = 3
+                            state=viewPager.currentItem
+                        }
+                        1 -> { //기존방이 존재하는 경우 -> 2번페이지로 EnterGroupFragment
+                            profileSaveButton.isEnabled = true
+                            viewPager.currentItem++
+                            state = PAGE_NUM-1
+                        }
+                        else -> { // 오류
+                            Toast.makeText(this,"group 오류",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }else{
+                    viewPager.currentItem++
+                    state=viewPager.currentItem
+                }
 
             }
         }
@@ -95,7 +127,13 @@ class RegisterActivity : FragmentActivity() {
             return when(position){
                 0-> ProfileFragment()
 
-                1-> BlankFragment()
+                1-> GroupFragment()
+
+                2-> EnterGroupFragment()
+
+                3-> SettingGroupNumberFragment()
+
+                4-> SettingGroupNameFragment()
 
                 else -> ProfileFragment()
             }
