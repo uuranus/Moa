@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "284742272554",
+    "firebase_url": "https://moaa-7da62-default-rtdb.firebaseio.com",
     "project_id": "moaa-7da62",
     "storage_bucket": "moaa-7da62.appspot.com"
   },
@@ -22,7 +23,7 @@
           }
         },
         {
-          "client_id": "284742272554-be56nejkospl0hetjj9fhb7mqcsihqjc.apps.googleusercontent.com",
+          "client_id": "284742272554-0a3gk7aoc12jdaqj1gloq16ijoqjmuvk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "284742272554-be56nejkospl0hetjj9fhb7mqcsihqjc.apps.googleusercontent.com",
+              "client_id": "284742272554-0a3gk7aoc12jdaqj1gloq16ijoqjmuvk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

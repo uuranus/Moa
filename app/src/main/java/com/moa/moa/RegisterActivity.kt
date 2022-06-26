@@ -9,9 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.moa.moa.Home.HomeActivity
 
 class RegisterActivity : FragmentActivity() {
+    private val database = Firebase.database.reference
+
+    var roomId: String? = null
+    var roomName: String? = null
+
     private var userEmail:String=""
 
     private var profilePageAdapter:FragmentStateAdapter?=null
@@ -56,7 +63,6 @@ class RegisterActivity : FragmentActivity() {
     }
 
     private fun init() {
-
         profilePageAdapter = ProfilePageAdapter(this)
         viewPager.adapter = profilePageAdapter
 
@@ -82,8 +88,15 @@ class RegisterActivity : FragmentActivity() {
 
         profileSaveButton.isEnabled=false
         profileSaveButton.setOnClickListener {
-            if(viewPager.currentItem==PAGE_NUM-1){ //마지막 페이지에서 save버튼 눌렀을 때 HomeActivity로 넘어가면 된다.
+            if(state==PAGE_NUM-1){ //마지막 페이지에서 save 버튼 눌렀을 때 HomeActivity 로 넘어가면 된다.
+                if(viewPager.currentItem == 2){ //enterFragment to homeActivity 데이터베이스에서 사용자가 입력한 방id가 존재하는지 검사
+
+                }else{ //settingGroupName to homeActivity 방을 생성한 경우이므로 database 에 저장해야한다.
+                    database.child("group")
+                }
                 val intent= Intent(this@RegisterActivity,HomeActivity::class.java)
+                intent.putExtra("roomId", roomId)
+                intent.putExtra("email", userEmail)
                 startActivity(intent)
             }
             else{
@@ -109,9 +122,6 @@ class RegisterActivity : FragmentActivity() {
                 }
             }
         }
-
-
-
     }
 
     fun isEnabled(isValid:Boolean){
@@ -140,8 +150,6 @@ class RegisterActivity : FragmentActivity() {
                 else -> ProfileFragment()
             }
         }
-
-
     }
 
 
