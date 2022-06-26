@@ -42,14 +42,27 @@ class GroupFragment : Fragment() {
     }
 
     private fun init() {
+        binding.createBtn.isSoundEffectsEnabled = false
+        binding.enterBtn.isSoundEffectsEnabled = false
+
         //val viewPager=registerActivity.findViewById<ViewPager2>(R.id.profileViewPager)
+        binding.newImg.setOnClickListener {
+            binding.createBtn.performClick()
+        }
+        binding.existingImg.setOnClickListener {
+            binding.enterBtn.performClick()
+        }
         registerActivity.isExisting = 0
         binding.isExistingGroup.setOnCheckedChangeListener { radioGroup, i ->
 
             if(binding.enterBtn.isChecked){
+                binding.newImg.setImageResource(R.drawable.new_group)
+                binding.existingImg.setImageResource(R.drawable.existing_focus)
                 registerActivity.isExisting = 1
             }
             if(binding.createBtn.isChecked){
+                binding.newImg.setImageResource(R.drawable.new_focus)
+                binding.existingImg.setImageResource(R.drawable.existing_group)
                 registerActivity.isExisting = 0
             }
         }
