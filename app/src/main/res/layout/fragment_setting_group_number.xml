@@ -21,7 +21,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="44dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/nicknameTextView"
         tools:layout_editor_absoluteX="16dp">
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:text="0명"
+            android:text="1명"
             android:textSize="20sp" />
 
         <Button
