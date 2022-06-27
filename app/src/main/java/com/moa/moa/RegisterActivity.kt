@@ -100,8 +100,8 @@ class RegisterActivity : FragmentActivity() {
         profileSaveButton.setOnClickListener {
             if(state==PAGE_NUM-1){ //마지막 페이지에서 save 버튼 눌렀을 때 HomeActivity 로 넘어가면 된다.
                 if(viewPager.currentItem == 2){ //enterFragment to homeActivity 데이터베이스에서 사용자가 입력한 방id가 존재하는지 검사
-                    database.child("group").child(roomId!!).get().addOnSuccessListener {
-                        Toast.makeText(this," , group ID : $roomId",Toast.LENGTH_SHORT).show()
+                    database.child("users").child(userEmail).child(roomId!!).get().addOnSuccessListener {
+                        Toast.makeText(this," group ID : $roomId",Toast.LENGTH_SHORT).show()
                         Log.i("firebase", "Got value ${it.value}")
                         if(it.value!=null)
                             startHomeActivity()
