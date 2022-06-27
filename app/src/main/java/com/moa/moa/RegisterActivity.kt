@@ -10,19 +10,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.moa.moa.Data.Group
 import com.moa.moa.Data.User
 import com.moa.moa.Data.Work
 import com.moa.moa.Home.HomeActivity
+import okhttp3.internal.wait
 
 class RegisterActivity : FragmentActivity() {
     private val database = Firebase.database.reference
 
     var roomId: String? = null
     var roomName: String? = null
-    var roomNumber:Int = -1
+    var roomNumber:Int = 1
     var nickname:String? = null
     private var userEmail:String=""
 
@@ -96,21 +101,23 @@ class RegisterActivity : FragmentActivity() {
             if(state==PAGE_NUM-1){ //마지막 페이지에서 save 버튼 눌렀을 때 HomeActivity 로 넘어가면 된다.
                 if(viewPager.currentItem == 2){ //enterFragment to homeActivity 데이터베이스에서 사용자가 입력한 방id가 존재하는지 검사
                     database.child("group").child(roomId!!).get().addOnSuccessListener {
-                        Toast.makeText(this,"group ID : ${it.value}",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this," , group ID : $roomId",Toast.LENGTH_SHORT).show()
                         Log.i("firebase", "Got value ${it.value}")
+                        if(it.value!=null)
+                            startHomeActivity()
                     }.addOnFailureListener{
-                        Toast.makeText(this,"해당하는 방이 존재하지 않습니다.",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"$roomId 방이 존재하지 않습니다. ",Toast.LENGTH_SHORT).show()
                         Log.e("firebase", "Error getting data", it)
                     }
                 }else{ //settingGroupName to homeActivity 방을 생성한 경우이므로 database 에 저장해야한다.
+                    if(roomName==null){
+                        Toast.makeText(this,"잘못된 그룹 이름입니다! 다시 입력해주세요",Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
                     insertNewGroup(nickname!!,"imageurl",roomName!!,roomNumber)
+                    startHomeActivity()
                 }
-                val intent= Intent(this@RegisterActivity,HomeActivity::class.java)
-                intent.putExtra("roomId", roomId)
-                intent.putExtra("email", userEmail)
-                onDestroy()
 
-                startActivity(intent)
             }
             else{
                 if(viewPager.currentItem == 1){ //1번 페이지에서 기존방 입장 or 새로운 그룹 생성 분기
@@ -137,7 +144,17 @@ class RegisterActivity : FragmentActivity() {
         }
     }
 
+    private fun startHomeActivity() {
+        val intent= Intent(this@RegisterActivity,HomeActivity::class.java)
+        intent.putExtra("roomId", roomId)
+        intent.putExtra("email", userEmail)
+        onDestroy()
+
+        startActivity(intent)
+    }
+
     private fun insertNewGroup(nickname:String, image:String, groupName:String, userNumber:Int){
+
         val key = database.root.child("group").push().key
         roomId =key
         if (key == null) {
