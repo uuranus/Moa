@@ -65,6 +65,7 @@ class ProfileFragment : Fragment() {
 
                 }
                 else{
+                    ra.nickname=textView.text.toString()
                     isValid=true
 
                 }
