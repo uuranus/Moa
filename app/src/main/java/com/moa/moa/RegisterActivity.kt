@@ -110,7 +110,7 @@ class RegisterActivity : FragmentActivity() {
                         Log.e("firebase", "Error getting data", it)
                     }
                 }else{ //settingGroupName to homeActivity 방을 생성한 경우이므로 database 에 저장해야한다.
-                    if(roomName==null){
+                    if(roomName==null || roomName == ""){
                         Toast.makeText(this,"잘못된 그룹 이름입니다! 다시 입력해주세요",Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
