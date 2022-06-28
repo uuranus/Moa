@@ -134,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
             //로그인 성공
             //회원가입 화면으로 이동
 
-            val intent=Intent(this@LoginActivity,RegisterActivity::class.java)
+            val intent=Intent(this@LoginActivity,HomeActivity::class.java)
             intent.putExtra("userEmail",account.email)
             startActivity(intent)
         }
