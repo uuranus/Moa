@@ -1,4 +1,4 @@
-package com.moa.moa.Home
+package com.moa.moa.Main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,15 +1,14 @@
-package com.moa.moa.Home
+package com.moa.moa.Main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.moa.moa.Home.HomeFragment
 import com.moa.moa.R
 
 class HomeActivity : AppCompatActivity() {
@@ -26,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        supportFragmentManager.beginTransaction().add(frame.id,HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().add(frame.id, HomeFragment()).commit()
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.homeFragment -> {

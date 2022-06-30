@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -15,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.moa.moa.Main.HomeActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.NidOAuthLoginState
@@ -22,7 +22,6 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.oauth.view.NidOAuthLoginButton
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
     private val naverLogin: NidOAuthLoginButton by lazy {
@@ -134,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
             //로그인 성공
             //회원가입 화면으로 이동
 
-            val intent=Intent(this@LoginActivity,HomeActivity::class.java)
+            val intent=Intent(this@LoginActivity, RegisterActivity::class.java)
             intent.putExtra("userEmail",account.email)
             startActivity(intent)
         }
@@ -150,20 +149,19 @@ class LoginActivity : AppCompatActivity() {
         //구글 로그인이 되어있는지 확인
         val account=GoogleSignIn.getLastSignedInAccount(this)
         if(account!=null){
-            val sharedPreferences=getSharedPreferences("Register", Context.MODE_PRIVATE)
+            val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
             if(sharedPreferences.getBoolean("isRegister",false)){
-                val intent= Intent(this,MainActivity::class.java)
+                val intent= Intent(this,HomeActivity::class.java)
                 startActivity(intent)
             }
-
 
         }
 
         //네이버 로그인이 되어있는지 확인
         if(NidOAuthLoginState.OK.equals(NaverIdLoginSDK.getState())){
-            val sharedPreferences=getSharedPreferences("Register", Context.MODE_PRIVATE)
+            val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
             if(sharedPreferences.getBoolean("isRegister",false)){
-                val intent= Intent(this,MainActivity::class.java)
+                val intent= Intent(this,HomeActivity::class.java)
                 startActivity(intent)
             }
 

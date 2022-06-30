@@ -1,26 +1,23 @@
 package com.moa.moa
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.moa.moa.Data.Group
 import com.moa.moa.Data.User
 import com.moa.moa.Data.Work
-import com.moa.moa.Home.HomeActivity
-import okhttp3.internal.wait
+import com.moa.moa.Main.HomeActivity
 
 class RegisterActivity : FragmentActivity() {
     private val database = Firebase.database.reference
@@ -161,6 +158,13 @@ class RegisterActivity : FragmentActivity() {
             Log.w("TAG", "Couldn't get push key for posts")
             return
         }
+
+        //key값 sharedPrefenece에 저장하고 있기
+        val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
+        sharedPreference.edit(true){
+            putString("groupID",key)
+        }
+
 
         val user = User(userEmail,nickname,image)
         val users = ArrayList<User>()

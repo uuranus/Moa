@@ -4,50 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".Main.HomeActivity">
 
-    <LinearLayout
-        android:id="@+id/homeLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="4dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="34dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/homeRecyclerView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/homeCalendarMonthTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="22dp"
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="@id/homeCalendar"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="2022년 7월" />
-
-        <com.github.sundeepk.compactcalendarview.CompactCalendarView
-            android:id="@+id/homeCalendar"
-            android:layout_width="327dp"
-            android:layout_height="322dp"
-            android:layout_marginTop="22dp"
-            android:padding="16dp"
-            app:compactCalendarTextSize="20sp" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeRecyclerView"
-        android:layout_width="match_parent"
+    <FrameLayout android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/fl_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bnv_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnv_main"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeLinearLayout" />
+        app:menu="@menu/navi_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
