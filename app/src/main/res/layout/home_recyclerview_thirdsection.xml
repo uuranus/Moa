@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="33dp"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/workdID"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <CheckBox
+        android:id="@+id/workIsChecked"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="11dp" />
+
+    <TextView
+        android:id="@+id/workTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="14sp"
+        tools:text="화분에 물 주기" />
+</LinearLayout>
