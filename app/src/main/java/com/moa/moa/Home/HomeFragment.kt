@@ -1,5 +1,6 @@
 package com.moa.moa.Home
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,46 +39,64 @@ class HomeFragment : Fragment() {
         requireView().findViewById(R.id.homeCalendar)
     }
 
+    private val beforeMonth:ImageButton by lazy{
+        requireView().findViewById(R.id.beforeMonth)
+    }
+
+    private val nextMonth:ImageButton by lazy{
+        requireView().findViewById(R.id.nextMonth)
+    }
+
     private val recyclerView: RecyclerView by lazy{
         requireView().findViewById(R.id.homeRecyclerView)
     }
 
+    private val notYetRecyclerView:RecyclerView by lazy{
+        requireView().findViewById(R.id.homeNotYetRecyclerView)
+    }
+
     private var workInfos= mutableListOf<Work>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
-    private var workList= mutableListOf<HomeFirstSection>(HomeFirstSection("아직 배정되지 않았어요!",
-        listOf(HomeSecondSection("0","미배정", mutableListOf()))),
-            HomeFirstSection("가족들은 얼마나 했을까요?", mutableListOf())
-            ) //RecyclerView에 전달하기 위한 list
+    private var notYetWorkList= listOf<HomeNotYetSection>( //아직 배정되지 않았어요 리사이클러뷰용 데이터리스트
+        HomeNotYetSection("아직 배정되지 않았어요!", mutableListOf<HomeNotYetSecondSection>()))
+
+    private var workList= listOf<HomeFirstSection>(HomeFirstSection("가족들은 얼마나 했을까요?", mutableListOf())) //RecyclerView에 전달하기 위한 list
 
     private val dateFormatForMonth: SimpleDateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault()) //달력의 월과 년도 표시용
 
-    private fun initCalendar(){
+    private fun init(){
         groupId= utility.getGroupId(requireActivity())
 
         getWorkInfo() //모든 집안일 정보 가져와서 workInfos에 저장
     }
 
     private fun initWorkList(){
-        workList[0].list[0].list= emptyList()
-        for(section in workList[1].list){
+        notYetWorkList[0].list= emptyList()
+
+        for(section in workList[0].list){
             section.list= emptyList()
         }
     }
 
-    private fun init(){
+    private fun initCalendar(){
+        initCalendarMonth()
 
-        calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-        getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
+        calendarView.setUseThreeLetterAbbreviation(true)
+
+        beforeMonth.setOnClickListener {
+            calendarView.scrollLeft()
+            initCalendarMonth()
+        }
+        nextMonth.setOnClickListener {
+            calendarView.scrollRight()
+            initCalendarMonth()
+        }
 
         calendarView.setListener(object:CompactCalendarView.CompactCalendarViewListener{
             override fun onDayClick(dateClicked: Date?) {
                 val events=calendarView.getEvents(dateClicked)
 
-                //집안일 목록 초기화
-                workList[0].list[0].list= mutableListOf()
-                for(user in workList[1].list){
-                    user.list= mutableListOf()
-                }
+                initCalendarMonth()
 
                 getTodayWork(dateClicked!!)
 
@@ -93,7 +113,13 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun getMonthWork(year:String,month:String){
+    private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
+        calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
+        getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
+
+    }
+
+    private fun getMonthWork(year:String,month:String){ //해당 월의 집안일 목록들을 가져오는 메소드
 
         firebaseDatabase.child(groupId).child("log").child(year).child(month).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -101,12 +127,12 @@ class HomeFragment : Fragment() {
                 //캘린더에 데이터를 넣어주기
 
                 val format=SimpleDateFormat("yyyy-mm-dd")
-                Log.i("date",format.format(format.parse("2022-07-22"))+groupId)
                 val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
 
 
                 calendarView.addEvent(event1)
 
+                calendarView.invalidate()
                 snapshot.value ?:return
 
             }
@@ -118,7 +144,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun getTodayWork(dateClicked:Date){
+    private fun getTodayWork(dateClicked:Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
 
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -127,34 +153,21 @@ class HomeFragment : Fragment() {
 
                 }
                 else {
-                    Log.i("info",getYear(dateClicked)+" "+getMonth(dateClicked)+" "+getDate(dateClicked))
-                    Log.i("it",snapshot.value.toString())
                     for(child in snapshot.children){
                         val workId=child.key.toString().toInt()
-                        Log.i("workId",workId.toString())
                         val person= mutableListOf<Person>()
                         for(child2 in child.child("manager").children){
-                            Log.i("child2",child2.toString())
                             person.add(Person(child2.child("userId").value.toString(),child2.child("userName").value.toString(),child2.child("isChecked").value.toString().toBoolean()))
                         }
 
-                        if(workInfos[workId].number > person.size){ //3명 담당인데 1명만 되어있으면 2개를 추가
-                            for(i in 1..workInfos[workId].number -person.size){
-                                Log.i("not","in charged${workList[0].list[0].userName}")
-                                val list=workList[0].list[0].list.toMutableList()
-                                list.add(HomeThirdSection(false,workId,
-                                    workInfos[workId].title))
-                                workList[0].list[0].list=list
-                            }
-
+                        if(workInfos[workId].number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
+                            val list=notYetWorkList[0].list.toMutableList()
+                            list.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
+                            notYetWorkList[0].list=list
                         }
 
-                        Log.i("nmiddle",workList.toString())
-
                         for(prs in person){
-                            Log.i("prs",prs.toString())
-
-                            for(element in workList[1].list){
+                            for(element in workList[0].list){
                                 if(element.userId==prs.userId){
                                     val list=element.list.toMutableList()
                                     list.add(HomeThirdSection(prs.isChecked,workId,
@@ -167,9 +180,15 @@ class HomeFragment : Fragment() {
                     }
                 }
 
+                //미배정 목록 리사이클러뷰
+                notYetRecyclerView.adapter= HomeNotYetRecyclerViewAdapter(notYetWorkList)
+                notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
 
+                //배정 목록 리사이클러뷰
                 recyclerView.adapter= HomeFirstSectionRecyclerViewAdapter(workList)
                 recyclerView.layoutManager=LinearLayoutManager(requireContext())
+
+
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(),"데이터를 가져오는데 실패했습니다",Toast.LENGTH_SHORT).show()
@@ -179,7 +198,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun getWorkInfo() {
+    private fun getWorkInfo() { //groupId->worklist에 저장되어 있는 집안일 정보를 가져옴
 
         firebaseDatabase.child("group").child(groupId).child("worklist").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -187,12 +206,12 @@ class HomeFragment : Fragment() {
 
                 snapshot.children.forEach { dataSnapshot ->
 
-                    Log.i("success",dataSnapshot.toString())
                     dataSnapshot.getValue<Work>()?.let {it2->
                         workInfos.add(it2.workId,it2)
                     }
                 }
 
+                //집안일 정보 가져 온 후 사용자 정보 가져오기 --> 가족들은 얼마나 했을까요?에서 구성원 목록을 미리 만들어놓기 위함
                 getUsers()
             }
 
@@ -205,8 +224,7 @@ class HomeFragment : Fragment() {
         
     }
 
-    private fun getUsers(){
-        Log.i("getsuers","getUsers")
+    private fun getUsers(){ //group->users에 저장되어 있는 유저들 정보를 가져옴
 
         firebaseDatabase.child("group").child(groupId).child("users").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -215,15 +233,15 @@ class HomeFragment : Fragment() {
                 snapshot.children.forEach { dataSnapshot ->
 
                     dataSnapshot.getValue<User>()?.let {it2->
-                        val list=workList[1].list.toMutableList()
-                        list.add(HomeSecondSection(it2.email,it2.nickName,
+                        val list=workList[0].list.toMutableList()
+                        list.add(HomeSecondSection(it2.userId,it2.userName,
                             mutableListOf()))
-                        workList[1].list=list
+                        workList[0].list=list
 
                     }
                 }
 
-                init()
+                initCalendar() //사용자 정보 다 가져왔으면 캘린더 초기화
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -246,21 +264,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        initCalendar()
+        init()
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun getYear(date:Date):String{
         val dateFormat=SimpleDateFormat("yyyy")
         return dateFormat.format(date)
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun getMonth(date:Date):String{
         val dateFormat=SimpleDateFormat("MM")
         return dateFormat.format(date)
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun getDate(date:Date):String{
         val dateFormat=SimpleDateFormat("dd")
         return dateFormat.format(date)
