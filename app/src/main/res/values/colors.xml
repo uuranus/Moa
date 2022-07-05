@@ -12,4 +12,5 @@
     <color name="red">#FFEF6E6E</color>
     <color name="dark_grey">#FF717171</color>
     <color name="temp">#fff</color>
+    <color name="background_white">#F6F6F6</color>
 </resources>

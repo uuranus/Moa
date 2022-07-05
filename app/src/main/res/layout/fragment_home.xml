@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F6F6F6"
+    android:backgroundTint="#F6F6F6"
     tools:context=".Main.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeLinearLayout"
-        android:layout_width="327dp"
-        android:layout_height="322dp"
-        android:layout_marginTop="22dp"
+        android:layout_width="308dp"
+        android:layout_height="317dp"
+        android:layout_marginTop="110dp"
         android:layout_marginBottom="34dp"
         android:background="@drawable/round_btn"
         android:backgroundTint="@color/white"
@@ -27,7 +29,6 @@
             android:id="@+id/calendarHeaderLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/homeCalendar"
@@ -42,11 +43,12 @@
                 android:layout_gravity="end|center_vertical"
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/homeCalendarMonthTextView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
             <TextView
@@ -71,56 +73,63 @@
                 android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/homeCalendarMonthTextView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <View
+            android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/text_grey"
             android:alpha="0.3"
+            android:background="@color/text_grey"
+            app:layout_constraintBottom_toTopOf="@id/homeCalendar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarHeaderLayout"
-            app:layout_constraintBottom_toTopOf="@id/homeCalendar"/>
+            app:layout_constraintTop_toBottomOf="@id/calendarHeaderLayout" />
 
         <com.github.sundeepk.compactcalendarview.CompactCalendarView
             android:id="@+id/homeCalendar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarHeaderLayout"
+            android:layout_width="282dp"
+            android:layout_height="241dp"
             android:layout_marginTop="22dp"
             android:padding="4dp"
-            app:compactCalendarTextSize="20sp"
             app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
             app:compactCalendarCurrentDayTextColor="@color/primary"
             app:compactCalendarCurrentSelectedDayBackgroundColor="@color/primary"
             app:compactCalendarCurrentSelectedDayTextColor="@color/white"
-            app:compactCalendarMultiEventIndicatorColor="@color/primary"/>
+            app:compactCalendarMultiEventIndicatorColor="@color/primary"
+            app:compactCalendarTextSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calendarHeaderLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:id="@+id/homeRecyclerViewScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#F6F6F6"
+        android:backgroundTint="#F6F6F6"
+        android:foregroundTint="#F6F6F6"
         android:orientation="vertical"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeLinearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+        app:layout_constraintTop_toBottomOf="@id/homeLinearLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="#F6F6F6"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -128,6 +137,7 @@
                 android:id="@+id/homeNotYetRecyclerView"
                 android:layout_width="327dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="20dp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -138,5 +148,57 @@
         </LinearLayout>
 
     </ScrollView>
+
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="494dp"
+        android:background="@drawable/round_image"
+        android:foregroundTint="#F6F6F6"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/homeRecyclerViewScroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="156dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/homeLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/moa" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/homeLinearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/home_circle" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="173dp"
+        android:layout_height="179dp"
+        android:layout_marginEnd="300dp"
+        app:layout_constraintBottom_toTopOf="@+id/homeRecyclerViewScroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.939"
+        app:srcCompat="@drawable/home_circle2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
