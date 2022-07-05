@@ -112,6 +112,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <ScrollView
         android:id="@+id/homeRecyclerViewScroll"
         android:layout_width="match_parent"
@@ -122,6 +123,7 @@
         android:orientation="vertical"
         android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/homeLinearLayout">
@@ -148,7 +150,6 @@
         </LinearLayout>
 
     </ScrollView>
-
 
     <ImageView
         android:id="@+id/imageView5"
