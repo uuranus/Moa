@@ -67,6 +67,7 @@ class HomeFragment : Fragment() {
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
 
+        Log.i("infofofofo",groupId)
         getWorkInfo() //모든 집안일 정보 가져와서 workInfos에 저장
     }
 
@@ -202,7 +203,11 @@ class HomeFragment : Fragment() {
 
         firebaseDatabase.child("group").child(groupId).child("worklist").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.value ?:return
+                if(snapshot.value ==null){
+                    //집안일 정보 가져 온 후 사용자 정보 가져오기 --> 가족들은 얼마나 했을까요?에서 구성원 목록을 미리 만들어놓기 위함
+                    getUsers()
+                    return
+                }
 
                 snapshot.children.forEach { dataSnapshot ->
 

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register.RegisterActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Register.ProfileImageFragment">
 
     <TextView
-        android:id="@+id/nicknameTextView"
+        android:id="@+id/profileImageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="사용하실 \n이름을 입력해주세요."
+        android:text="프로필을 등록해주세요"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -18,17 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <EditText
-        android:id="@+id/editNickname"
-        android:layout_width="match_parent"
-        android:hint="이름"
-        android:inputType="text"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/editProfileImg"
+        android:layout_width="131dp"
+        android:layout_height="131dp"
+        android:src="@drawable/ic_baseline_person_add_alt_1_24"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nicknameTextView"
-        android:layout_marginTop="54dp"
-        tools:text="닉네임" />
-
+        app:layout_constraintTop_toBottomOf="@id/profileImageTextView"
+        android:layout_marginTop="44dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
