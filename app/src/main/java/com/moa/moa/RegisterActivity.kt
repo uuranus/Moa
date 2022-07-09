@@ -1,8 +1,15 @@
 package com.moa.moa
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.Global.putString
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -177,7 +184,7 @@ class RegisterActivity : FragmentActivity() {
         }
 
         //key값 sharedPrefenece에 저장하고 있기
-        val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
+        val sharedPreference=getSharedPreferences("Info", Context.MODE_PRIVATE)
         sharedPreference.edit(true){
             putString("groupID",key)
         }
