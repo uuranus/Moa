@@ -1,13 +1,8 @@
 package com.moa.moa
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.Toast
-import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -54,6 +49,8 @@ class RegisterActivity : FragmentActivity() {
                 profileSaveButton.text= "다음"
             }
 
+            backButton.isEnabled = value != 0
+
         }
 
     var isExisting : Int = -1
@@ -69,7 +66,26 @@ class RegisterActivity : FragmentActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if(state!=0){
+            viewPager.currentItem--
+            state=viewPager.currentItem
+        }
+        else{
+            AlertDialog.Builder(this)
+                .setMessage("회원가입을 그만두시겠습니까?")
+                .setPositiveButton("네"){_,_ ->
+                    super.onBackPressed()
+                }
+                .setNegativeButton("아니오"){_,_ ->
+
+                }
+                .show()
+        }
+
+    }
     private fun init() {
+
         profilePageAdapter = ProfilePageAdapter(this)
         viewPager.adapter = profilePageAdapter
 
@@ -94,6 +110,7 @@ class RegisterActivity : FragmentActivity() {
         }
 
         profileSaveButton.isEnabled=false
+        backButton.isEnabled=false
         profileSaveButton.setOnClickListener {
             if(state==PAGE_NUM-1){ //마지막 페이지에서 save 버튼 눌렀을 때 HomeActivity 로 넘어가면 된다.
                 if(viewPager.currentItem == 2){ //enterFragment to homeActivity 데이터베이스에서 사용자가 입력한 방id가 존재하는지 검사
@@ -211,6 +228,8 @@ class RegisterActivity : FragmentActivity() {
                 else -> ProfileFragment()
             }
         }
+
+
     }
 
 
