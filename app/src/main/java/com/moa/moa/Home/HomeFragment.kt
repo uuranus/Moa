@@ -55,6 +55,7 @@ class HomeFragment : Fragment() {
         requireView().findViewById(R.id.homeNotYetRecyclerView)
     }
 
+
     private var workInfos= mutableListOf<Work>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
     private var notYetWorkList= listOf<HomeNotYetSection>( //아직 배정되지 않았어요 리사이클러뷰용 데이터리스트
@@ -179,10 +180,15 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-
                 //미배정 목록 리사이클러뷰
-                notYetRecyclerView.adapter= HomeNotYetRecyclerViewAdapter(notYetWorkList)
+
+                val homeAdapter = HomeNotYetRecyclerViewAdapter(notYetWorkList)
+                homeAdapter.onItemClickListener = {
+                    Log.i("home adapter","$it clicked!  in homefrag")
+                }
+                notYetRecyclerView.adapter= homeAdapter
                 notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+
 
                 //배정 목록 리사이클러뷰
                 recyclerView.adapter= HomeFirstSectionRecyclerViewAdapter(workList)

@@ -11,6 +11,8 @@ import com.moa.moa.R
 
 class HomeNotYetSecondRecyclerViewAdapter(val list:List<HomeNotYetSecondSection>): RecyclerView.Adapter<HomeNotYetSecondRecyclerViewAdapter.HomeViewHolder>() {
 
+    var onItemClickListener : ((Int)->Unit)? = null
+
     class HomeViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
         val workdID=itemView.findViewById<TextView>(R.id.workdID)
         val workdColor=itemView.findViewById<View>(R.id.workdColor)
@@ -26,11 +28,20 @@ class HomeNotYetSecondRecyclerViewAdapter(val list:List<HomeNotYetSecondSection>
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): HomeNotYetSecondRecyclerViewAdapter.HomeViewHolder {
-        return HomeNotYetSecondRecyclerViewAdapter.HomeViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.home_notyet_recyclerview_secondsection, parent, false)
-        )
+    ): HomeViewHolder {
+
+        val item = LayoutInflater.from(parent.context)
+            .inflate(R.layout.home_notyet_recyclerview_secondsection, parent, false)
+
+        val listViewHolder = HomeViewHolder(item)
+
+        item.setOnClickListener {
+            var position = listViewHolder.adapterPosition
+            onItemClickListener?.invoke(position)
+        }
+        return listViewHolder
+
+
     }
 
     override fun onBindViewHolder(
