@@ -6,135 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".Main.HomeActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/homeLinearLayout"
-        android:layout_width="327dp"
-        android:layout_height="322dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginBottom="34dp"
-        android:background="@drawable/round_btn"
-        android:backgroundTint="@color/white"
-        android:clipChildren="true"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:padding="12dp"
-        app:layout_constraintBottom_toTopOf="@id/homeRecyclerViewScroll"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/calendarHeaderLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/homeCalendar"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/beforeMonth"
-                android:layout_width="10dp"
-                android:layout_height="18dp"
-                android:layout_gravity="end|center_vertical"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/homeCalendarMonthTextView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/homeCalendarMonthTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_on_secondary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/beforeMonth"
-                app:layout_constraintRight_toLeftOf="@id/nextMonth"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="2022년 7월" />
-
-
-            <ImageButton
-                android:id="@+id/nextMonth"
-                android:layout_width="10dp"
-                android:layout_height="18dp"
-                android:layout_gravity="end|center_vertical"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/homeCalendarMonthTextView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_grey"
-            android:alpha="0.3"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarHeaderLayout"
-            app:layout_constraintBottom_toTopOf="@id/homeCalendar"/>
-
-        <com.github.sundeepk.compactcalendarview.CompactCalendarView
-            android:id="@+id/homeCalendar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarHeaderLayout"
-            android:layout_marginTop="22dp"
-            android:padding="4dp"
-            app:compactCalendarTextSize="20sp"
-            app:compactCalendarCurrentDayBackgroundColor="@android:color/transparent"
-            app:compactCalendarCurrentDayTextColor="@color/primary"
-            app:compactCalendarCurrentSelectedDayBackgroundColor="@color/primary"
-            app:compactCalendarCurrentSelectedDayTextColor="@color/white"
-            app:compactCalendarMultiEventIndicatorColor="@color/primary"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <ScrollView
         android:id="@+id/homeRecyclerViewScroll"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeLinearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeNotYetRecyclerView"
-                android:layout_width="327dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" />
+                android:padding="30dp"
+                android:background="@drawable/round_btn">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeRecyclerView"
-                android:layout_width="327dp"
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/homeCalendar"
+                    android:layout_width="315dp"
+                    android:layout_height="wrap_content"
+                    app:abbreviationsLabelsColor="@color/text_grey"
+                    app:anotherMonthsDaysLabelsColor="@color/white"
+                    app:eventsEnabled="true"
+                    app:headerColor="@color/white"
+                    app:previousButtonSrc="@drawable/ic_baseline_keyboard_arrow_left_24"
+                    app:forwardButtonSrc="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:headerLabelColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:selectionColor="@color/primary"
+                    app:todayLabelColor="@color/primary"
+                    app:type="one_day_picker" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/homeNotYetRecyclerView" />
+                android:layout_marginTop="27dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/homeNotYetRecyclerView"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/homeRecyclerView"
+                    android:layout_width="327dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/homeNotYetRecyclerView" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

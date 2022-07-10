@@ -121,17 +121,22 @@ class RegisterActivity : FragmentActivity() {
                         Toast.makeText(this,"잘못된 그룹 ID입니다! 다시 입력해주세요",Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
+                    progressBar.visibility= View.VISIBLE
                     database.child("group").child(roomId!!).get().addOnSuccessListener {
                         Toast.makeText(this," group ID : $roomId",Toast.LENGTH_SHORT).show()
                         Log.i("firebase", "Got value ${it.value}")
                         if(it.value!=null){
-                            progressBar.visibility= View.VISIBLE
                             insertUser()
+                        }
+                        else{
+                            Toast.makeText(this,"$roomId 방이 존재하지 않습니다. ",Toast.LENGTH_SHORT).show()
+                            progressBar.visibility= View.GONE
                         }
 
                     }.addOnFailureListener{
                         Toast.makeText(this,"$roomId 방이 존재하지 않습니다. ",Toast.LENGTH_SHORT).show()
                         Log.e("firebase", "Error getting data", it)
+                        progressBar.visibility= View.GONE
                     }
                 }else{ //settingGroupName to homeActivity 방을 생성한 경우이므로 database 에 저장해야한다.
                     if(roomName==null || roomName == ""){
@@ -178,7 +183,9 @@ class RegisterActivity : FragmentActivity() {
             AlertDialog.Builder(this)
                 .setMessage("프로필 설정을 종료하시겠습니까?")
                 .setPositiveButton("예") { _, _ ->
-                    super.onBackPressed()
+                    val intent=Intent(this,LoginActivity::class.java)
+                    intent.putExtra("cancelRegister",false)
+                    startActivity(intent)
                 }
                 .setNegativeButton("아니오") { _, _ ->
 
@@ -206,6 +213,7 @@ class RegisterActivity : FragmentActivity() {
         intent.putExtra("email", userEmail)
         onDestroy()
 
+        intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
 
@@ -230,6 +238,7 @@ class RegisterActivity : FragmentActivity() {
             insertUser()
         }.addOnFailureListener {
             Toast.makeText(this,"데이터 저장에 실패했습니다",Toast.LENGTH_SHORT).show()
+            progressBar.visibility= View.GONE
         }
 
 

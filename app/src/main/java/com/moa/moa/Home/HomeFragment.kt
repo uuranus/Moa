@@ -2,19 +2,19 @@ package com.moa.moa.Home
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.sundeepk.compactcalendarview.CompactCalendarView
-import com.github.sundeepk.compactcalendarview.domain.Event
+import com.applandeo.materialcalendarview.CalendarView
+import com.applandeo.materialcalendarview.EventDay
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
@@ -31,21 +31,11 @@ class HomeFragment : Fragment() {
 
     private lateinit var firebaseDatabase:DatabaseReference
 
-    private val calenderMonthTextView: TextView by lazy{
-        requireView().findViewById(R.id.homeCalendarMonthTextView)
-    }
 
-    private val calendarView: CompactCalendarView by lazy{
+    private val calendarView: CalendarView by lazy{
         requireView().findViewById(R.id.homeCalendar)
     }
 
-    private val beforeMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.beforeMonth)
-    }
-
-    private val nextMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.nextMonth)
-    }
 
     private val recyclerView: RecyclerView by lazy{
         requireView().findViewById(R.id.homeRecyclerView)
@@ -82,42 +72,58 @@ class HomeFragment : Fragment() {
     private fun initCalendar(){
         initCalendarMonth()
 
-        calendarView.setUseThreeLetterAbbreviation(true)
+        val events = mutableListOf<EventDay>();
 
-        beforeMonth.setOnClickListener {
-            calendarView.scrollLeft()
+        val calendar = Calendar.getInstance();
+//        events.add( EventDay(calendar, R.drawable.circle));
+
+//or if you want to specify event label color
+        events.add( EventDay(calendar, R.drawable.circle, Color.parseColor("#228B22")));
+
+
+        calendarView.setEvents(events)
+
+
+
+        calendarView.setOnPreviousPageChangeListener {
             initCalendarMonth()
         }
-        nextMonth.setOnClickListener {
-            calendarView.scrollRight()
+
+        calendarView.setOnForwardPageChangeListener {
             initCalendarMonth()
         }
 
-        calendarView.setListener(object:CompactCalendarView.CompactCalendarViewListener{
-            override fun onDayClick(dateClicked: Date?) {
-                val events=calendarView.getEvents(dateClicked)
+        calendarView.setOnDayClickListener {
+            val events=it
 
-                initCalendarMonth()
+            println("event@!!!"+events)
 
-                getTodayWork(dateClicked!!)
+            initCalendarMonth()
 
-            }
+            getTodayWork(it.calendar.run {
+                add(Calendar.MONTH,1)
+                time
+            })
 
-            override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-                calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-                getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
-            }
-
-        })
+        }
+//        (object:CompactCalendarView.CompactCalendarViewListener{
+//            override fun onDayClick(dateClicked: Date?) {
+//
+//            }
+//
+//            override fun onMonthScroll(firstDayOfNewMonth: Date?) {
+//                calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
+//                getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
+//            }
+//
+//        })
 
         getTodayWork(Date())
 
     }
 
     private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
-        calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-        getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
-
+        getMonthWork(calendarView.currentPageDate.get(Calendar.YEAR).toString(),calendarView.currentPageDate.get(Calendar.MONTH).toString()) //0월부터 시작
     }
 
     private fun getMonthWork(year:String,month:String){ //해당 월의 집안일 목록들을 가져오는 메소드
@@ -127,13 +133,13 @@ class HomeFragment : Fragment() {
                 //선택된 월의 데이터를 가져오기
                 //캘린더에 데이터를 넣어주기
 
-                val format=SimpleDateFormat("yyyy-mm-dd")
-                val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
-
-
-                calendarView.addEvent(event1)
-
-                calendarView.invalidate()
+//                val format=SimpleDateFormat("yyyy-mm-dd")
+//                val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
+//
+//
+//                calendarView.addEvent(event1)
+//
+//                calendarView.invalidate()
                 snapshot.value ?:return
 
             }
@@ -145,7 +151,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun getTodayWork(dateClicked:Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
+    private fun getTodayWork(dateClicked: Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
 
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {

@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:windowTranslucentStatus">true</item>
+
         <!-- Customize your theme here. -->
 
         <item name="textFillColor">@color/text_grey</item>

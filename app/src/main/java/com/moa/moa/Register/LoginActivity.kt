@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN=100
 
-
+    private var isBack:Boolean=false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +97,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         override fun onSuccess() {
-            Toast.makeText(this@LoginActivity,"로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
 
             NidOAuthLogin().callProfileApi(object:NidProfileCallback<NidProfileResponse>{
                 override fun onError(errorCode: Int, message: String) {
@@ -116,8 +115,7 @@ class LoginActivity : AppCompatActivity() {
                         putString("userId",result.profile?.email)
                     }
 
-                    val intent=Intent(this@LoginActivity, RegisterActivity::class.java)
-                    startActivity(intent)
+                    goToRegisterActivity()
 
                 }
 
@@ -148,8 +146,7 @@ class LoginActivity : AppCompatActivity() {
                 putString("userId",account.email)
             }
 
-            val intent=Intent(this@LoginActivity, RegisterActivity::class.java)
-            startActivity(intent)
+            goToRegisterActivity()
         }
         catch(e:ApiException){
             Log.i("exception",e.toString())
@@ -160,34 +157,49 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        //구글 로그인이 되어있는지 확인
-        val account=GoogleSignIn.getLastSignedInAccount(this)
-        if(account!=null){
-            val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
-            if(sharedPreferences.getBoolean("isRegistered",false)){
-                val intent= Intent(this,HomeActivity::class.java)
-                startActivity(intent)
+        if(!intent.hasExtra("cancelRegistered")){
+
+            //구글 로그인이 되어있는지 확인
+            val account=GoogleSignIn.getLastSignedInAccount(this)
+            if(account!=null){
+                val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
+
+                if(sharedPreferences.getBoolean("isRegistered",false)){
+                    goToHomeActivity()
+                }
+                else{
+                    goToRegisterActivity()
+                }
             }
-            else{
-                val intent=Intent(this@LoginActivity, RegisterActivity::class.java)
-                startActivity(intent)
+
+            //네이버 로그인이 되어있는지 확인
+            if(NidOAuthLoginState.OK == NaverIdLoginSDK.getState()){
+
+                val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
+
+                if(sharedPreferences.getBoolean("isRegistered",false)){
+                    goToHomeActivity()
+                }
+                else{
+                    goToRegisterActivity()
+                }
+
             }
         }
 
-        //네이버 로그인이 되어있는지 확인
-        if(NidOAuthLoginState.OK == NaverIdLoginSDK.getState()){
 
-            val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
-            if(sharedPreferences.getBoolean("isRegistered",false)){
-                val intent= Intent(this,HomeActivity::class.java)
-                startActivity(intent)
-            }
-            else{
-                val intent=Intent(this@LoginActivity, RegisterActivity::class.java)
-                startActivity(intent)
-            }
+    }
 
-        }
+    private fun goToRegisterActivity(){
+        val intent=Intent(this@LoginActivity, RegisterActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToHomeActivity(){
+        val intent= Intent(this,HomeActivity::class.java)
+        intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
     }
 
 }
