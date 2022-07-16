@@ -1,7 +1,9 @@
 package com.moa.moa.Home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,8 +20,13 @@ import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
+import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
+import com.moa.moa.RegisterActivity
 import com.moa.moa.Utility
+import com.moa.moa.databinding.FragmentGroupBinding
+import com.moa.moa.databinding.FragmentHomeBinding
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +34,11 @@ import java.util.*
 class HomeFragment : Fragment() {
     private val utility=Utility()
 
+    private var _binding: FragmentHomeBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+    lateinit var homeActivity: HomeActivity
     private lateinit var groupId :String
 
     private lateinit var firebaseDatabase:DatabaseReference
@@ -67,6 +79,7 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
+
 
         getWorkInfo() //모든 집안일 정보 가져와서 workInfos에 저장
     }
@@ -149,6 +162,7 @@ class HomeFragment : Fragment() {
 
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                val tmpList= mutableListOf<HomeNotYetSecondSection>()
                 if(snapshot.value ==null) {
                     initWorkList()
 
@@ -164,6 +178,7 @@ class HomeFragment : Fragment() {
                         if(workInfos[workId].number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
                             val list=notYetWorkList[0].list.toMutableList()
                             list.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
+                            tmpList.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
                             notYetWorkList[0].list=list
                         }
 
@@ -182,9 +197,26 @@ class HomeFragment : Fragment() {
                 }
                 //미배정 목록 리사이클러뷰
 
-                val homeAdapter = HomeNotYetRecyclerViewAdapter(notYetWorkList)
+                //val homeAdapter = HomeNotYetRecyclerViewAdapter(notYetWorkList)
+                val homeAdapter =HomeNotYetSecondRecyclerViewAdapter(tmpList)
                 homeAdapter.onItemClickListener = {
-                    Log.i("home adapter","$it clicked!  in homefrag")
+                    Log.i("home adapter","$it clicked! in homefrag")
+
+                    val slidePanel = binding.mainFrame
+
+                    val state = slidePanel.panelState
+                    // 닫힌 상태일 경우 열기
+                    if (state == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                        slidePanel.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
+                    }
+
+                    setDetailPage(it)
+
+                    binding.assignBtn.setOnClickListener {
+                        if (state == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                            slidePanel.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+                        }
+                    }
                 }
                 notYetRecyclerView.adapter= homeAdapter
                 notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
@@ -201,6 +233,46 @@ class HomeFragment : Fragment() {
             }
 
         })
+
+    }
+
+    private fun setDetailPage(workNum:Int) {
+        firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("title").get().addOnSuccessListener {
+            binding.workDetailTitle.text = it.value.toString()
+
+        }
+        firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("stars").get().addOnSuccessListener {
+            binding.starNum.text = it.value.toString()
+            val starNum=it.value.toString().toInt()
+            when(starNum){
+                1->{
+                    binding.star2.visibility = View.GONE
+                    binding.star3.visibility = View.GONE
+                    binding.star4.visibility = View.GONE
+                    binding.star5.visibility = View.GONE
+                }
+
+                2->{
+                    binding.star3.visibility = View.GONE
+                    binding.star4.visibility = View.GONE
+                    binding.star5.visibility = View.GONE
+                }
+
+                3->{
+                    binding.star4.visibility = View.GONE
+                    binding.star5.visibility = View.GONE
+                }
+
+                4->{
+                    binding.star5.visibility = View.GONE
+                }
+            }
+
+        }
+        firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("description").get().addOnSuccessListener {
+            binding.workDetailContents.text = it.value.toString()
+
+        }
 
     }
 
@@ -257,6 +329,14 @@ class HomeFragment : Fragment() {
         })
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        // 2. Context를 액티비티로 형변환해서 할당
+        homeActivity = context as HomeActivity
+
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -264,7 +344,13 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val instance=FirebaseDatabase.getInstance()
         firebaseDatabase=instance.reference
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+       //binding.workDetailLayout.background = ColorDrawable(Color.TRANSPARENT)
+        val slidePanel = binding.mainFrame
+        slidePanel.shadowHeight = 0
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
