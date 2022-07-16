@@ -23,27 +23,38 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="30dp"
-                android:background="@drawable/round_btn">
+                android:background="@drawable/round_btn"
+                android:padding="30dp">
 
-                <com.applandeo.materialcalendarview.CalendarView
-                    android:id="@+id/homeCalendar"
-                    android:layout_width="315dp"
-                    android:layout_height="wrap_content"
-                    app:abbreviationsLabelsColor="@color/text_grey"
-                    app:anotherMonthsDaysLabelsColor="@color/white"
-                    app:eventsEnabled="true"
-                    app:headerColor="@color/white"
-                    app:previousButtonSrc="@drawable/ic_baseline_keyboard_arrow_left_24"
-                    app:forwardButtonSrc="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    app:headerLabelColor="@color/black"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="325dp"
+                    android:layout_height="348dp"
+                    android:background="@drawable/round_btn"
+                    android:backgroundTint="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:selectionColor="@color/primary"
-                    app:todayLabelColor="@color/primary"
-                    app:type="one_day_picker" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.applandeo.materialcalendarview.CalendarView
+                        android:id="@+id/homeCalendar"
+                        android:layout_width="315dp"
+                        android:layout_height="338dp"
+                        app:abbreviationsLabelsColor="@color/text_grey"
+                        app:anotherMonthsDaysLabelsColor="@color/white"
+                        app:eventsEnabled="true"
+                        app:forwardButtonSrc="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        app:headerColor="@color/white"
+                        app:headerLabelColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:previousButtonSrc="@drawable/ic_baseline_keyboard_arrow_left_24"
+                        app:selectionColor="@color/primary"
+                        app:todayLabelColor="@color/primary"
+                        app:type="one_day_picker" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

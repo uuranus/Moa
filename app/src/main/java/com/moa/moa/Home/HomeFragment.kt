@@ -3,6 +3,7 @@ package com.moa.moa.Home
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.EventDay
+import com.applandeo.materialcalendarview.builders.DatePickerBuilder
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener
+import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
+import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
@@ -70,59 +76,74 @@ class HomeFragment : Fragment() {
     }
 
     private fun initCalendar(){
+
         initCalendarMonth()
 
-        val events = mutableListOf<EventDay>();
+        val events = mutableListOf<EventDay>()
 
-        val calendar = Calendar.getInstance();
+        val calendar1 = Calendar.getInstance()
+        val calendar2= Calendar.getInstance()
+        val calendar3= Calendar.getInstance()
 //        events.add( EventDay(calendar, R.drawable.circle));
 
 //or if you want to specify event label color
-        events.add( EventDay(calendar, R.drawable.circle, Color.parseColor("#228B22")));
+        Log.i("calendar",calendar1.get(Calendar.DATE).toString())
+        calendar1.set(2022,6,11)
+        events.add( EventDay(calendar1, R.drawable.circle))
+        Log.i("events",events.toString())
+        calendar2.set(2022,6,31)
+        Log.i("calendar",calendar2.get(Calendar.DATE).toString())
+        events.add( EventDay(calendar2, R.drawable.circle))
 
+        calendar3.set(2022,6,22)
+        Log.i("calendar",calendar3.get(Calendar.DATE).toString())
+        events.add( EventDay(calendar3, R.drawable.circle))
 
+        calendarView.setCalendarDayLayout(R.layout.calendar_day_custom)
+
+        Log.i("events",events.toString())
         calendarView.setEvents(events)
 
 
 
-        calendarView.setOnPreviousPageChangeListener {
-            initCalendarMonth()
-        }
+        calendarView.setOnPreviousPageChangeListener(object:OnCalendarPageChangeListener{
+            override fun onChange() {
+                initCalendarMonth()
+            }
+        })
 
-        calendarView.setOnForwardPageChangeListener {
-            initCalendarMonth()
-        }
+        calendarView.setOnForwardPageChangeListener(object:OnCalendarPageChangeListener{
+            override fun onChange() {
+                initCalendarMonth()
+            }
+        })
 
-        calendarView.setOnDayClickListener {
-            val events=it
 
-            println("event@!!!"+events)
-
-            initCalendarMonth()
-
-            getTodayWork(it.calendar.run {
-                add(Calendar.MONTH,1)
-                time
-            })
-
-        }
-//        (object:CompactCalendarView.CompactCalendarViewListener{
-//            override fun onDayClick(dateClicked: Date?) {
+        calendarView.setOnDayClickListener(object:OnDayClickListener{
+            override fun onDayClick(eventDay: EventDay) {
 //
-//            }
+//                Log.i("selectedDates",calendarView.selectedDates.toString())
+//                val events=eventDay
 //
-//            override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-//                calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-//                getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
-//            }
+//                println("event@!!!"+events)
 //
-//        })
+//                initCalendarMonth()
+//
+                getTodayWork(eventDay.calendar.run {
+                    add(Calendar.MONTH,1)
+                    time
+                })
+            }
+
+        })
+
 
         getTodayWork(Date())
 
     }
 
     private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
+        Log.i("selectedDates",calendarView.selectedDates.toString())
         getMonthWork(calendarView.currentPageDate.get(Calendar.YEAR).toString(),calendarView.currentPageDate.get(Calendar.MONTH).toString()) //0월부터 시작
     }
 
@@ -153,6 +174,7 @@ class HomeFragment : Fragment() {
 
     private fun getTodayWork(dateClicked: Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
 
+        Log.i("todaywork",dateClicked.toString())
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.value ==null) {
