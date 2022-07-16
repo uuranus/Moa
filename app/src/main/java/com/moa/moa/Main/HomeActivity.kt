@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moa.moa.Home.HomeFragment
 import com.moa.moa.R
-import com.moa.moa.Work.WorkFragment
 
 class HomeActivity : AppCompatActivity() {
     private var doubleBackToExit = false

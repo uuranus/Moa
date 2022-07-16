@@ -1,3 +1,11 @@
 package com.moa.moa.Data
 
-data class TitleHistory()
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class TitleHistory(
+    @PrimaryKey val uid:Int?,
+    @ColumnInfo(name="keyword") val keyword:String?
+)

@@ -14,7 +14,6 @@
         android:theme="@style/Theme.Moa">
         <activity
             android:name=".Work.WorkActivity"
-            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".Main.HomeActivity"
