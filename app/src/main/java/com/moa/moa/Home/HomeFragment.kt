@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
         requireView().findViewById(R.id.homeNotYetRecyclerView)
     }
 
-    private var workInfos= mutableListOf<Work>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
+    private var workInfos= arrayOf<Work?>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
     private var notYetWorkList= listOf<HomeNotYetSection>( //아직 배정되지 않았어요 리사이클러뷰용 데이터리스트
         HomeNotYetSection("아직 배정되지 않았어요!", mutableListOf<HomeNotYetSecondSection>()))
@@ -189,9 +189,9 @@ class HomeFragment : Fragment() {
                             person.add(Person(child2.child("userId").value.toString(),child2.child("userName").value.toString(),child2.child("isChecked").value.toString().toBoolean()))
                         }
 
-                        if(workInfos[workId].number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
+                        if(workInfos[workId]!!.number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
                             val list=notYetWorkList[0].list.toMutableList()
-                            list.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
+                            list.add(HomeNotYetSecondSection(0,workInfos[workId]!!.title,workId.toString()))
                             notYetWorkList[0].list=list
                         }
 
@@ -200,7 +200,7 @@ class HomeFragment : Fragment() {
                                 if(element.userId==prs.userId){
                                     val list=element.list.toMutableList()
                                     list.add(HomeThirdSection(prs.isChecked,workId,
-                                        workInfos[workId].title))
+                                        workInfos[workId]!!.title))
                                     element.list=list
                                 }
                             }
@@ -237,10 +237,11 @@ class HomeFragment : Fragment() {
                     return
                 }
 
-                snapshot.children.forEach { dataSnapshot ->
 
+                snapshot.children.forEach { dataSnapshot ->
+                    workInfos= arrayOfNulls<Work>(dataSnapshot.childrenCount.toInt())
                     dataSnapshot.getValue<Work>()?.let {it2->
-                        workInfos.add(it2.workId,it2)
+                        workInfos.set(it2.workId,it2)
                     }
                 }
 

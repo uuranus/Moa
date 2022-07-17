@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 @Entity
 data class TitleHistory(
     @PrimaryKey val uid:Int?,
-    @ColumnInfo(name="keyword") val keyword:String?
+    @ColumnInfo(name="title") val title:String?
 )

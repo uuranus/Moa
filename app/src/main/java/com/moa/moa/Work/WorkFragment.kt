@@ -3,6 +3,7 @@ package com.moa.moa.Main
 import android.content.Intent
 import android.content.LocusId
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -54,9 +55,12 @@ class WorkFragment : Fragment() {
     }
 
     private fun initView(){
+        workListRecyclerView.isEnabled=false
         workAddButton.setOnClickListener {
             val intent= Intent(requireContext(),WorkActivity::class.java)
+            val size=adapter.currentList[adapter.itemCount-1].workId+1
             intent.putExtra("isEdit",false)
+            intent.putExtra("workId",size)
             startActivity(intent)
         }
 
@@ -66,6 +70,7 @@ class WorkFragment : Fragment() {
             intent.putExtra("editData",it)
             startActivity(intent)
         })
+
         workListRecyclerView.adapter=adapter
 
         workListRecyclerView.layoutManager=LinearLayoutManager(requireContext())
@@ -75,15 +80,16 @@ class WorkFragment : Fragment() {
     private fun initRecyclerView(){
         FirebaseDatabase.getInstance().reference.child("group").child(groupId).child("worklist").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                val list = mutableListOf<Work>()
                 snapshot.children.forEach { dataSnapshot ->
 
-                    val list = mutableListOf<Work>()
                     dataSnapshot.getValue<Work>()?.let { it2->
+                        Log.i("worklist",it2.toString())
                         list.add(it2)
                     }
-
-                    adapter.submitList(list)
                 }
+                adapter.submitList(list)
+                workAddButton.isEnabled=true
             }
 
             override fun onCancelled(error: DatabaseError) {

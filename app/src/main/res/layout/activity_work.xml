@@ -40,8 +40,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/backButton"
-                app:layout_constraintEnd_toStartOf="@id/saveButton"
-                app:layout_constraintStart_toEndOf="@id/backButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/backButton" />
 
             <TextView
@@ -77,19 +77,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:inputType="text"
+            android:lines="1"
             android:backgroundTint="@color/text_grey"
             app:layout_constraintBottom_toBottomOf="@id/workTitleTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/workTitleTextView"
             app:layout_constraintTop_toTopOf="@id/workTitleTextView" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/workTitleEditText"
-            app:layout_constraintStart_toStartOf="@id/workTitleEditText"
-            app:layout_constraintTop_toBottomOf="@id/workTitleEditText" />
+
 
         <TextView
             android:id="@+id/workDescriptionTextView"
@@ -109,10 +105,23 @@
             android:layout_width="0dp"
             android:layout_height="158dp"
             android:layout_marginTop="25dp"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:maxLines="6"
             android:background="@drawable/gray_round_box"
+            android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/workDescriptionTextView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/titleHistoryRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/workTitleEditText"
+            app:layout_constraintStart_toStartOf="@id/workTitleEditText"
+            app:layout_constraintTop_toBottomOf="@id/workTitleEditText" />
 
         <TextView
             android:id="@+id/workPeriodTextView"
@@ -131,10 +140,10 @@
             android:id="@+id/workPeriodSlider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:stepSize="1"
             android:valueFrom="1"
             android:valueTo="30"
-            android:stepSize="1"
-            android:layout_marginStart="12dp"
             app:layout_constraintBottom_toBottomOf="@id/workPeriodTextView"
             app:layout_constraintEnd_toStartOf="@id/workPeriodValue"
             app:layout_constraintStart_toEndOf="@id/workPeriodTextView"
@@ -152,7 +161,7 @@
             app:layout_constraintTop_toTopOf="@id/workPeriodTextView" />
 
         <TextView
-            android:id="@+id/workAlarmTextView"
+            android:id="@+id/workPeriodStartDayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
@@ -163,6 +172,29 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workPeriodTextView" />
+
+        <TextView
+            android:id="@+id/workPeriodStartPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/workPeriodStartDayTextView"
+            app:layout_constraintTop_toTopOf="@id/workPeriodStartDayTextView"
+            app:layout_constraintBottom_toBottomOf="@id/workPeriodStartDayTextView"
+            tools:text="2022-2-22"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/workAlarmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="알람"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workPeriodStartDayTextView" />
 
         <Switch
             android:id="@+id/workAlarmSwitch"
@@ -298,6 +330,7 @@
             android:layout_marginTop="50dp"
             android:text="집안일 삭제"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/workStarTextView" />
 
