@@ -1,7 +1,11 @@
 package com.moa.moa.Work
 
+import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,12 +19,15 @@ import androidx.room.Room
 import com.google.android.material.slider.Slider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.moa.moa.Data.AlarmReceiver
 import com.moa.moa.Data.Time
 import com.moa.moa.Data.TitleHistory
 import com.moa.moa.Data.Work
 import com.moa.moa.R
 import com.moa.moa.Utility
 import com.moa.moa.databinding.ActivityWorkBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class WorkActivity : AppCompatActivity() {
 
@@ -151,6 +158,13 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun initViews(){
+        val pendingIntentt=PendingIntent.getBroadcast(this, 0,
+            Intent(this, AlarmReceiver::class.java), PendingIntent.FLAG_NO_CREATE
+        )
+
+        if( pendingIntentt==null) Log.i("pendingIntent","null")
+       else  Log.i("pendingIntent",pendingIntentt.creatorUid.toString())
+
         if(isEdit){
             titleEditText.setText(editData?.title)
             descriptionEditText.setText(editData?.description)
@@ -188,6 +202,7 @@ class WorkActivity : AppCompatActivity() {
             else{
                 addWork()
             }
+            finish()
         }
 
         workDeleteButton.setOnClickListener {
@@ -196,6 +211,7 @@ class WorkActivity : AppCompatActivity() {
                 .setPositiveButton("네"){_,_->
                     deleteWork()
                     deleteAlarm()
+                    finish()
                 }
                 .setNegativeButton("아니오"){_,_->
 
@@ -249,7 +265,7 @@ class WorkActivity : AppCompatActivity() {
             val curdate=periodStartPicker.text.toString().split("-")
             DatePickerDialog(this,object:DatePickerDialog.OnDateSetListener{
                 override fun onDateSet(p0: DatePicker?, year: Int, month: Int, date: Int) {
-                    periodStartPicker.text="${year}-${month+1}-${date}"
+                    periodStartPicker.text="%04d-%02d-%02d".format(year,month+1,date)
                 }
             },
                 curdate[0].toInt(),
@@ -332,7 +348,7 @@ class WorkActivity : AppCompatActivity() {
 
         //알림 설정
         if(time.timeText!="-1:-1"){
-            setAlarm()
+            setAlarm(time,periodStartPicker.text.toString())
         }
 
     }
@@ -364,15 +380,48 @@ class WorkActivity : AppCompatActivity() {
         database.child("group").child(groupId).child("worklist").child(curWorkId.toString()).removeValue()
     }
 
-    private fun setAlarm(){
-        //이미 알람이 설정되어 있으면 알람 삭제
+    private fun setAlarm(startTime:Time,startDay:String){
+        //이미 알람이 설정되어 있으면 새로 업데이트
+        val calendar= Calendar.getInstance().apply{
+            set(Calendar.HOUR_OF_DAY,startTime.hour)
+            set(Calendar.MINUTE,startTime.minute)
 
-        //알람 세팅
+            val dates=startDay.split("-")
+            set(Calendar.YEAR, dates[0].toInt())
+            set(Calendar.MONTH, dates[1].toInt()-1) //calendar는 0월부터 셈
+            set(Calendar.DATE, dates[2].toInt())
 
+        }
+
+        val dateFormatForMonth: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()) //달력의 월과 년도 표시용
+        Log.i("alarm calendar",dateFormatForMonth.format(calendar.time))
+        val alarmManager=getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent= Intent(this, AlarmReceiver::class.java)
+        intent.putExtra("workTitle",titleEditText.text.toString())
+        intent.putExtra("workId",curWorkId)
+
+        val pendingIntent= PendingIntent.getBroadcast(this, 1000,
+            intent, PendingIntent.FLAG_CANCEL_CURRENT) //기존 게 있으면 cancel하고 새로 생성 하겠다
+        alarmManager.setInexactRepeating(
+            AlarmManager.ELAPSED_REALTIME, //경과한 시간을 기준으로 시간 카운트
+            calendar.timeInMillis,
+            periodSlider.value.toLong(),
+            pendingIntent
+        )
+
+
+        val pendingIntentt=PendingIntent.getBroadcast(this, 1000,
+            Intent(this, AlarmReceiver::class.java), PendingIntent.FLAG_NO_CREATE
+        )
+        Log.i("setAlamr???", pendingIntentt.creatorUid.toString())
     }
 
     private fun deleteAlarm(){
-
+        //현재 알림 설정되어있는 거 삭제
+        val pendingIntent=PendingIntent.getBroadcast(this, 1000,
+            Intent(this, AlarmReceiver::class.java), PendingIntent.FLAG_NO_CREATE
+        )
+        pendingIntent?.cancel()
     }
 
     //제목 최근기록을 위한 메소드들

@@ -36,9 +36,8 @@ class Utility  {
         val database=FirebaseDatabase.getInstance().reference
         val today=getToday()
 
-        var date:String=""
         for(i in 0..period) {
-            date=addDateFrom(today, i)
+            val date=addDateFrom(today, i)
             Log.i("finddate",date)
             val datestr = date.split("-")
             database.child("group").child(groupId).child("log")

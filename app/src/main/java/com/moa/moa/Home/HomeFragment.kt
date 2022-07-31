@@ -189,6 +189,10 @@ class HomeFragment : Fragment() {
                             person.add(Person(child2.child("userId").value.toString(),child2.child("userName").value.toString(),child2.child("isChecked").value.toString().toBoolean()))
                         }
 
+                        for(work in workInfos){
+                            Log.i("workInfo",work.toString())
+                        }
+                        Log.i("null", workId.toString()+" "+workInfos[workId].toString())
                         if(workInfos[workId]!!.number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
                             val list=notYetWorkList[0].list.toMutableList()
                             list.add(HomeNotYetSecondSection(0,workInfos[workId]!!.title,workId.toString()))
@@ -237,11 +241,16 @@ class HomeFragment : Fragment() {
                     return
                 }
 
+                Log.i("last",snapshot.key.toString())
+                val len=snapshot.children.last().key!!.toInt()
+                Log.i("len",len.toString())
+                workInfos= arrayOfNulls<Work>(len+1)
 
                 snapshot.children.forEach { dataSnapshot ->
-                    workInfos= arrayOfNulls<Work>(dataSnapshot.childrenCount.toInt())
+
                     dataSnapshot.getValue<Work>()?.let {it2->
                         workInfos.set(it2.workId,it2)
+                        Log.i("workInfooooo",workInfos.toString())
                     }
                 }
 

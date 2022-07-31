@@ -15,9 +15,12 @@
         <activity
             android:name=".Work.WorkActivity"
             android:exported="false" />
+        <receiver android:name=".Data.AlarmReceiver"
+            android:exported="false"/>
+
         <activity
             android:name=".Main.HomeActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
         <activity
             android:name=".Register.RegisterActivity"
             android:exported="false"

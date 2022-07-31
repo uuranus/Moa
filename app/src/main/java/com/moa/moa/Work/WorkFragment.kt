@@ -51,6 +51,10 @@ class WorkFragment : Fragment() {
         groupId=utility.getGroupId(requireActivity())
 
         initView()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initRecyclerView()
     }
 
