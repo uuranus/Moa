@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".Register.RegisterActivity">
 
     <TextView
         android:id="@+id/nicknameTextView"
@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/editTextTextGroupName"
-        android:layout_width="321dp"
+        android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_marginTop="52dp"
         android:ems="10"

@@ -1,32 +1,31 @@
 package com.moa.moa.Home
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.applandeo.materialcalendarview.CalendarView
+import com.applandeo.materialcalendarview.EventDay
+import com.applandeo.materialcalendarview.builders.DatePickerBuilder
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener
+import com.applandeo.materialcalendarview.listeners.OnSelectDateListener
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
-import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
-import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
-import com.moa.moa.RegisterActivity
 import com.moa.moa.Utility
-import com.moa.moa.databinding.FragmentGroupBinding
-import com.moa.moa.databinding.FragmentHomeBinding
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,31 +34,16 @@ import kotlin.properties.Delegates
 class HomeFragment : Fragment() {
     private val utility=Utility()
 
-    private var _binding: FragmentHomeBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-    lateinit var homeActivity: HomeActivity
     private lateinit var groupId :String
     private  lateinit var _dateClicked: Date
     private var _workClicked by Delegates.notNull<Int>()
     private lateinit var firebaseDatabase:DatabaseReference
 
-    private val calenderMonthTextView: TextView by lazy{
-        requireView().findViewById(R.id.homeCalendarMonthTextView)
-    }
 
-    private val calendarView: CompactCalendarView by lazy{
+    private val calendarView: CalendarView by lazy{
         requireView().findViewById(R.id.homeCalendar)
     }
 
-    private val beforeMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.beforeMonth)
-    }
-
-    private val nextMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.nextMonth)
-    }
 
     private val recyclerView: RecyclerView by lazy{
         requireView().findViewById(R.id.homeRecyclerView)
@@ -69,8 +53,7 @@ class HomeFragment : Fragment() {
         requireView().findViewById(R.id.homeNotYetRecyclerView)
     }
 
-
-    private var workInfos= mutableListOf<Work>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
+    private var workInfos= arrayOf<Work?>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
     private var notYetWorkList= listOf<HomeNotYetSection>( //아직 배정되지 않았어요 리사이클러뷰용 데이터리스트
         HomeNotYetSection("아직 배정되지 않았어요!", mutableListOf<HomeNotYetSecondSection>()))
@@ -82,9 +65,7 @@ class HomeFragment : Fragment() {
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
 
-
         initWorkDetail()
-
 
         getWorkInfo() //모든 집안일 정보 가져와서 workInfos에 저장
     }
@@ -126,44 +107,75 @@ class HomeFragment : Fragment() {
     }
 
     private fun initCalendar(){
+
         initCalendarMonth()
 
-        calendarView.setUseThreeLetterAbbreviation(true)
+        val events = mutableListOf<EventDay>()
 
-        beforeMonth.setOnClickListener {
-            calendarView.scrollLeft()
-            initCalendarMonth()
-        }
-        nextMonth.setOnClickListener {
-            calendarView.scrollRight()
-            initCalendarMonth()
-        }
+        val calendar1 = Calendar.getInstance()
+        val calendar2= Calendar.getInstance()
+        val calendar3= Calendar.getInstance()
+//        events.add( EventDay(calendar, R.drawable.circle));
 
-        calendarView.setListener(object:CompactCalendarView.CompactCalendarViewListener{
-            override fun onDayClick(dateClicked: Date?) {
-                val events=calendarView.getEvents(dateClicked)
+//or if you want to specify event label color
+        Log.i("calendar",calendar1.get(Calendar.DATE).toString())
+        calendar1.set(2022,6,11)
+        events.add( EventDay(calendar1, R.drawable.circle))
+        Log.i("events",events.toString())
+        calendar2.set(2022,6,31)
+        Log.i("calendar",calendar2.get(Calendar.DATE).toString())
+        events.add( EventDay(calendar2, R.drawable.circle))
 
+        calendar3.set(2022,6,22)
+        Log.i("calendar",calendar3.get(Calendar.DATE).toString())
+        events.add( EventDay(calendar3, R.drawable.circle))
+
+        calendarView.setCalendarDayLayout(R.layout.calendar_day_custom)
+
+        Log.i("events",events.toString())
+        calendarView.setEvents(events)
+
+
+
+        calendarView.setOnPreviousPageChangeListener(object:OnCalendarPageChangeListener{
+            override fun onChange() {
                 initCalendarMonth()
-
-                getTodayWork(dateClicked!!)
-
             }
+        })
 
-            override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-                calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-                getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
+        calendarView.setOnForwardPageChangeListener(object:OnCalendarPageChangeListener{
+            override fun onChange() {
+                initCalendarMonth()
+            }
+        })
+
+
+        calendarView.setOnDayClickListener(object:OnDayClickListener{
+            override fun onDayClick(eventDay: EventDay) {
+//
+//                Log.i("selectedDates",calendarView.selectedDates.toString())
+//                val events=eventDay
+//
+//                println("event@!!!"+events)
+//
+//                initCalendarMonth()
+//
+                getTodayWork(eventDay.calendar.run {
+                    add(Calendar.MONTH,1)
+                    time
+                })
             }
 
         })
+
 
         getTodayWork(Date())
 
     }
 
     private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
-        calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-        getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
-
+        Log.i("selectedDates",calendarView.selectedDates.toString())
+        getMonthWork(calendarView.currentPageDate.get(Calendar.YEAR).toString(),calendarView.currentPageDate.get(Calendar.MONTH).toString()) //0월부터 시작
     }
 
     private fun getMonthWork(year:String,month:String){ //해당 월의 집안일 목록들을 가져오는 메소드
@@ -173,13 +185,13 @@ class HomeFragment : Fragment() {
                 //선택된 월의 데이터를 가져오기
                 //캘린더에 데이터를 넣어주기
 
-                val format=SimpleDateFormat("yyyy-mm-dd")
-                val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
-
-
-                calendarView.addEvent(event1)
-
-                calendarView.invalidate()
+//                val format=SimpleDateFormat("yyyy-mm-dd")
+//                val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
+//
+//
+//                calendarView.addEvent(event1)
+//
+//                calendarView.invalidate()
                 snapshot.value ?:return
 
             }
@@ -191,11 +203,11 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun getTodayWork(dateClicked:Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
+    private fun getTodayWork(dateClicked: Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
 
+        Log.i("todaywork",dateClicked.toString())
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val tmpList= mutableListOf<HomeNotYetSecondSection>()
                 if(snapshot.value ==null) {
                     initWorkList()
 
@@ -208,10 +220,13 @@ class HomeFragment : Fragment() {
                             person.add(Person(child2.child("userId").value.toString(),child2.child("userName").value.toString(),child2.child("isChecked").value.toString().toBoolean()))
                         }
 
-                        if(workInfos[workId].number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
+                        for(work in workInfos){
+                            Log.i("workInfo",work.toString())
+                        }
+                        Log.i("null", workId.toString()+" "+workInfos[workId].toString())
+                        if(workInfos[workId]!!.number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
                             val list=notYetWorkList[0].list.toMutableList()
-                            list.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
-                            tmpList.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
+                            list.add(HomeNotYetSecondSection(0,workInfos[workId]!!.title,workId.toString()))
                             notYetWorkList[0].list=list
                         }
 
@@ -220,7 +235,7 @@ class HomeFragment : Fragment() {
                                 if(element.userId==prs.userId){
                                     val list=element.list.toMutableList()
                                     list.add(HomeThirdSection(prs.isChecked,workId,
-                                        workInfos[workId].title))
+                                        workInfos[workId]!!.title))
                                     element.list=list
                                 }
                             }
@@ -228,6 +243,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
+
 
                 //미배정 목록 리사이클러뷰
                 val homeAdapter =HomeNotYetSecondRecyclerViewAdapter(tmpList)
@@ -248,8 +264,8 @@ class HomeFragment : Fragment() {
 
                 }
                 notYetRecyclerView.adapter= homeAdapter
-                notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
 
+                notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
 
                 //배정 목록 리사이클러뷰
                 recyclerView.adapter= HomeFirstSectionRecyclerViewAdapter(workList)
@@ -265,56 +281,26 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun setDetailPage(workNum:Int) {
-        firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("title").get().addOnSuccessListener {
-            binding.workDetailTitle.text = it.value.toString()
-
-        }
-        firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("stars").get().addOnSuccessListener {
-            binding.starNum.text = it.value.toString()
-            val starNum=it.value.toString().toInt()
-            when(starNum){
-                1->{
-                    binding.star2.visibility = View.GONE
-                    binding.star3.visibility = View.GONE
-                    binding.star4.visibility = View.GONE
-                    binding.star5.visibility = View.GONE
-                }
-
-                2->{
-                    binding.star3.visibility = View.GONE
-                    binding.star4.visibility = View.GONE
-                    binding.star5.visibility = View.GONE
-                }
-
-                3->{
-                    binding.star4.visibility = View.GONE
-                    binding.star5.visibility = View.GONE
-                }
-
-                4->{
-                    binding.star5.visibility = View.GONE
-                }
-            }
-
-        }
-        firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("description").get().addOnSuccessListener {
-            binding.workDetailContents.text = it.value.toString()
-
-        }
-
-    }
-
     private fun getWorkInfo() { //groupId->worklist에 저장되어 있는 집안일 정보를 가져옴
 
         firebaseDatabase.child("group").child(groupId).child("worklist").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.value ?:return
+                if(snapshot.value ==null){
+                    //집안일 정보 가져 온 후 사용자 정보 가져오기 --> 가족들은 얼마나 했을까요?에서 구성원 목록을 미리 만들어놓기 위함
+                    getUsers()
+                    return
+                }
+
+                Log.i("last",snapshot.key.toString())
+                val len=snapshot.children.last().key!!.toInt()
+                Log.i("len",len.toString())
+                workInfos= arrayOfNulls<Work>(len+1)
 
                 snapshot.children.forEach { dataSnapshot ->
 
                     dataSnapshot.getValue<Work>()?.let {it2->
-                        workInfos.add(it2.workId,it2)
+                        workInfos.set(it2.workId,it2)
+                        Log.i("workInfooooo",workInfos.toString())
                     }
                 }
 
@@ -358,14 +344,6 @@ class HomeFragment : Fragment() {
         })
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        // 2. Context를 액티비티로 형변환해서 할당
-        homeActivity = context as HomeActivity
-
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -373,13 +351,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val instance=FirebaseDatabase.getInstance()
         firebaseDatabase=instance.reference
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-       //binding.workDetailLayout.background = ColorDrawable(Color.TRANSPARENT)
-        val slidePanel = binding.mainFrame
-        slidePanel.shadowHeight = 0
-
-        return binding.root
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

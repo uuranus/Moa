@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="33dp"
     android:background="@drawable/round_btn"
     android:backgroundTint="@color/white"
-    android:gravity="center"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
@@ -26,17 +24,15 @@
 
     <TextView
         android:id="@+id/workTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_marginEnd="11dp"
         android:gravity="center_vertical"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="14sp"
         tools:text="화분에 물 주기" />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+
     <CheckBox
         android:id="@+id/workIsChecked"
         android:layout_width="20dp"

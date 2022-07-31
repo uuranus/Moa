@@ -1,36 +1,25 @@
-package com.moa.moa
+package com.moa.moa.Register
 
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.moa.moa.R
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class ProfileFragment : Fragment() {
-
-    private val editProfileImg: CircleImageView by lazy{
+class ProfileImageFragment : Fragment() {
+    private val editProfileImg: ImageButton by lazy{
         requireView().findViewById(R.id.editProfileImg)
     }
-    private val editNickname: EditText by lazy{
-        requireView().findViewById(R.id.editNickname)
-    }
-
-    private var isValid:Boolean=false
-        set(value) {
-            field=value
-            val ra=activity as RegisterActivity
-            ra.isEnabled(isValid)
-        }
 
     private var isDefaultImg:Boolean=true
 
@@ -39,7 +28,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return inflater.inflate(R.layout.fragment_profile_image, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,46 +38,22 @@ class ProfileFragment : Fragment() {
     }
 
     private fun init(){
-
-        val ra=activity as RegisterActivity
-        ra.isEnabled(isValid)
-
-        editNickname.setOnEditorActionListener { textView, actionID, keyEvent ->
-            if(actionID== EditorInfo.IME_ACTION_DONE){
-                //닉네임 유효성 검사
-                if(textView.text.isEmpty()){
-                    Toast.makeText(context,"닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
-                    isValid=false
-                }
-                else if(textView.text.length<2 || textView.text.length>20){
-                    Toast.makeText(context,"닉네임은 2~20자 사이여야 합니다", Toast.LENGTH_SHORT).show()
-                    isValid=false
-
-                }
-                else{
-                    ra.nickname=textView.text.toString()
-                    isValid=true
-
-                }
-
-            }
-            return@setOnEditorActionListener false
-        }
-
         editProfileImg.setOnClickListener {
 
             if(!isDefaultImg){
 
                 val view=LayoutInflater.from(requireContext()).inflate(R.layout.activity_register_profileimg_alertdialog,null)
 
-                val dialog=AlertDialog.Builder(requireContext()).setView(view).create()
+                val dialog= AlertDialog.Builder(requireContext()).setView(view).create()
 
-                val chooseDefaultTextView:TextView=view.findViewById(R.id.profileChooseDefault)
-                val chooseGalleryTextView:TextView=view.findViewById(R.id.profileChooseGallery)
+                val chooseDefaultTextView: TextView =view.findViewById(R.id.profileChooseDefault)
+                val chooseGalleryTextView: TextView =view.findViewById(R.id.profileChooseGallery)
 
                 chooseDefaultTextView.setOnClickListener {
-                    val uri=Uri.parse("android.resource://"+requireActivity().packageName+"/"+R.drawable.default_img)
+                    val uri= Uri.parse("android.resource://"+requireActivity().packageName+"/"+ R.drawable.ic_baseline_person_add_alt_1_24)
                     editProfileImg.setImageURI(uri)
+                    val ra=activity as RegisterActivity
+                    ra.imageUri=null
                     isDefaultImg=true
                     dialog.dismiss()
                 }
@@ -117,8 +82,6 @@ class ProfileFragment : Fragment() {
 
         }
 
-
-
     }
 
     override fun onRequestPermissionsResult(
@@ -142,6 +105,8 @@ class ProfileFragment : Fragment() {
             val selectedImgUri: Uri?=data?.data
             if(selectedImgUri!=null){
                 editProfileImg.setImageURI(selectedImgUri)
+                val ra=activity as RegisterActivity
+                ra.imageUri=selectedImgUri
                 isDefaultImg=false
             }
         }
@@ -149,9 +114,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getProfileImg(){
-        val intent=Intent(Intent.ACTION_GET_CONTENT)
+        val intent= Intent(Intent.ACTION_GET_CONTENT)
         intent.type="image/*"
         startActivityForResult(intent,2000)
     }
 }
-

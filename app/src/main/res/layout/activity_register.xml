@@ -3,15 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="20dp"
+    android:padding="36dp"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".Register.RegisterActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/profileLinearLayout"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/profileViewPager"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -20,16 +28,28 @@
 
         <ImageButton
             android:id="@+id/registerBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+            android:id="@+id/dotsIndicator"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="wrap_content"
+            app:dotsSize="8dp"
+            app:dotsSpacing="7dp"
+            app:dotsColor="@color/primary"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/profileViewPager"
@@ -45,12 +65,12 @@
         android:id="@+id/profileSaveButton"
         android:layout_width="315dp"
         android:layout_height="59dp"
+        app:layout_goneMarginBottom="63dp"
         android:textColor="@color/white"
         android:background="@drawable/round_btn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="53dp"
         android:text="다음"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

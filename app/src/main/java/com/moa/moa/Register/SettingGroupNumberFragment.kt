@@ -1,4 +1,4 @@
-package com.moa.moa
+package com.moa.moa.Register
 
 import android.content.Context
 import android.os.Bundle
@@ -6,13 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
-import com.moa.moa.databinding.FragmentGroupBinding
-import com.moa.moa.databinding.FragmentSettingGroupNameBinding
+import com.moa.moa.databinding.FragmentSettingGroupNumberBinding
 
 
-class SettingGroupNameFragment : Fragment() {
-    private var _binding: FragmentSettingGroupNameBinding? = null
+class SettingGroupNumberFragment : Fragment() {
+    private var _binding: FragmentSettingGroupNumberBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -30,7 +28,7 @@ class SettingGroupNameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentSettingGroupNameBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingGroupNumberBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -41,9 +39,20 @@ class SettingGroupNameFragment : Fragment() {
         init()
     }
 
-    private fun init(){
-        binding.editTextTextGroupName.addTextChangedListener {
-            registerActivity.roomName=binding.editTextTextGroupName.text.toString()
+    private fun init() {
+        var number = binding.textView2.text.toString().split("명")[0].toInt()
+
+        binding.button.setOnClickListener {
+            number += 1
+            binding.textView2.text = number.toString() + "명"
+            registerActivity.roomNumber =number
+        }
+        binding.button2.setOnClickListener {
+            if(number!=0){
+                number -= 1
+            }
+            binding.textView2.text = number.toString() + "명"
+            registerActivity.roomNumber =number
         }
     }
 
