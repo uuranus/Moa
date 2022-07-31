@@ -29,12 +29,14 @@ import com.moa.moa.Utility
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 class HomeFragment : Fragment() {
     private val utility=Utility()
 
     private lateinit var groupId :String
-
+    private  lateinit var _dateClicked: Date
+    private var _workClicked by Delegates.notNull<Int>()
     private lateinit var firebaseDatabase:DatabaseReference
 
 
@@ -63,8 +65,37 @@ class HomeFragment : Fragment() {
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
 
-        Log.i("infofofofo",groupId)
+        initWorkDetail()
+
         getWorkInfo() //모든 집안일 정보 가져와서 workInfos에 저장
+    }
+
+    private fun initWorkDetail() {
+        val slidePanel = binding.mainFrame
+        binding.assignBtn.setOnClickListener {
+            slidePanel.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+
+            Log.i("home", workList.size.toString())
+
+            firebaseDatabase.child("group").child(groupId).child("log")
+                .child(getYear(_dateClicked)).child(getMonth(_dateClicked)).child(getDate(_dateClicked)).child(_workClicked.toString()).child("manager").get().addOnSuccessListener {
+                    val childrenCount = it.childrenCount.toString()
+                    val insertPoint = firebaseDatabase.child("group").child(groupId).child("log")
+                        .child(getYear(_dateClicked)).child(getMonth(_dateClicked)).child(getDate(_dateClicked)).child(_workClicked.toString())
+                        .child("manager").child(childrenCount)
+                    insertPoint.child("isChecked").setValue("false")
+                    insertPoint.child("userId").setValue(utility.getUserId(requireActivity()))
+                    //수정필요 userName받아와야함
+                    for(i in 0 until workList[0].list.size){
+                        if(workList[0].list[i].userId==utility.getUserId(requireActivity())){
+                            insertPoint.child("userName").setValue(workList[0].list[i].userName)
+                        }
+                    }
+                }
+
+        }
+
+
     }
 
     private fun initWorkList(){
@@ -213,8 +244,27 @@ class HomeFragment : Fragment() {
                     }
                 }
 
+
                 //미배정 목록 리사이클러뷰
-                notYetRecyclerView.adapter= HomeNotYetRecyclerViewAdapter(notYetWorkList)
+                val homeAdapter =HomeNotYetSecondRecyclerViewAdapter(tmpList)
+                homeAdapter.onItemClickListener = {
+                    Log.i("home adapter","$it clicked! in homefrag")
+
+                    val slidePanel = binding.mainFrame
+                    val state = slidePanel.panelState
+                    // 닫힌 상태일 경우 열기
+                    if (state == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                        slidePanel.panelState = SlidingUpPanelLayout.PanelState.ANCHORED
+                    }
+
+                    setDetailPage(it)
+
+                    _dateClicked = dateClicked
+                    _workClicked = it
+
+                }
+                notYetRecyclerView.adapter= homeAdapter
+
                 notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
 
                 //배정 목록 리사이클러뷰
