@@ -26,6 +26,9 @@ import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
 import com.moa.moa.R
 import com.moa.moa.Utility
+import com.moa.moa.databinding.FragmentGroupBinding
+import com.moa.moa.databinding.FragmentHomeBinding
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,7 +41,7 @@ class HomeFragment : Fragment() {
     private  lateinit var _dateClicked: Date
     private var _workClicked by Delegates.notNull<Int>()
     private lateinit var firebaseDatabase:DatabaseReference
-
+    private var binding:FragmentHomeBinding?=null
 
     private val calendarView: CalendarView by lazy{
         requireView().findViewById(R.id.homeCalendar)
@@ -351,7 +354,8 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val instance=FirebaseDatabase.getInstance()
         firebaseDatabase=instance.reference
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

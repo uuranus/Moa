@@ -34,7 +34,7 @@
             android:backgroundTint="@color/white"
             android:outlineProvider="none"
             android:text="-"
-            android:textColor="@color/text_grey" />
+            android:textColor="@color/textColorSecondary" />
 
         <TextView
             android:id="@+id/textView2"
@@ -51,7 +51,7 @@
             android:backgroundTint="@color/white"
             android:outlineProvider="none"
             android:text="+"
-            android:textColor="@color/text_grey" />
+            android:textColor="@color/textColorPrimary" />
     </LinearLayout>
 
 

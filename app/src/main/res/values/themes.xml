@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Moa" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/coloPrimary</item>
-        <item name="colorPrimaryVariant">@color/coloPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorSecondary</item>
@@ -22,7 +22,7 @@
 
     <style name="CustomTimePicker">
         <item name="android:textColorPrimary">@color/textColorPrimary</item><!-- text color -->
-        <item name="colorControlNormal">@color/coloPrimary</item><!-- divider color -->
+        <item name="colorControlNormal">@color/colorPrimary</item><!-- divider color -->
         <item name="android:textSize">16sp</item>
     </style>
 </resources>

@@ -79,7 +79,7 @@
             android:layout_marginStart="12dp"
             android:inputType="text"
             android:lines="1"
-            android:backgroundTint="@color/text_grey"
+            android:backgroundTint="@color/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="@id/workTitleTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/workTitleTextView"

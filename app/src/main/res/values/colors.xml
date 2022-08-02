@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- custom color -->
-    <color name="coloPrimary">#36E7B2</color>
+    <color name="colorPrimary">#36E7B2</color>
     <color name="colorSecondary">@drawable/secondary_color</color>
     <color name="backgroundWhite">#FFFFFFFF</color>
     <color name="mainPageBackgroundColor">#FFF6F6F6</color>

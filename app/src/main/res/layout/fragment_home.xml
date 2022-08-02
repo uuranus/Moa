@@ -40,7 +40,7 @@
                         android:id="@+id/homeCalendar"
                         android:layout_width="315dp"
                         android:layout_height="338dp"
-                        app:abbreviationsLabelsColor="@color/text_grey"
+                        app:abbreviationsLabelsColor="@color/textColorSecondary"
                         app:anotherMonthsDaysLabelsColor="@color/white"
                         app:eventsEnabled="true"
                         app:forwardButtonSrc="@drawable/ic_baseline_keyboard_arrow_right_24"
@@ -51,9 +51,10 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:previousButtonSrc="@drawable/ic_baseline_keyboard_arrow_left_24"
-                        app:selectionColor="@color/primary"
-                        app:todayLabelColor="@color/primary"
-                        app:type="one_day_picker" />
+                        app:selectionColor="@color/colorPrimary"
+                        app:todayLabelColor="@color/colorPrimary"
+                        app:type="one_day_picker"
+                        tools:ignore="MissingClass" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
