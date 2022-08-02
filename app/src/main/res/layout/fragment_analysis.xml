@@ -5,10 +5,35 @@
     android:layout_height="match_parent"
     tools:context=".Main.AnalysisFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="analysis" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:paddingLeft="20dp"
+            android:paddingTop="50dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:text="누가 가장 많은\n별을 모았을까요?" />
+
+        <Spinner
+            android:layout_gravity="top"
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="20dp"
+            android:spinnerMode="dropdown" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"/>
+    </LinearLayout>
 </FrameLayout>

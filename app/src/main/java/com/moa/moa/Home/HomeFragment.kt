@@ -45,13 +45,13 @@ class HomeFragment : Fragment() {
     private var _workClicked by Delegates.notNull<Int>()
     private lateinit var firebaseDatabase:DatabaseReference
 
-    private val calenderMonthTextView: TextView by lazy{
-        requireView().findViewById(R.id.homeCalendarMonthTextView)
-    }
+//    private val calenderMonthTextView: TextView by lazy{
+//        requireView().findViewById(R.id.homeCalendarMonthTextView)
+//    }
 
-    private val calendarView: CompactCalendarView by lazy{
-        requireView().findViewById(R.id.homeCalendar)
-    }
+//    // private val calendarView: CompactCalendarView by lazy{
+//        requireView().findViewById(R.id.homeCalendar)
+//    }
 
     private val beforeMonth:ImageButton by lazy{
         requireView().findViewById(R.id.beforeMonth)
@@ -61,13 +61,13 @@ class HomeFragment : Fragment() {
         requireView().findViewById(R.id.nextMonth)
     }
 
-    private val recyclerView: RecyclerView by lazy{
-        requireView().findViewById(R.id.homeRecyclerView)
-    }
-
-    private val notYetRecyclerView:RecyclerView by lazy{
-        requireView().findViewById(R.id.homeNotYetRecyclerView)
-    }
+//    private val recyclerView: RecyclerView by lazy{
+//        requireView().findViewById(R.id.homeRecyclerView)
+//    }
+//
+//    private val notYetRecyclerView:RecyclerView by lazy{
+//        requireView().findViewById(R.id.homeNotYetRecyclerView)
+//    }
 
 
     private var workInfos= mutableListOf<Work>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
@@ -127,7 +127,7 @@ class HomeFragment : Fragment() {
 
     private fun initCalendar(){
         initCalendarMonth()
-
+        val calendarView = binding.homeCalendar
         calendarView.setUseThreeLetterAbbreviation(true)
 
         beforeMonth.setOnClickListener {
@@ -150,7 +150,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-                calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
+                binding.homeCalendarMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
                 getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
             }
 
@@ -161,12 +161,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
-        calenderMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
+        val calendarView = binding.homeCalendar
+
+        binding.homeCalendarMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
         getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
 
     }
 
     private fun getMonthWork(year:String,month:String){ //해당 월의 집안일 목록들을 가져오는 메소드
+        val calendarView = binding.homeCalendar
 
         firebaseDatabase.child(groupId).child("log").child(year).child(month).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -175,7 +178,6 @@ class HomeFragment : Fragment() {
 
                 val format=SimpleDateFormat("yyyy-mm-dd")
                 val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
-
 
                 calendarView.addEvent(event1)
 
@@ -247,13 +249,13 @@ class HomeFragment : Fragment() {
                     _workClicked = it
 
                 }
-                notYetRecyclerView.adapter= homeAdapter
-                notYetRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+                binding.homeNotYetRecyclerView.adapter= homeAdapter
+                binding.homeNotYetRecyclerView.layoutManager=LinearLayoutManager(homeActivity)
 
 
                 //배정 목록 리사이클러뷰
-                recyclerView.adapter= HomeFirstSectionRecyclerViewAdapter(workList)
-                recyclerView.layoutManager=LinearLayoutManager(requireContext())
+                binding.homeRecyclerView.adapter= HomeFirstSectionRecyclerViewAdapter(workList)
+                binding.homeRecyclerView.layoutManager=LinearLayoutManager(homeActivity)
 
 
             }
