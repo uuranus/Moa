@@ -1,7 +1,6 @@
 package com.moa.moa.Main
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -11,18 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.components.*
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.moa.moa.R
-import com.moa.moa.RegisterActivity
 import com.moa.moa.databinding.FragmentAnalysisBinding
-import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 
 class AnalysisFragment : Fragment() {
     private var _binding: FragmentAnalysisBinding? = null
@@ -90,6 +79,15 @@ class AnalysisFragment : Fragment() {
     }
 
     private fun init() {
+        val chartlist = ArrayList<ChartData>()
+        chartlist.add(ChartData("asd","나",15))
+        chartlist.add(ChartData("asd","아빠",19))
+        chartlist.add(ChartData("asd","엄마",25))
+        chartlist.add(ChartData("asd","누나",13))
+
+        val adapter = ChartAdapter(chartlist)
+        binding.chartRecyclerview.adapter =  adapter
+
 
     }
 
