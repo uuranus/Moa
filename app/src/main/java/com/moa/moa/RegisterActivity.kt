@@ -44,7 +44,7 @@ class RegisterActivity : FragmentActivity() {
         findViewById(R.id.profileViewPager)
     }
 
-    private val PAGE_NUM=5
+    private val PAGE_NUM=4
 
     private var state:Int=0
         set(value) {
@@ -228,9 +228,8 @@ class RegisterActivity : FragmentActivity() {
 
                 2-> EnterGroupFragment()
 
-                3-> SettingGroupNumberFragment()
+                3-> SettingGroupNameFragment()
 
-                4-> SettingGroupNameFragment()
 
                 else -> ProfileFragment()
             }
