@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             app:dotsSize="8dp"
             app:dotsSpacing="7dp"
-            app:dotsColor="@color/primary"
+            app:dotsColor="@color/coloPrimary"
             android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

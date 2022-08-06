@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="11dp"
             android:gravity="center_vertical"
-            android:textColor="@color/dark_grey"
+            android:textColor="@color/textColorPrimary"
             android:textSize="14sp"
             tools:text="엄마" />
 
