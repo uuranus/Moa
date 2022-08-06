@@ -15,12 +15,10 @@ import com.moa.moa.R
 
 class AlarmReceiver :BroadcastReceiver(){
     companion object{
-        const val NOTIFICATION_ID=1000
         const val NOTIFICATION_CHANNEL_ID="1000"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.i("alarem received!!!!","alarm")
         val text=intent.getStringExtra("workTitle")
         val id=intent.getIntExtra("workId",0)
         createNotificationChannel(context)
@@ -36,20 +34,20 @@ class AlarmReceiver :BroadcastReceiver(){
     }
 
     private fun notifyNotification(context:Context,id:Int,text:String){
-//        val intent= Intent(context, HomeActivity::class.java) //알림 누르면 메인 홈 화면으로 이동
-//
-//        val pendingIntent=
-//            PendingIntent.getActivity(context,id,intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val intent= Intent(context, HomeActivity::class.java) //알림 누르면 메인 홈 화면으로 이동
+
+        val pendingIntent=
+            PendingIntent.getActivity(context,id,intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 
         with(NotificationManagerCompat.from(context)){
             val build=NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("Moa")
-                .setContentText(text)
+                .setContentTitle("집안일 알람")
+                .setContentText("${text}을(를) 할 시간입니다")
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-            notify(NOTIFICATION_ID,build.build())
+            notify(id,build.build())
         }
     }
 
