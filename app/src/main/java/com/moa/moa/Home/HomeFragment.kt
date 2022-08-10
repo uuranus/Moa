@@ -22,7 +22,7 @@ import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
 import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
-import com.moa.moa.RegisterActivity
+import com.moa.moa.Register.RegisterActivity
 import com.moa.moa.Utility
 import com.moa.moa.databinding.FragmentGroupBinding
 import com.moa.moa.databinding.FragmentHomeBinding
