@@ -20,4 +20,5 @@
         <item>7</item>
         <item>8</item>
     </string-array>
+    <string name="title_activity_chart_view_compose_activitu">ChartViewComposeActivitu</string>
 </resources>

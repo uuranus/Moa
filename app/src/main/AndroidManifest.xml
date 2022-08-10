@@ -19,6 +19,11 @@
             android:exported="false"/>
 
         <activity
+            android:name=".ChartViewComposeActivitu"
+            android:exported="false"
+            android:label="@string/title_activity_chart_view_compose_activitu"
+            android:theme="@style/Theme.Moa" />
+        <activity
             android:name=".Main.HomeActivity"
             android:exported="true"/>
         <activity
@@ -34,9 +39,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"></activity>
     </application>
 
 </manifest>
