@@ -255,15 +255,22 @@ class RegisterActivity : FragmentActivity() {
                 } else {
                     null
                 }
-
-                val user = User(userEmail,nickname!!, imageUri.toString())
+                val starCount = ArrayList<Int>()
+                for(i in 1..12){
+                    starCount.add(0)
+                }
+                val user = User(userEmail,nickname!!, imageUri.toString(),starCount)
                 Log.i("user",user.toString())
                 database.child("group").child(roomId!!).child("users").push().setValue(user)
                 startHomeActivity()
             }
         }
         else{
-            val user = User(userEmail,nickname!!, "null")
+            val starCount = ArrayList<Int>()
+            for(i in 1..12){
+                starCount.add(0)
+            }
+            val user = User(userEmail,nickname!!, "null",starCount)
 
             database.child("group").child(roomId!!).child("users").push().setValue(user)
             startHomeActivity()
