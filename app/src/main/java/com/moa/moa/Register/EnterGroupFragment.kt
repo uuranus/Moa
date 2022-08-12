@@ -1,4 +1,4 @@
-package com.moa.moa
+package com.moa.moa.Register
 
 import android.content.Context
 import android.os.Bundle
@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.moa.moa.databinding.FragmentSettingGroupNameBinding
-import com.moa.moa.databinding.FragmentSettingGroupNumberBinding
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import com.moa.moa.databinding.FragmentEnterGroupBinding
 
-
-class SettingGroupNumberFragment : Fragment() {
-    private var _binding: FragmentSettingGroupNumberBinding? = null
+class EnterGroupFragment : Fragment() {
+    private var _binding: FragmentEnterGroupBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -29,7 +29,7 @@ class SettingGroupNumberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentSettingGroupNumberBinding.inflate(inflater, container, false)
+        _binding = FragmentEnterGroupBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -41,19 +41,9 @@ class SettingGroupNumberFragment : Fragment() {
     }
 
     private fun init() {
-        var number = binding.textView2.text.toString().split("명")[0].toInt()
+        binding.editTextTextGroupName.addTextChangedListener {
+            registerActivity.roomId = binding.editTextTextGroupName.text.toString()
 
-        binding.button.setOnClickListener {
-            number += 1
-            binding.textView2.text = number.toString() + "명"
-            registerActivity.roomNumber =number
-        }
-        binding.button2.setOnClickListener {
-            if(number!=0){
-                number -= 1
-            }
-            binding.textView2.text = number.toString() + "명"
-            registerActivity.roomNumber =number
         }
     }
 
@@ -61,4 +51,5 @@ class SettingGroupNumberFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

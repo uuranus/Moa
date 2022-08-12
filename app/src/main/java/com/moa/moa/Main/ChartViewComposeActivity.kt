@@ -60,7 +60,7 @@ fun ProportionBar(
         targetValue = if (animate) 1f else 0f,
         tween(2000)
     )
-    val primaryColor  =  colorResource(id = R.color.primary)
+    val primaryColor  =  colorResource(id = R.color.colorPrimary)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End

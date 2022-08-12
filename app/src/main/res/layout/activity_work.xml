@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Work.WorkActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="35dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/workAddTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="집안일 추가"
+                android:textColor="@color/design_default_color_on_secondary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/backButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/backButton" />
+
+            <TextView
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_btn"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="저장"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/backButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/backButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/workTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="제목"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/headerLinearLayout" />
+
+        <EditText
+            android:id="@+id/workTitleEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:inputType="text"
+            android:lines="1"
+            android:backgroundTint="@color/textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/workTitleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/workTitleTextView"
+            app:layout_constraintTop_toTopOf="@id/workTitleTextView" />
+
+
+
+        <TextView
+            android:id="@+id/workDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="세부사항"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workTitleTextView" />
+
+        <EditText
+            android:id="@+id/workDescriptionEditText"
+            android:layout_width="0dp"
+            android:layout_height="158dp"
+            android:layout_marginTop="25dp"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:maxLines="6"
+            android:background="@drawable/gray_round_box"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/workDescriptionTextView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/titleHistoryRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/workTitleEditText"
+            app:layout_constraintStart_toStartOf="@id/workTitleEditText"
+            app:layout_constraintTop_toBottomOf="@id/workTitleEditText" />
+
+        <TextView
+            android:id="@+id/workPeriodTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="주기"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workDescriptionEditText" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/workPeriodSlider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:stepSize="1"
+            android:valueFrom="1"
+            android:valueTo="30"
+            app:layout_constraintBottom_toBottomOf="@id/workPeriodTextView"
+            app:layout_constraintEnd_toStartOf="@id/workPeriodValue"
+            app:layout_constraintStart_toEndOf="@id/workPeriodTextView"
+            app:layout_constraintTop_toTopOf="@id/workPeriodTextView" />
+
+        <TextView
+            android:id="@+id/workPeriodValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="1일"
+            app:layout_constraintBottom_toBottomOf="@id/workPeriodTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/workPeriodSlider"
+            app:layout_constraintTop_toTopOf="@id/workPeriodTextView" />
+
+        <TextView
+            android:id="@+id/workPeriodStartDayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="알람"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workPeriodTextView" />
+
+        <TextView
+            android:id="@+id/workPeriodStartPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/workPeriodStartDayTextView"
+            app:layout_constraintTop_toTopOf="@id/workPeriodStartDayTextView"
+            app:layout_constraintBottom_toBottomOf="@id/workPeriodStartDayTextView"
+            tools:text="2022-2-22"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/workAlarmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="알람"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workPeriodStartDayTextView" />
+
+        <Switch
+            android:id="@+id/workAlarmSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/workAlarmTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/workAlarmTextView" />
+
+        <TimePicker
+            android:id="@+id/workAlarmPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:theme="@style/CustomTimePicker"
+            android:timePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workAlarmTextView" />
+
+        <TextView
+            android:id="@+id/workPeopleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="담당인원"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workAlarmPicker" />
+
+        <ImageButton
+            android:id="@+id/workMinusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_minimize_24"
+            app:layout_constraintBottom_toBottomOf="@id/workPeopleTextView"
+            app:layout_constraintStart_toEndOf="@id/workPeopleTextView"
+            app:layout_constraintTop_toTopOf="@id/workPeopleTextView" />
+
+        <TextView
+            android:id="@+id/workCurrentPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="1명"
+            app:layout_constraintBottom_toBottomOf="@id/workPeopleTextView"
+            app:layout_constraintStart_toEndOf="@id/workMinusButton"
+            app:layout_constraintTop_toTopOf="@id/workPeopleTextView" />
+
+        <ImageButton
+            android:id="@+id/workPlusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="@id/workPeopleTextView"
+            app:layout_constraintStart_toEndOf="@id/workCurrentPeople"
+            app:layout_constraintTop_toTopOf="@id/workPeopleTextView" />
+
+        <TextView
+            android:id="@+id/workStarTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_btn"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="별"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/workPeopleTextView" />
+
+        <ImageView
+            android:id="@+id/star1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/star_selector"
+            app:layout_constraintBottom_toBottomOf="@id/workStarTextView"
+            app:layout_constraintStart_toEndOf="@id/workStarTextView"
+            app:layout_constraintTop_toTopOf="@id/workStarTextView" />
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/star_selector"
+            app:layout_constraintBottom_toBottomOf="@id/workStarTextView"
+            app:layout_constraintStart_toEndOf="@id/star1"
+            app:layout_constraintTop_toTopOf="@id/workStarTextView" />
+
+        <ImageView
+            android:id="@+id/star3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/star_selector"
+            app:layout_constraintBottom_toBottomOf="@id/workStarTextView"
+            app:layout_constraintStart_toEndOf="@id/star2"
+            app:layout_constraintTop_toTopOf="@id/workStarTextView" />
+
+        <ImageView
+            android:id="@+id/star4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/star_selector"
+            app:layout_constraintBottom_toBottomOf="@id/workStarTextView"
+            app:layout_constraintStart_toEndOf="@id/star3"
+            app:layout_constraintTop_toTopOf="@id/workStarTextView" />
+
+        <ImageView
+            android:id="@+id/star5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/star_selector"
+            app:layout_constraintBottom_toBottomOf="@id/workStarTextView"
+            app:layout_constraintStart_toEndOf="@id/star4"
+            app:layout_constraintTop_toTopOf="@id/workStarTextView" />
+
+        <Button
+            android:id="@+id/workDeleteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="집안일 삭제"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/workStarTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
