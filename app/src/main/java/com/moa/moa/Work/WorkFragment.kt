@@ -62,7 +62,7 @@ class WorkFragment : Fragment() {
         workListRecyclerView.isEnabled=false
         workAddButton.setOnClickListener {
             val intent= Intent(requireContext(),WorkActivity::class.java)
-            val size=adapter.currentList[adapter.itemCount-1].workId+1
+            val size=if(adapter.currentList.isEmpty()) 0 else adapter.currentList[adapter.itemCount-1].workId+1
             intent.putExtra("isEdit",false)
             intent.putExtra("workId",size)
             startActivity(intent)

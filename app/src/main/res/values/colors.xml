@@ -10,7 +10,8 @@
 
     <!-- custom color -->
     <color name="colorPrimary">#36E7B2</color>
-<!--    <color name="colorSecondary">@drawable/secondary_color</color>-->
+    <color name="colorSecondary">#FF37E8D3</color>
+
     <color name="backgroundWhite">#FFFFFFFF</color>
     <color name="mainPageBackgroundColor">#FFF6F6F6</color>
     <color name="textColorPrimary">#FF000000</color>

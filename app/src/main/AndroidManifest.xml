@@ -26,11 +26,7 @@
         <activity
             android:name=".Main.HomeActivity"
             android:exported="true">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Register.RegisterActivity"
@@ -39,7 +35,11 @@
         <activity
             android:name=".Register.LoginActivity"
             android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
 
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
     </application>
 

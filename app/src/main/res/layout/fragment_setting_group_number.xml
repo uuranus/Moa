@@ -51,7 +51,8 @@
             android:backgroundTint="@color/white"
             android:outlineProvider="none"
             android:text="+"
-            android:textColor="@color/textColorPrimary" />
+            android:textColor="@color/textColorSecondary" />
+
     </LinearLayout>
 
 

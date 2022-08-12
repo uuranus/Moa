@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moa.moa.Home.HomeFragment
+import com.moa.moa.MyPage.MyPageFragment
 import com.moa.moa.R
 
 class HomeActivity : AppCompatActivity() {

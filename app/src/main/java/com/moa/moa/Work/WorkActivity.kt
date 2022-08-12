@@ -48,7 +48,7 @@ class WorkActivity : AppCompatActivity() {
     private var maxPeople=3
 
 
-    private var star=0
+    private var star=1
     set(value) {
         field=value
         val starList= listOf<ImageView>(star1,star2,star3,star4,star5)
@@ -158,12 +158,6 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun initViews(){
-        val pendingIntentt=PendingIntent.getBroadcast(this, 0,
-            Intent(this, AlarmReceiver::class.java), PendingIntent.FLAG_NO_CREATE
-        )
-
-        if( pendingIntentt==null) Log.i("pendingIntent","null")
-       else  Log.i("pendingIntent",pendingIntentt.creatorUid.toString())
 
         if(isEdit){
             titleEditText.setText(editData?.title)
@@ -184,6 +178,10 @@ class WorkActivity : AppCompatActivity() {
 
             workDeleteButton.isVisible=true
         }
+        else{
+            star1.isSelected=true
+        }
+
     }
 
     private fun initListener(){
@@ -320,6 +318,7 @@ class WorkActivity : AppCompatActivity() {
             return
         }
 
+
         val time=if(alarmSwitch.isChecked){
             Time(alarmPicker.hour,alarmPicker.minute)
         }
@@ -400,25 +399,20 @@ class WorkActivity : AppCompatActivity() {
         intent.putExtra("workTitle",titleEditText.text.toString())
         intent.putExtra("workId",curWorkId)
 
-        val pendingIntent= PendingIntent.getBroadcast(this, 1000,
+        val pendingIntent= PendingIntent.getBroadcast(this, curWorkId,
             intent, PendingIntent.FLAG_CANCEL_CURRENT) //기존 게 있으면 cancel하고 새로 생성 하겠다
         alarmManager.setInexactRepeating(
-            AlarmManager.ELAPSED_REALTIME, //경과한 시간을 기준으로 시간 카운트
+            AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             periodSlider.value.toLong(),
             pendingIntent
         )
 
-
-        val pendingIntentt=PendingIntent.getBroadcast(this, 1000,
-            Intent(this, AlarmReceiver::class.java), PendingIntent.FLAG_NO_CREATE
-        )
-        Log.i("setAlamr???", pendingIntentt.creatorUid.toString())
     }
 
     private fun deleteAlarm(){
         //현재 알림 설정되어있는 거 삭제
-        val pendingIntent=PendingIntent.getBroadcast(this, 1000,
+        val pendingIntent=PendingIntent.getBroadcast(this, curWorkId,
             Intent(this, AlarmReceiver::class.java), PendingIntent.FLAG_NO_CREATE
         )
         pendingIntent?.cancel()
@@ -463,6 +457,7 @@ class WorkActivity : AppCompatActivity() {
 
     //담당인원 최대 수를 위해 현 그룹의 인원 수 가져오기
     private fun getMaxPeople(){
+        Log.i("groupID", groupId)
         database.child("group").child(groupId).child("userNumber").get().addOnCompleteListener {
             if(it.isSuccessful){
                 maxPeople=it.result.value.toString().toInt()

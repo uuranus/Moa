@@ -2,27 +2,28 @@
     <!-- Base application theme. -->
     <style name="Theme.Moa" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-<!--        <item name="colorSecondary">@color/colorSecondary</item>-->
-<!--        <item name="colorSecondaryVariant">@color/colorSecondary</item>-->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondary</item>
+
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:windowTranslucentStatus">true</item>
 
         <!-- Customize your theme here. -->
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="backgroundWhite">@color/backgroundWhite</item>
-        <item name="mainPageBackgroundColor">@color/mainPageBackgroundColor</item>
 
+        <item name="textFillColor">@color/textColorSecondary</item>
     </style>
 
     <style name="CustomTimePicker">
+
         <item name="android:textColorPrimary">@color/textColorPrimary</item><!-- text color -->
         <item name="colorControlNormal">@color/colorPrimary</item><!-- divider color -->
+
         <item name="android:textSize">16sp</item>
     </style>
 </resources>

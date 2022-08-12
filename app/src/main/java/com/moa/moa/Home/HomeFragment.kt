@@ -15,6 +15,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.applandeo.materialcalendarview.EventDay
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.database.*
@@ -70,7 +73,7 @@ class HomeFragment : Fragment() {
 //    }
 
 
-    private var workInfos= mutableListOf<Work>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
+    private var workInfos= arrayOf<Work?>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
     private var notYetWorkList= listOf<HomeNotYetSection>( //아직 배정되지 않았어요 리사이클러뷰용 데이터리스트
         HomeNotYetSection("아직 배정되지 않았어요!", mutableListOf<HomeNotYetSecondSection>()))
@@ -82,7 +85,6 @@ class HomeFragment : Fragment() {
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
 
-
         initWorkDetail()
 
 
@@ -90,6 +92,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initWorkDetail() {
+
         val slidePanel = binding.mainFrame
         binding.assignBtn.setOnClickListener {
             slidePanel.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
@@ -114,7 +117,6 @@ class HomeFragment : Fragment() {
 
         }
 
-
     }
 
     private fun initWorkList(){
@@ -128,30 +130,33 @@ class HomeFragment : Fragment() {
     private fun initCalendar(){
         initCalendarMonth()
         val calendarView = binding.homeCalendar
-        calendarView.setUseThreeLetterAbbreviation(true)
 
-        beforeMonth.setOnClickListener {
-            calendarView.scrollLeft()
-            initCalendarMonth()
-        }
-        nextMonth.setOnClickListener {
-            calendarView.scrollRight()
-            initCalendarMonth()
-        }
-
-        calendarView.setListener(object:CompactCalendarView.CompactCalendarViewListener{
-            override fun onDayClick(dateClicked: Date?) {
-                val events=calendarView.getEvents(dateClicked)
-
+        calendarView.setOnPreviousPageChangeListener(object:OnCalendarPageChangeListener{
+            override fun onChange() {
                 initCalendarMonth()
-
-                getTodayWork(dateClicked!!)
-
             }
+        })
 
-            override fun onMonthScroll(firstDayOfNewMonth: Date?) {
-                binding.homeCalendarMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-                getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
+        calendarView.setOnForwardPageChangeListener(object: OnCalendarPageChangeListener {
+            override fun onChange() {
+                initCalendarMonth()
+            }
+        })
+
+        calendarView.setOnDayClickListener(object: OnDayClickListener {
+            override fun onDayClick(eventDay: EventDay) {
+//
+//                Log.i("selectedDates",calendarView.selectedDates.toString())
+//                val events=eventDay
+//
+//                println("event@!!!"+events)
+//
+//                initCalendarMonth()
+//
+                getTodayWork(eventDay.calendar.run {
+                    add(Calendar.MONTH,1)
+                    time
+                })
             }
 
         })
@@ -163,8 +168,7 @@ class HomeFragment : Fragment() {
     private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
         val calendarView = binding.homeCalendar
 
-        binding.homeCalendarMonthTextView.text=(dateFormatForMonth.format(calendarView.firstDayOfCurrentMonth))
-        getMonthWork(getYear(calendarView.firstDayOfCurrentMonth),getMonth(calendarView.firstDayOfCurrentMonth)) //0월부터 시작
+        getMonthWork(calendarView.currentPageDate.get(Calendar.YEAR).toString(),calendarView.currentPageDate.get(Calendar.MONTH).toString()) //0월부터 시작
 
     }
 
@@ -176,12 +180,6 @@ class HomeFragment : Fragment() {
                 //선택된 월의 데이터를 가져오기
                 //캘린더에 데이터를 넣어주기
 
-                val format=SimpleDateFormat("yyyy-mm-dd")
-                val event1=Event(Color.GREEN,SimpleDateFormat("yyyy-mm-dd").parse("2022-07-22").time,"0")
-
-                calendarView.addEvent(event1)
-
-                calendarView.invalidate()
                 snapshot.value ?:return
 
             }
@@ -210,10 +208,10 @@ class HomeFragment : Fragment() {
                             person.add(Person(child2.child("userId").value.toString(),child2.child("userName").value.toString(),child2.child("isChecked").value.toString().toBoolean()))
                         }
 
-                        if(workInfos[workId].number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
+                        if(workInfos[workId]!!.number > person.size){ //3명 담당인데 1명만 되어있으면 notYetWorkList에 추가
                             val list=notYetWorkList[0].list.toMutableList()
-                            list.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
-                            tmpList.add(HomeNotYetSecondSection(0,workInfos[workId].title,workId.toString()))
+                            list.add(HomeNotYetSecondSection(0,workInfos[workId]!!.title,workId.toString()))
+                            tmpList.add(HomeNotYetSecondSection(0,workInfos[workId]!!.title,workId.toString()))
                             notYetWorkList[0].list=list
                         }
 
@@ -222,7 +220,7 @@ class HomeFragment : Fragment() {
                                 if(element.userId==prs.userId){
                                     val list=element.list.toMutableList()
                                     list.add(HomeThirdSection(prs.isChecked,workId,
-                                        workInfos[workId].title))
+                                        workInfos[workId]!!.title))
                                     element.list=list
                                 }
                             }
@@ -231,7 +229,9 @@ class HomeFragment : Fragment() {
                     }
                 }
 
+
                 //미배정 목록 리사이클러뷰
+
                 val homeAdapter =HomeNotYetSecondRecyclerViewAdapter(tmpList)
                 homeAdapter.onItemClickListener = {
                     Log.i("home adapter","$it clicked! in homefrag")
@@ -251,6 +251,7 @@ class HomeFragment : Fragment() {
                 }
                 binding.homeNotYetRecyclerView.adapter= homeAdapter
                 binding.homeNotYetRecyclerView.layoutManager=LinearLayoutManager(homeActivity)
+
 
 
                 //배정 목록 리사이클러뷰
@@ -311,12 +312,22 @@ class HomeFragment : Fragment() {
 
         firebaseDatabase.child("group").child(groupId).child("worklist").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.value ?:return
+                if(snapshot.value ==null){
+                    //집안일 정보 가져 온 후 사용자 정보 가져오기 --> 가족들은 얼마나 했을까요?에서 구성원 목록을 미리 만들어놓기 위함
+                    getUsers()
+                    return
+                }
+
+                Log.i("last",snapshot.key.toString())
+                val len=snapshot.children.last().key!!.toInt()
+                Log.i("len",len.toString())
+                workInfos= arrayOfNulls<Work>(len+1)
 
                 snapshot.children.forEach { dataSnapshot ->
 
                     dataSnapshot.getValue<Work>()?.let {it2->
-                        workInfos.add(it2.workId,it2)
+                        workInfos.set(it2.workId,it2)
+                        Log.i("workInfooooo",workInfos.toString())
                     }
                 }
 
@@ -330,7 +341,7 @@ class HomeFragment : Fragment() {
 
 
         })
-        
+
     }
 
     private fun getUsers(){ //group->users에 저장되어 있는 유저들 정보를 가져옴
@@ -410,6 +421,4 @@ class HomeFragment : Fragment() {
     }
 
 }
-
-
 
