@@ -10,8 +10,8 @@
         android:id="@+id/profileBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/round_image"
         android:backgroundTint="@color/colorSecondary"
+        android:src="@drawable/round_image"
         app:layout_constraintBottom_toTopOf="@id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +24,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
         android:src="@drawable/default_img"
+        app:layout_constraintBottom_toBottomOf="@id/profileBackground"
         app:layout_constraintStart_toStartOf="@id/profileBackground"
-        app:layout_constraintTop_toTopOf="@id/profileBackground"
-        app:layout_constraintBottom_toBottomOf="@id/profileBackground"/>
+        app:layout_constraintTop_toTopOf="@id/profileBackground" />
 
     <TextView
         android:id="@+id/nickname"
@@ -44,18 +44,54 @@
         android:id="@+id/emailId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/backgroundWhite"
         android:layout_marginTop="5dp"
+        android:textColor="@color/backgroundWhite"
         app:layout_constraintBottom_toBottomOf="@id/profileImg"
         app:layout_constraintStart_toStartOf="@id/nickname"
         app:layout_constraintTop_toBottomOf="@id/nickname"
         tools:text="email@email.com" />
+
+    <ImageButton
+        android:id="@+id/alarmButton"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="15dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_baseline_notifications_24_white"
+        app:layout_constraintBottom_toBottomOf="@id/moreButton"
+        app:layout_constraintEnd_toStartOf="@id/moreButton"
+        app:layout_constraintTop_toTopOf="@id/moreButton" />
+
+    <TextView
+        android:id="@+id/alarmNotReadCount"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/circle"
+        android:backgroundTint="#FFF94162"
+        android:gravity="center"
+        android:text="2"
+        android:textColor="@color/backgroundWhite"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/alarmButton"
+        app:layout_constraintTop_toTopOf="@id/alarmButton" />
+
+    <ImageButton
+        android:id="@+id/moreButton"
+        android:layout_width="4dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="45dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintBottom_toBottomOf="@id/profileBackground"
+        app:layout_constraintEnd_toEndOf="@id/profileBackground"
+        app:layout_constraintTop_toTopOf="@id/profileBackground" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
+        android:background="@color/mainPageBackgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileImg" />
@@ -69,10 +105,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="logout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

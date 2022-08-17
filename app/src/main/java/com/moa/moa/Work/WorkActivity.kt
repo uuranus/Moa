@@ -9,7 +9,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -21,11 +20,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.moa.moa.Data.AlarmReceiver
 import com.moa.moa.Data.Time
-import com.moa.moa.Data.TitleHistory
+import com.moa.moa.Local.TitleHistory
 import com.moa.moa.Data.Work
+import com.moa.moa.Local.AppDatabase
 import com.moa.moa.R
 import com.moa.moa.Utility
-import com.moa.moa.databinding.ActivityWorkBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,7 +34,7 @@ class WorkActivity : AppCompatActivity() {
     private lateinit var groupId:String
     private var isEdit=false
     private var editData: Work?=null
-    private lateinit var db:AppDatabase
+    private lateinit var db: AppDatabase
     private lateinit var database:DatabaseReference
     private lateinit var adapter:TitleHistoryAdapter
     private var curWorkId:Int=0
@@ -140,7 +139,7 @@ class WorkActivity : AppCompatActivity() {
         db= Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "WorkDB"
+            "MoaDB"
         ).fallbackToDestructiveMigration()
             .build()
         database=FirebaseDatabase.getInstance().reference

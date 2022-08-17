@@ -1,4 +1,4 @@
-package com.moa.moa.Data
+package com.moa.moa.Local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

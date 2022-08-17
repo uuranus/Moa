@@ -261,7 +261,14 @@ class RegisterActivity : FragmentActivity() {
                 }
                 val user = User(userEmail,nickname!!, imageUri.toString(),starCount)
                 Log.i("user",user.toString())
-                database.child("group").child(roomId!!).child("users").push().setValue(user)
+
+                val userKey=database.child("group").child(roomId!!).child("users").push().key!!
+                database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)
+                val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
+                sharedPreference.edit(true){
+                    putString("userKey",userKey)
+                }
+
                 startHomeActivity()
             }
         }
@@ -272,7 +279,12 @@ class RegisterActivity : FragmentActivity() {
             }
             val user = User(userEmail,nickname!!, "null",starCount)
 
-            database.child("group").child(roomId!!).child("users").push().setValue(user)
+            val userKey=database.child("group").child(roomId!!).child("users").push().key!!
+            database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)
+            val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
+            sharedPreference.edit(true){
+                putString("userKey",userKey)
+            }
             startHomeActivity()
         }
 
