@@ -105,7 +105,10 @@ class StarFragment : Fragment() {
 
     private fun initRecyclerView(list:List<Complement>,usedList:List<Complement>){
 
-        adapter=ComplementRecyclerViewAdapter(list)
+        Log.i("listttttt",list.toString())
+        Log.i("listttttt",usedList.toString())
+
+        adapter=ComplementRecyclerViewAdapter(emptyList())
         adapter.complementInterface=object:ComplementRecyclerViewAdapter.ComplementInterface{
 
             override fun complementAdd(isEdit: Boolean, complement: Complement?) {
@@ -126,7 +129,7 @@ class StarFragment : Fragment() {
 
         Log.i("adaterSize",adapter.itemCount.toString())
 
-        usedAdapter= ComplementUsedRecyclerViewAdapter(usedList)
+        usedAdapter= ComplementUsedRecyclerViewAdapter(emptyList())
         starUsedRecyclerView.adapter=usedAdapter
         starUsedRecyclerView.layoutManager=LinearLayoutManager(requireContext())
     }
@@ -180,7 +183,7 @@ class StarFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val com=Complement("",star,title.text.toString(), description.text.toString(),false)
+            val com=Complement("",star,title.text.toString(), description.text.toString(),0)
             if(isEdit) {
 
                 deleteComplement(complement?.uid!!)
@@ -243,18 +246,19 @@ class StarFragment : Fragment() {
                         initRecyclerView(list,usedList)
                         return
                     }
-                    Log.i("recyclerview2",list.toString())
-                    Log.i("recyclerView2",usedList.toString())
+
+
                     snapshot.children.forEach { dataSnapshot ->
                         Log.i("dataSnapshot",dataSnapshot.toString())
                         dataSnapshot.getValue<Complement>().let {
                             it?:return@let
 
-                            if(it.isUsed) usedList.add(it)
+                            if(it.isUsed==1) usedList.add(it)
                             else list.add(it)
                         }
                     }
-
+                    Log.i("recyclerview2",list.toString())
+                    Log.i("recyclerView2",usedList.toString())
 
                     initRecyclerView(list,usedList)
                 }

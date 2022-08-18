@@ -92,7 +92,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.2"
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
-    implementation 'com.github.zhukic:sectioned-recyclerview:1.2.3'
+
 
     //슬라이드 뷰 구현
     implementation 'com.github.hannesa2:AndroidSlidingUpPanel:4.2.1'

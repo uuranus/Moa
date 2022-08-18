@@ -1,9 +1,11 @@
 package com.moa.moa.MyPage
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -24,6 +27,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.moa.moa.Data.User
 import com.moa.moa.Local.AppDatabase
 import com.moa.moa.R
 import com.moa.moa.Register.RegisterActivity
@@ -42,10 +48,20 @@ class MyPageFragment : Fragment() {
     private lateinit var userKey: String
     private lateinit var database: DatabaseReference
 
+    private val OAUTH_CLIENT_ID:String by lazy {
+        resources.getString(R.string.naver_client_id)
+    }
+    private val OAUTH_CLIENT_SECRET:String by lazy {
+        resources.getString(R.string.naver_client_secret)
+    }
+    private val OAUTH_CLIENT_NAME:String by lazy {
+        resources.getString(R.string.naver_client_name)
+    }
+
     private lateinit var db:AppDatabase
 
     private var isDefaultImg:Boolean=true
-
+    private var imageUri:Uri?=null
 
     private val profileImg: ImageView by lazy {
         requireView().findViewById(R.id.profileImg)
@@ -59,7 +75,7 @@ class MyPageFragment : Fragment() {
         requireView().findViewById(R.id.emailId)
     }
 
-    private val bellImage:ImageButton by lazy{
+    private val bellImage:ImageView by lazy{
         requireView().findViewById(R.id.alarmButton)
     }
 
@@ -67,7 +83,7 @@ class MyPageFragment : Fragment() {
         requireView().findViewById(R.id.alarmNotReadCount)
     }
 
-    private val moreButton:ImageButton by lazy{
+    private val moreButton:ImageView by lazy{
         requireView().findViewById(R.id.moreButton)
     }
 
@@ -90,6 +106,9 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        NaverIdLoginSDK.initialize(requireContext(),OAUTH_CLIENT_ID,OAUTH_CLIENT_SECRET,OAUTH_CLIENT_NAME)
+
+
         gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
 
@@ -100,6 +119,7 @@ class MyPageFragment : Fragment() {
         userKey = utility.getUserKey(requireActivity())
         database = FirebaseDatabase.getInstance().reference
 
+        Log.i("infofofofo",groupId+" "+userKey)
         db = Room.databaseBuilder(
             requireActivity().applicationContext,
             AppDatabase::class.java,
@@ -119,12 +139,19 @@ class MyPageFragment : Fragment() {
         database.child("group").child(groupId).child("users")
             .child(userKey).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.child("profileImage").value.toString() != "null") {
-                        Glide.with(requireContext())
-                            .load(snapshot.child("profileImage"))
-                            .into(profileImg)
-                    }
 
+                    if (snapshot.child("profileImage").value.toString() != "null") {
+                        FirebaseStorage.getInstance().getReferenceFromUrl(snapshot.child("profileImage").value.toString())
+                            .downloadUrl.addOnSuccessListener {
+                                imageUri=it
+                                isDefaultImg=false
+                                Glide.with(requireContext())
+                                    .load(it)
+                                    .circleCrop()
+                                    .into(profileImg)
+                            }
+
+                    }
 
                     nickname.text = snapshot.child("userName").value.toString()
                     emailId.text = snapshot.child("userId").value.toString()
@@ -148,10 +175,15 @@ class MyPageFragment : Fragment() {
             //탈퇴, 정보 수정 화면
             val view=LayoutInflater.from(requireContext()).inflate(R.layout.more_button_dialog,null)
 
+            val builder = AlertDialog.Builder(requireContext())
+                .setView(view)
+
             val quit=view.findViewById<TextView>(R.id.quit)
             val edit=view.findViewById<TextView>(R.id.editProfile)
 
+            val dialog = builder.create()
             quit.setOnClickListener {
+                Log.i("quir","clicked")
                 AlertDialog.Builder(requireContext())
                     .setMessage("정말로 탈퇴하시겠습니까?")
                     .setPositiveButton("네"){ _,_->
@@ -172,17 +204,14 @@ class MyPageFragment : Fragment() {
                     }
                     .setNegativeButton("아니오"){_,_->
 
-                    }
+                    }.show()
             }
 
             edit.setOnClickListener {
-
+                showEditProfileDialog()
             }
 
-            val builder= AlertDialog.Builder(requireContext())
-                .setView(view).create()
-
-
+            dialog.show()
         }
 
         Thread{
@@ -227,13 +256,26 @@ class MyPageFragment : Fragment() {
     }
 
     private lateinit var editProfileImage:ImageView
+    private var selectedImgUri:Uri?=null
 
     private fun showEditProfileDialog(){
         val view=LayoutInflater.from(requireContext()).inflate(R.layout.edit_profile_dialog,null)
 
+        val builder=AlertDialog.Builder(requireContext()).setView(view).create()
+
         editProfileImage=view.findViewById<ImageView>(R.id.profileImg)
         val nicknameEdit=view.findViewById<EditText>(R.id.editNicknameDialog)
-        val groupId=view.findViewById<TextView>(R.id.groupId)
+        val groupIdText=view.findViewById<TextView>(R.id.groupId)
+
+        if(imageUri!=null){
+            Glide.with(requireContext())
+                .load(imageUri)
+                .into(editProfileImage)
+
+        }
+
+        nicknameEdit.setText(nickname.text)
+        groupIdText.text=groupId
 
         val okay=view.findViewById<Button>(R.id.editProfileOkay)
 
@@ -251,8 +293,6 @@ class MyPageFragment : Fragment() {
                 chooseDefaultTextView.setOnClickListener {
                     val uri= Uri.parse("android.resource://"+requireActivity().packageName+"/"+ R.drawable.ic_baseline_person_add_alt_1_24)
                     editProfileImage.setImageURI(uri)
-                    val ra=activity as RegisterActivity
-                    ra.imageUri=null
                     isDefaultImg=true
                     dialog.dismiss()
                 }
@@ -277,16 +317,47 @@ class MyPageFragment : Fragment() {
                 }
             }
 
-
-
         }
-
 
         okay.setOnClickListener {
+            if(nicknameEdit.length()==0) {
+                Toast.makeText(requireContext(),"닉네임을 입력하세요",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             //저장....
+            if(!isDefaultImg){
+                val ref=FirebaseStorage.getInstance().reference.child("profileImages/${emailId.text}_profileimg.jpg")
+                ref.putFile(selectedImgUri!!).addOnSuccessListener {
+                    ref.downloadUrl.addOnSuccessListener {
+                        val uri=it
 
-            initUser()
+                        database.child("group").child(groupId).child("users").child(userKey)
+                            .child("userName").setValue(nicknameEdit.text.toString())
+                        database.child("group").child(groupId).child("users").child(userKey)
+                            .child("profileImage").setValue(uri.toString())
+
+                        initUser()
+
+                        builder.dismiss()
+                    }
+
+                }
+            }
+            else{
+                database.child("group").child(groupId).child("users").child(userKey)
+                    .child("userName").setValue(nicknameEdit.text.toString())
+                database.child("group").child(groupId).child("users").child(userKey)
+                    .child("profileImage").setValue("null")
+
+                initUser()
+
+                builder.dismiss()
+            }
+
+
         }
+
+        builder.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -307,11 +378,9 @@ class MyPageFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode==2000){
-            val selectedImgUri: Uri?=data?.data
+            selectedImgUri=data?.data
             if(selectedImgUri!=null){
                 editProfileImage.setImageURI(selectedImgUri)
-                val ra=activity as RegisterActivity
-                ra.imageUri=selectedImgUri
                 isDefaultImg=false
             }
         }

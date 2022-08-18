@@ -92,6 +92,7 @@ class ComplementRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ComplementViewHolder, position: Int) {
+        Log.i("bind",position.toString())
         if (position == complementList.size) holder.bind(null, position)
         else holder.bind(complementList[position], position)
     }

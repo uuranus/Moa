@@ -22,7 +22,6 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
         android:src="@drawable/default_img"
         app:layout_constraintBottom_toBottomOf="@id/profileBackground"
         app:layout_constraintStart_toStartOf="@id/profileBackground"
@@ -51,12 +50,11 @@
         app:layout_constraintTop_toBottomOf="@id/nickname"
         tools:text="email@email.com" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/alarmButton"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="15dp"
-        android:background="?attr/selectableItemBackground"
         android:src="@drawable/ic_baseline_notifications_24_white"
         app:layout_constraintBottom_toBottomOf="@id/moreButton"
         app:layout_constraintEnd_toStartOf="@id/moreButton"
@@ -75,12 +73,12 @@
         app:layout_constraintEnd_toEndOf="@id/alarmButton"
         app:layout_constraintTop_toTopOf="@id/alarmButton" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/moreButton"
-        android:layout_width="4dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="45dp"
-        android:background="?attr/selectableItemBackground"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="33dp"
+        app:layout_constraintDimensionRatio="H 6:1"
         android:src="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintBottom_toBottomOf="@id/profileBackground"
         app:layout_constraintEnd_toEndOf="@id/profileBackground"
@@ -102,8 +100,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
