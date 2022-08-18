@@ -218,6 +218,7 @@ class MyPageFragment : Fragment() {
         Thread{
             val alarms=db.alarmDao().getNotRead()
 
+            Log.i("not read",alarms.toString())
             requireActivity().runOnUiThread {
                 if(alarms.isEmpty()) alarmCount.isVisible=false
                 else{

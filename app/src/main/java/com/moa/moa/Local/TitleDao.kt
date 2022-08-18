@@ -9,7 +9,7 @@ interface TitleDao{
     @Query("SELECT * FROM titleHistory")
     fun getAll():List<TitleHistory>
 
-    @Query("SELECT * FROM titleHistory where title LIKE :title||'%' ")
+    @Query("SELECT * FROM titleHistory where title LIKE :title || '%' ")
     fun getHistory(title:String):List<TitleHistory>
 
     @Insert

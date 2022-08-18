@@ -23,7 +23,7 @@ class AlarmListAdapter() : ListAdapter<AlarmHistory, AlarmListAdapter.AlarmViewH
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmViewHolder {
-        return AlarmViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.alarm_list_row,parent,false))
+        return AlarmViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.alarm_list_row,null))
     }
 
     override fun onBindViewHolder(holder: AlarmViewHolder, position: Int) {

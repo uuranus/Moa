@@ -3,6 +3,7 @@ package com.moa.moa.MyPage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.moa.moa.Local.AppDatabase
@@ -29,6 +30,10 @@ class AlarmActivity : AppCompatActivity() {
         ).fallbackToDestructiveMigration()
             .build()
 
+        adapter= AlarmListAdapter()
+        recyclerView.adapter=adapter
+        recyclerView.layoutManager=LinearLayoutManager(this)
+
         init()
 
         checked()
@@ -41,11 +46,11 @@ class AlarmActivity : AppCompatActivity() {
 
             Log.i("alarms", alarms.toString())
             runOnUiThread {
-                adapter= AlarmListAdapter()
                 adapter.submitList(alarms)
-                recyclerView.adapter=adapter
+                Log.i("alarms22", adapter.itemCount.toString())
+
             }
-        }
+        }.start()
     }
 
     private fun checked(){
