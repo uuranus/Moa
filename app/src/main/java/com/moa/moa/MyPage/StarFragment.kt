@@ -108,7 +108,7 @@ class StarFragment : Fragment() {
         Log.i("listttttt",list.toString())
         Log.i("listttttt",usedList.toString())
 
-        adapter=ComplementRecyclerViewAdapter(emptyList())
+        adapter=ComplementRecyclerViewAdapter(list)
         adapter.complementInterface=object:ComplementRecyclerViewAdapter.ComplementInterface{
 
             override fun complementAdd(isEdit: Boolean, complement: Complement?) {
@@ -129,7 +129,7 @@ class StarFragment : Fragment() {
 
         Log.i("adaterSize",adapter.itemCount.toString())
 
-        usedAdapter= ComplementUsedRecyclerViewAdapter(emptyList())
+        usedAdapter= ComplementUsedRecyclerViewAdapter(usedList)
         starUsedRecyclerView.adapter=usedAdapter
         starUsedRecyclerView.layoutManager=LinearLayoutManager(requireContext())
     }
@@ -219,7 +219,7 @@ class StarFragment : Fragment() {
 
     private fun useComplement(uid:String){
         database.child("group").child(groupId).child("users")
-            .child(userKey).child("complements").child(uid).child("isUsed").setValue(true)
+            .child(userKey).child("complements").child(uid).child("used").setValue(1)
 
         getComplements()
 
@@ -239,7 +239,7 @@ class StarFragment : Fragment() {
                     val list= mutableListOf<Complement>()
                     val usedList= mutableListOf<Complement>()
 
-                    Log.i("recyclerview",list.toString())
+                    Log.i("recyclerview",snapshot.value.toString())
                     Log.i("recyclerView",usedList.toString())
 
                     if(snapshot.value==null){
@@ -253,7 +253,7 @@ class StarFragment : Fragment() {
                         dataSnapshot.getValue<Complement>().let {
                             it?:return@let
 
-                            if(it.isUsed==1) usedList.add(it)
+                            if(it.used==1) usedList.add(it)
                             else list.add(it)
                         }
                     }

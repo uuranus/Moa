@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.moa.moa.Data.Badge
 import com.moa.moa.Data.Group
 import com.moa.moa.Data.User
 import com.moa.moa.Data.Work
@@ -268,7 +269,16 @@ class RegisterActivity : FragmentActivity() {
                     for(i in 1..12){
                         starCount.add(0)
                     }
-                    val user = User(userEmail,nickname!!, uri,starCount)
+
+                    val badges= ArrayList<Badge>().apply{
+                        add(Badge("초보","집안일 1개 이상 완료!",false))
+                        add(Badge("중수","집안일 10개 이상 완료!",false))
+                        add(Badge("고수","집안일 50개 이상 완료!",false))
+                        add(Badge("알리미","알림 1번 이상 울림",false))
+                        add(Badge("이끔이","집안일 1개 이상 추가",false))
+                    }
+
+                    val user = User(userEmail,nickname!!, uri,starCount, badges)
                     Log.i("user",user.toString())
 
                     val userKey=database.child("group").child(roomId!!).child("users").push().key!!
@@ -289,7 +299,16 @@ class RegisterActivity : FragmentActivity() {
             for(i in 1..12){
                 starCount.add(0)
             }
-            val user = User(userEmail,nickname!!, "null",starCount)
+
+            val badges= ArrayList<Badge>().apply{
+                add(Badge("초보","집안일 1개 이상 완료!",false))
+                add(Badge("중수","집안일 10개 이상 완료!",false))
+                add(Badge("고수","집안일 50개 이상 완료!",false))
+                add(Badge("알리미","알림 1번 이상 울림",false))
+                add(Badge("이끔이","집안일 1개 이상 추가",false))
+            }
+
+            val user = User(userEmail,nickname!!, "null",starCount, badges)
 
             val userKey=database.child("group").child(roomId!!).child("users").push().key!!
             database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)

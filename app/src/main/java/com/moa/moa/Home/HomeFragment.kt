@@ -207,7 +207,7 @@ class HomeFragment : Fragment() {
 
                     //담당했는데 안 한 집안일이 있다면
                     if(isExist){
-                        calendar.set(year.toInt(),month.toInt()-1,it.key.toString().toInt())
+                        calendar.set(year.toInt(),month.toInt()-1,date)
                         list.add(EventDay(
                             calendar,
                             R.drawable.circle

@@ -23,7 +23,7 @@ class ComplementUsedRecyclerViewAdapter (
         private val complementDescription =
             itemView.findViewById<TextView>(R.id.complementDescription)
 
-        fun bind(complement: Complement, position: Int) {
+        fun bind(complement: Complement) {
             complementStar.text="${complement.star}"
             complementTitle.text=complement.title
             complementDescription.text=complement.description
@@ -38,7 +38,7 @@ class ComplementUsedRecyclerViewAdapter (
     }
 
     override fun onBindViewHolder(holder: ComplementUsedViewHolder, position: Int) {
-        holder.bind(complementList[position], position)
+        holder.bind(complementList[position])
     }
 
     override fun getItemCount(): Int {

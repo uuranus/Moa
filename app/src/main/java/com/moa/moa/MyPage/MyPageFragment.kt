@@ -209,6 +209,7 @@ class MyPageFragment : Fragment() {
 
             edit.setOnClickListener {
                 showEditProfileDialog()
+                dialog.dismiss()
             }
 
             dialog.show()

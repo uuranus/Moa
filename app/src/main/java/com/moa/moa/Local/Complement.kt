@@ -8,5 +8,5 @@ data class Complement(
     val star:Int=1,
     val title:String="",
     val description:String="",
-    val isUsed:Int=0,
+    val used:Int=1
 ):Serializable

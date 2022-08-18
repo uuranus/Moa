@@ -59,25 +59,37 @@ class ComplementRecyclerViewAdapter(
                     val view= LayoutInflater.from(itemView.context)
                         .inflate(R.layout.complemt_more, null)
 
+                    val builder=AlertDialog.Builder(itemView.context)
+                        .setView(view)
+                        .create()
+
                     val edit=view.findViewById<TextView>(R.id.complementEdit)
                     val delete=view.findViewById<TextView>(R.id.complementDelete)
                     val use=view.findViewById<TextView>(R.id.complementUse)
 
                     edit.setOnClickListener {
                         complementInterface?.complementAdd(true,complement)
+                        builder.dismiss()
                     }
                     delete.setOnClickListener {
-                        complementInterface?.complementDelete(complement?.uid!!)
+                        AlertDialog.Builder(itemView.context)
+                            .setMessage("해당 보상을 삭제하시겠습니까?")
+                            .setPositiveButton("네"){_,_->
+                                complementInterface?.complementDelete(complement?.uid!!)
+                                builder.dismiss()
+                            }
+                            .setNegativeButton("아니오"){_,_->
+
+                            }
                     }
 
                     use.setOnClickListener {
                         complementInterface?.complementUse(complement?.uid!!)
+                        builder.dismiss()
                     }
 
-                    AlertDialog.Builder(itemView.context)
-                        .setView(view)
-                        .create()
-                        .show()
+
+                    builder.show()
 
                 }
             }

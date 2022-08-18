@@ -8,6 +8,5 @@ import androidx.room.TypeConverters
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun titleDao(): TitleDao
-//    abstract fun complementDao(): ComplementDao
     abstract fun alarmDao(): AlarmDao
 }

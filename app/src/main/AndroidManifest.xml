@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moa">
         <activity
+            android:name=".MyPage.BadgeInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyPage.AlarmActivity"
             android:exported="false" />
         <activity
@@ -31,7 +34,7 @@
             android:theme="@style/Theme.Moa" />
         <activity
             android:name=".Main.HomeActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Register.RegisterActivity"
             android:exported="false"

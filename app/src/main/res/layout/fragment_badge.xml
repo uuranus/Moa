@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="30dp"
-        android:text="이번달 얻은 뱃지 수"
+        android:text="총 얻은 뱃지 수"
+
         android:textColor="@color/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -85,26 +86,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/thisMonthBadgeCount" />
 
-    <TextView
-        android:id="@+id/badgeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="43dp"
-        android:text="뱃지 목록"
-        android:textColor="@color/textColorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_view" />
-
-    <GridLayout
-        android:id="@+id/badgeGridLayout"
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="33dp"
-        android:layout_marginTop="38dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/badgeTextView" />
+        app:layout_constraintTop_toBottomOf="@id/horizontal_view">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/badgeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="33dp"
+                android:layout_marginTop="43dp"
+                android:textSize="18sp"
+                android:text="뱃지 목록"
+                android:textColor="@color/textColorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/badgeMoreButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="더보기"
+                android:textColor="@color/textColorSecondary"
+                app:layout_constraintEnd_toEndOf="@id/badgeGridLayout"
+                app:layout_constraintTop_toTopOf="@id/badgeTextView"
+                app:layout_constraintBottom_toBottomOf="@id/badgeTextView" />
+
+            <GridView
+                android:id="@+id/badgeGridLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="33dp"
+                android:numColumns="3"
+                android:isScrollContainer="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/badgeTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
