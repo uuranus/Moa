@@ -34,6 +34,7 @@ class Utility  {
         return userKey ?: "-N9oPIsDVYy7lgJfsRFW"
     }
 
+
     fun getToday():String{
         val dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(Calendar.getInstance().time)
