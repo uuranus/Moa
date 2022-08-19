@@ -15,7 +15,7 @@ class Utility  {
          val sharedPreferences=activity.getSharedPreferences("Info", Context.MODE_PRIVATE)
          val groupId=sharedPreferences.getString("groupId","")
 
-         return groupId ?: ""
+         return groupId ?: "-N9oK-NsYF3XR488QR7L"
 
      }
 
@@ -23,7 +23,7 @@ class Utility  {
         val sharedPreferences=activity.getSharedPreferences("Info", Context.MODE_PRIVATE)
         val userId=sharedPreferences.getString("userId","")
 
-        return userId ?: ""
+        return userId ?: "yur0920@naver.com"
 
     }
 
@@ -31,7 +31,7 @@ class Utility  {
         val sharedPreferences=activity.getSharedPreferences("Info", Context.MODE_PRIVATE)
         val userKey=sharedPreferences.getString("userKey","")
 
-        return userKey ?: ""
+        return userKey ?: "-N9oPIsDVYy7lgJfsRFW"
     }
 
     fun getToday():String{

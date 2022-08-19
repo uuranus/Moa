@@ -34,7 +34,13 @@
             android:theme="@style/Theme.Moa" />
         <activity
             android:name=".Main.HomeActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Register.RegisterActivity"
             android:exported="false"
@@ -42,11 +48,7 @@
         <activity
             android:name=".Register.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
     </application>
 
