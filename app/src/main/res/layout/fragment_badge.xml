@@ -1,14 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPage.BadgeFragment">
+    android:background="@color/mainPageBackgroundColor"
+    tools:context=".MyPage.StarFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/thisMonthBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="30dp"
+        android:text="총 얻은 뱃지 수"
 
-</FrameLayout>
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/thisMonthBadgeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="0"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="@id/thisMonthBadge"
+        app:layout_constraintStart_toStartOf="@id/thisMonthBadge"
+        app:layout_constraintTop_toBottomOf="@id/thisMonthBadge" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="3dp"
+        android:text="개"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/thisMonthBadgeCount"
+        app:layout_constraintStart_toEndOf="@id/thisMonthBadgeCount" />
+
+    <TextView
+        android:id="@+id/thisMonthFamily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="52dp"
+        android:text="가족 평균 뱃지 수"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/thisMonthFamilyCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="0"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="@id/thisMonthFamily"
+        app:layout_constraintStart_toStartOf="@id/thisMonthFamily"
+        app:layout_constraintTop_toBottomOf="@id/thisMonthFamily" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="3dp"
+        android:text="개"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/thisMonthFamilyCount"
+        app:layout_constraintStart_toEndOf="@id/thisMonthFamilyCount" />
+
+
+    <View
+        android:id="@+id/horizontal_view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="37dp"
+        android:background="@color/textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/thisMonthBadgeCount" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_view">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/badgeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="33dp"
+                android:layout_marginTop="43dp"
+                android:textSize="18sp"
+                android:text="뱃지 목록"
+                android:textColor="@color/textColorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/badgeMoreButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="더보기"
+                android:textColor="@color/textColorSecondary"
+                app:layout_constraintEnd_toEndOf="@id/badgeGridLayout"
+                app:layout_constraintTop_toTopOf="@id/badgeTextView"
+                app:layout_constraintBottom_toBottomOf="@id/badgeTextView" />
+
+            <GridView
+                android:id="@+id/badgeGridLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="33dp"
+                android:numColumns="3"
+                android:isScrollContainer="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/badgeTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

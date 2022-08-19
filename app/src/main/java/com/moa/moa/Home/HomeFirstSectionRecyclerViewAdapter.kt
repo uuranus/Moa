@@ -19,7 +19,6 @@ class HomeFirstSectionRecyclerViewAdapter(val list:List<HomeFirstSection>) :Recy
 
         @SuppressLint("ResourceAsColor")
         fun bind(firstsection:HomeFirstSection){
-            android.util.Log.i("loggggg",firstsection.toString())
             homeListCategory.text=firstsection.title
             if(firstsection.title.equals("아직 배정되지 않았어요!")) homeListCategory.setTextColor(ContextCompat.getColor(itemView.context,R.color.textColorPrimary))
             homeFirstRecyclerView.adapter=HomeSecondSectionRecyclerViewAdapter(firstsection.list)

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/round_btn"
+    android:backgroundTint="@color/backgroundWhite"
+    android:padding="25dp">
+
+    <EditText
+        android:id="@+id/complementAddTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="보상 이름을 적어주세요"
+        android:backgroundTint="@color/textColorSecondary"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/complementAddDescription"
+        android:layout_width="match_parent"
+        android:layout_height="158dp"
+        android:layout_marginTop="25dp"
+        android:padding="12dp"
+        android:background="@drawable/gray_round_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/complementAddTitle"
+        android:inputType="text"/>
+
+    <ImageView
+        android:id="@+id/star1"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="61dp"
+        android:src="@drawable/star_selector"
+        app:layout_constraintStart_toStartOf="@id/complementAddDescription"
+        app:layout_constraintTop_toBottomOf="@id/complementAddDescription" />
+
+    <ImageView
+        android:id="@+id/star2"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/star_selector"
+        app:layout_constraintStart_toEndOf="@id/star1"
+        app:layout_constraintTop_toTopOf="@id/star1"
+        app:layout_constraintBottom_toBottomOf="@id/star1"/>
+
+    <ImageView
+        android:id="@+id/star3"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/star_selector"
+        app:layout_constraintStart_toEndOf="@id/star2"
+        app:layout_constraintTop_toTopOf="@id/star2"
+        app:layout_constraintBottom_toBottomOf="@id/star2" />
+
+    <ImageView
+        android:id="@+id/star4"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/star_selector"
+        app:layout_constraintStart_toEndOf="@id/star3"
+        app:layout_constraintTop_toTopOf="@id/star3"
+        app:layout_constraintBottom_toBottomOf="@id/star3" />
+
+    <ImageView
+        android:id="@+id/star5"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/star_selector"
+        app:layout_constraintStart_toEndOf="@id/star4"
+        app:layout_constraintTop_toTopOf="@id/star4"
+        app:layout_constraintBottom_toBottomOf="@id/star4" />
+    
+    <TextView
+        android:id="@+id/starMinus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintEnd_toStartOf="@id/starCount"
+        app:layout_constraintTop_toTopOf="@id/star5"
+        app:layout_constraintBottom_toBottomOf="@id/star5"
+        android:textSize="16sp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/starCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1개"
+        app:layout_constraintEnd_toStartOf="@id/starPlus"
+        app:layout_constraintTop_toTopOf="@id/star5"
+        app:layout_constraintBottom_toBottomOf="@id/star5"
+        android:layout_marginEnd="24dp"
+        android:textSize="16sp"
+        android:textColor="@color/textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/starPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        app:layout_constraintTop_toTopOf="@id/star5"
+        app:layout_constraintBottom_toBottomOf="@id/star5"
+        app:layout_constraintEnd_toEndOf="@id/complementAddDescription"
+        android:textSize="16sp"
+        android:textColor="@color/textColorPrimary"/>
+    
+    <Button
+        android:id="@+id/complementAddOkay"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="확인"
+        android:background="@drawable/round_btn"
+        android:backgroundTint="@color/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/star1"
+        android:layout_marginTop="95dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

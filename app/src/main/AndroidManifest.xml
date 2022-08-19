@@ -3,6 +3,7 @@
     package="com.moa.moa">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -13,10 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moa">
         <activity
+            android:name=".MyPage.BadgeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyPage.AlarmActivity"
+            android:exported="false" />
+        <activity
             android:name=".Work.WorkActivity"
             android:exported="false" />
-        <receiver android:name=".Data.AlarmReceiver"
-            android:exported="false"/>
+
+        <receiver
+            android:name=".Data.AlarmReceiver"
+            android:exported="false" />
 
         <activity
             android:name=".Main.ChartViewComposeActivity"
@@ -25,9 +34,7 @@
             android:theme="@style/Theme.Moa" />
         <activity
             android:name=".Main.HomeActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Register.RegisterActivity"
             android:exported="false"

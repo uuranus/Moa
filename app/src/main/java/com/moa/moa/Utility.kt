@@ -27,6 +27,13 @@ class Utility  {
 
     }
 
+    fun getUserKey(activity: FragmentActivity):String{
+        val sharedPreferences=activity.getSharedPreferences("Info", Context.MODE_PRIVATE)
+        val userKey=sharedPreferences.getString("userKey","")
+
+        return userKey ?: ""
+    }
+
     fun getToday():String{
         val dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(Calendar.getInstance().time)

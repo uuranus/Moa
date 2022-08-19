@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    android:padding="6dp">
+
+    <ImageView
+        android:id="@+id/alarmImage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_baseline_notifications_24"
+        android:textColor="@color/backgroundWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/alarmTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/alarmDate"
+        app:layout_constraintStart_toEndOf="@id/alarmImage"
+        app:layout_constraintTop_toTopOf="@id/alarmImage"
+        tools:text="내가 원하는 메뉴로 외식하기" />
+
+    <TextView
+        android:id="@+id/alarmDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="9sp"
+        app:layout_constraintBottom_toBottomOf="@id/alarmImage"
+        app:layout_constraintStart_toStartOf="@id/alarmTitle"
+        app:layout_constraintTop_toBottomOf="@id/alarmTitle"
+        tools:text="나머지 가족 중 별 개수가 제일 적은 사람이 사기!" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

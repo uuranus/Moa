@@ -6,11 +6,12 @@ import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
 import android.widget.*
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,11 +22,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.moa.moa.Data.AlarmReceiver
 import com.moa.moa.Data.Time
-import com.moa.moa.Data.TitleHistory
+import com.moa.moa.Local.TitleHistory
 import com.moa.moa.Data.Work
+import com.moa.moa.Local.AppDatabase
 import com.moa.moa.R
 import com.moa.moa.Utility
-import com.moa.moa.databinding.ActivityWorkBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,9 +34,10 @@ class WorkActivity : AppCompatActivity() {
 
     private val utility= Utility()
     private lateinit var groupId:String
+    private lateinit var userKey:String
     private var isEdit=false
     private var editData: Work?=null
-    private lateinit var db:AppDatabase
+    private lateinit var db: AppDatabase
     private lateinit var database:DatabaseReference
     private lateinit var adapter:TitleHistoryAdapter
     private var curWorkId:Int=0
@@ -137,10 +139,11 @@ class WorkActivity : AppCompatActivity() {
         setContentView(R.layout.activity_work)
 
         groupId=utility.getGroupId(this)
+        userKey=utility.getUserKey(this)
         db= Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "WorkDB"
+            "MoaDB"
         ).fallbackToDestructiveMigration()
             .build()
         database=FirebaseDatabase.getInstance().reference
@@ -350,6 +353,20 @@ class WorkActivity : AppCompatActivity() {
             setAlarm(time,periodStartPicker.text.toString())
         }
 
+        //첫 집안일 추가면 뱃지 추가
+        val sharedPreferences=getSharedPreferences("Info", Context.MODE_PRIVATE)
+
+        val works=sharedPreferences.getInt("addWork",0)
+
+        if(works==0){
+            database.child("group").child(groupId).child("users").child(userKey)
+                .child("badges").child("4").child("get").setValue(true)
+        }
+
+        sharedPreferences.edit(true){
+            putInt("addWork",works+1)
+        }
+
     }
 
     private fun saveWorkForThreeMonth(){
@@ -398,6 +415,8 @@ class WorkActivity : AppCompatActivity() {
         val intent= Intent(this, AlarmReceiver::class.java)
         intent.putExtra("workTitle",titleEditText.text.toString())
         intent.putExtra("workId",curWorkId)
+        intent.putExtra("groupId",groupId)
+        intent.putExtra("userKey",userKey)
 
         val pendingIntent= PendingIntent.getBroadcast(this, curWorkId,
             intent, PendingIntent.FLAG_CANCEL_CURRENT) //기존 게 있으면 cancel하고 새로 생성 하겠다

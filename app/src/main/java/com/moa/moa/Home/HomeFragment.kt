@@ -48,30 +48,6 @@ class HomeFragment : Fragment() {
     private var _workClicked by Delegates.notNull<Int>()
     private lateinit var firebaseDatabase:DatabaseReference
 
-//    private val calenderMonthTextView: TextView by lazy{
-//        requireView().findViewById(R.id.homeCalendarMonthTextView)
-//    }
-
-//    // private val calendarView: CompactCalendarView by lazy{
-//        requireView().findViewById(R.id.homeCalendar)
-//    }
-
-    private val beforeMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.beforeMonth)
-    }
-
-    private val nextMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.nextMonth)
-    }
-
-//    private val recyclerView: RecyclerView by lazy{
-//        requireView().findViewById(R.id.homeRecyclerView)
-//    }
-//
-//    private val notYetRecyclerView:RecyclerView by lazy{
-//        requireView().findViewById(R.id.homeNotYetRecyclerView)
-//    }
-
 
     private var workInfos= arrayOf<Work?>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
@@ -79,8 +55,6 @@ class HomeFragment : Fragment() {
         HomeNotYetSection("아직 배정되지 않았어요!", mutableListOf<HomeNotYetSecondSection>()))
 
     private var workList= listOf<HomeFirstSection>(HomeFirstSection("가족들은 얼마나 했을까요?", mutableListOf())) //RecyclerView에 전달하기 위한 list
-
-    private val dateFormatForMonth: SimpleDateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault()) //달력의 월과 년도 표시용
 
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
@@ -131,6 +105,8 @@ class HomeFragment : Fragment() {
         initCalendarMonth()
         val calendarView = binding.homeCalendar
 
+        calendarView.setCalendarDayLayout(R.layout.calendar_day_custom)
+
         calendarView.setOnPreviousPageChangeListener(object:OnCalendarPageChangeListener{
             override fun onChange() {
                 initCalendarMonth()
@@ -145,15 +121,15 @@ class HomeFragment : Fragment() {
 
         calendarView.setOnDayClickListener(object: OnDayClickListener {
             override fun onDayClick(eventDay: EventDay) {
-//
-//                Log.i("selectedDates",calendarView.selectedDates.toString())
-//                val events=eventDay
-//
-//                println("event@!!!"+events)
-//
-//                initCalendarMonth()
-//
-                getTodayWork(eventDay.calendar.run {
+
+                val calendar=Calendar.getInstance()
+                calendar.set(
+                    eventDay.calendar.get(Calendar.YEAR),
+                    eventDay.calendar.get(Calendar.MONTH),
+                    eventDay.calendar.get(Calendar.DATE),
+                )
+
+                getTodayWork(calendar.run {
                     add(Calendar.MONTH,1)
                     time
                 })
@@ -168,20 +144,55 @@ class HomeFragment : Fragment() {
     private fun initCalendarMonth(){ //사용자가 달력을 스크롤할때마다 실행되는 메소드 년도와 월을 변경하고 바뀐 월에 맞춰서 집안일 목록을 가져옴
         val calendarView = binding.homeCalendar
 
-        getMonthWork(calendarView.currentPageDate.get(Calendar.YEAR).toString(),calendarView.currentPageDate.get(Calendar.MONTH).toString()) //0월부터 시작
+        getMonthWork(calendarView.currentPageDate.get(Calendar.YEAR).toString(),String.format("%02d",(calendarView.currentPageDate.get(Calendar.MONTH)+1))) //0월부터 시작
 
     }
 
     private fun getMonthWork(year:String,month:String){ //해당 월의 집안일 목록들을 가져오는 메소드
         val calendarView = binding.homeCalendar
 
-        firebaseDatabase.child(groupId).child("log").child(year).child(month).addListenerForSingleValueEvent(object:ValueEventListener{
+        val userId=utility.getUserId(requireActivity())
+
+        val calendar=Calendar.getInstance()
+        Log.i("year", "$year $month $groupId")
+        firebaseDatabase.child("group").child(groupId).child("log").child(year).child(month).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 //선택된 월의 데이터를 가져오기
                 //캘린더에 데이터를 넣어주기
-
+                Log.i("eventssssss",snapshot.toString())
                 snapshot.value ?:return
 
+
+                val list= mutableListOf<EventDay>()
+                snapshot.children.forEach {
+                    val date=it.key.toString().toInt()
+                    var isExist=false
+                    for(chld in it.children){
+                        for(c in chld.child("manager").children){
+                            c?:break
+                            if(c.child("userId").value.toString()==userId
+                                && c.child("isChecked").value.toString()!="true"){
+                                isExist=true
+                                break
+                            }
+                        }
+                        if(isExist) break
+                    }
+
+                    //담당했는데 안 한 집안일이 있다면
+                    if(isExist){
+                        calendar.set(year.toInt(),month.toInt()-1,date)
+                        list.add(EventDay(
+                            calendar,
+                            R.drawable.circle
+                        ))
+                    }
+
+                }
+
+                calendarView.setEvents(list)
+
+                Log.i("events",list.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -193,6 +204,7 @@ class HomeFragment : Fragment() {
 
     private fun getTodayWork(dateClicked:Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
 
+        Log.i("todaywork","${getYear(dateClicked)}")
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val tmpList= mutableListOf<HomeNotYetSecondSection>()
@@ -318,16 +330,14 @@ class HomeFragment : Fragment() {
                     return
                 }
 
-                Log.i("last",snapshot.key.toString())
                 val len=snapshot.children.last().key!!.toInt()
-                Log.i("len",len.toString())
+
                 workInfos= arrayOfNulls<Work>(len+1)
 
                 snapshot.children.forEach { dataSnapshot ->
 
                     dataSnapshot.getValue<Work>()?.let {it2->
                         workInfos.set(it2.workId,it2)
-                        Log.i("workInfooooo",workInfos.toString())
                     }
                 }
 
