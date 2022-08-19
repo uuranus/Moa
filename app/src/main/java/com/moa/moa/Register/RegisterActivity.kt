@@ -20,7 +20,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.moa.moa.Data.Badge
 import com.moa.moa.Data.Group
 import com.moa.moa.Data.User
 import com.moa.moa.Data.Work
@@ -208,23 +207,14 @@ class RegisterActivity : FragmentActivity() {
             putBoolean("isRegistered",true)
         }
 
-        database.child("group").child(roomId!!).child("userNumber").get().addOnCompleteListener {
-            if(it.isSuccessful){
-                val number=it.result.value.toString().toInt()+1
-                database.child("group").child(roomId!!).child("userNumber").setValue(number)
+        progressBar.visibility= View.GONE
+        val intent= Intent(this@RegisterActivity,HomeActivity::class.java)
+        intent.putExtra("roomId", roomId)
+        intent.putExtra("email", userEmail)
+        onDestroy()
 
-                progressBar.visibility= View.GONE
-                val intent= Intent(this@RegisterActivity,HomeActivity::class.java)
-                intent.putExtra("roomId", roomId)
-                intent.putExtra("email", userEmail)
-                onDestroy()
-
-                intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-            }
-        }
-
-
+        intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK + Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     private fun insertNewGroup(nickname:String, groupName:String, userNumber:Int){
@@ -258,40 +248,21 @@ class RegisterActivity : FragmentActivity() {
     private fun insertUser(){
         Log.i("imageUri",imageUri.toString())
         if(imageUri!=null){
-            val ref=FirebaseStorage.getInstance().reference.child("profileImages/"+userEmail+"_profileimg.jpg")
-            ref.putFile(imageUri!!).addOnSuccessListener {
-
-                ref.downloadUrl.addOnSuccessListener {
-                    Log.i("result",it.toString())
-                    val uri = it.toString()
-
-                    val starCount = ArrayList<Int>()
-                    for(i in 1..12){
-                        starCount.add(0)
-                    }
-
-                    val badges= ArrayList<Badge>().apply{
-                        add(Badge("초보","집안일 1개 이상 완료!",false))
-                        add(Badge("중수","집안일 10개 이상 완료!",false))
-                        add(Badge("고수","집안일 50개 이상 완료!",false))
-                        add(Badge("알리미","알림 1번 이상 울림",false))
-                        add(Badge("이끔이","집안일 1개 이상 추가",false))
-                    }
-
-                    val user = User(userEmail,nickname!!, uri,starCount, badges)
-                    Log.i("user",user.toString())
-
-                    val userKey=database.child("group").child(roomId!!).child("users").push().key!!
-                    database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)
-                    val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
-                    sharedPreference.edit(true){
-                        putString("userKey",userKey)
-                    }
-
-                    startHomeActivity()
-
+            FirebaseStorage.getInstance().reference.child("profileImages/"+userEmail+"_profileimg.jpg").putFile(imageUri!!).addOnCompleteListener {
+                Log.i("firebaseStroage",it.result.toString())
+                imageUri = if (it.isSuccessful) {
+                    it.result.uploadSessionUri
+                } else {
+                    null
                 }
-
+                val starCount = ArrayList<Int>()
+                for(i in 1..12){
+                    starCount.add(0)
+                }
+                val user = User(userEmail,nickname!!, imageUri.toString(),starCount)
+                Log.i("user",user.toString())
+                database.child("group").child(roomId!!).child("users").push().setValue(user)
+                startHomeActivity()
             }
         }
         else{
@@ -299,23 +270,9 @@ class RegisterActivity : FragmentActivity() {
             for(i in 1..12){
                 starCount.add(0)
             }
+            val user = User(userEmail,nickname!!, "null",starCount)
 
-            val badges= ArrayList<Badge>().apply{
-                add(Badge("초보","집안일 1개 이상 완료!",false))
-                add(Badge("중수","집안일 10개 이상 완료!",false))
-                add(Badge("고수","집안일 50개 이상 완료!",false))
-                add(Badge("알리미","알림 1번 이상 울림",false))
-                add(Badge("이끔이","집안일 1개 이상 추가",false))
-            }
-
-            val user = User(userEmail,nickname!!, "null",starCount, badges)
-
-            val userKey=database.child("group").child(roomId!!).child("users").push().key!!
-            database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)
-            val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
-            sharedPreference.edit(true){
-                putString("userKey",userKey)
-            }
+            database.child("group").child(roomId!!).child("users").push().setValue(user)
             startHomeActivity()
         }
 

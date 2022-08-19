@@ -8,37 +8,18 @@
         <entry key="app/src/main/res/drawable/circle.xml" value="0.2755" />
         <entry key="app/src/main/res/drawable/circle_gray.xml" value="0.2755" />
         <entry key="app/src/main/res/drawable/gray_round_box.xml" value="0.2755" />
-        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1795" />
-        <entry key="app/src/main/res/drawable/ic_baseline_insert_emoticon_24.xml" value="0.1795" />
-        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24_gray.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.1275" />
-        <entry key="app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1275" />
-        <entry key="app/src/main/res/drawable/ic_baseline_notifications_24_white.xml" value="0.1275" />
-        <entry key="app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1275" />
-        <entry key="app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/round_btn.xml" value="0.2755" />
         <entry key="app/src/main/res/drawable/round_image.xml" value="0.2755" />
         <entry key="app/src/main/res/drawable/round_layout.xml" value="0.2755" />
         <entry key="app/src/main/res/drawable/secondary_color.xml" value="0.29" />
-        <entry key="app/src/main/res/layout/activity_alarm.xml" value="0.21787872314453127" />
-        <entry key="app/src/main/res/layout/activity_alarm_list.xml" value="0.346875" />
-        <entry key="app/src/main/res/layout/activity_badge_info.xml" value="0.3768518518518518" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.3385416666666667" />
         <entry key="app/src/main/res/layout/activity_register_profileimg_alertdialog.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/activity_work.xml" value="0.3385416666666667" />
-        <entry key="app/src/main/res/layout/alarm_list_row.xml" value="0.346875" />
         <entry key="app/src/main/res/layout/analysis_row.xml" value="0.13333333333333333" />
-        <entry key="app/src/main/res/layout/badge_info_viewpager.xml" value="0.49539170506912444" />
-        <entry key="app/src/main/res/layout/badge_row.xml" value="0.3768518518518518" />
         <entry key="app/src/main/res/layout/calendar_day_custom.xml" value="0.3385416666666667" />
-        <entry key="app/src/main/res/layout/complement_alrerdialog.xml" value="0.29375" />
-        <entry key="app/src/main/res/layout/complement_row.xml" value="0.2796875" />
-        <entry key="app/src/main/res/layout/complement_used_row.xml" value="0.29375" />
-        <entry key="app/src/main/res/layout/complemt_more.xml" value="0.29375" />
-        <entry key="app/src/main/res/layout/edit_profile_dialog.xml" value="0.3182291666666667" />
         <entry key="app/src/main/res/layout/fragment_analysis.xml" value="0.3385416666666667" />
         <entry key="app/src/main/res/layout/fragment_badge.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/fragment_enter_group.xml" value="0.3385416666666667" />
@@ -55,7 +36,6 @@
         <entry key="app/src/main/res/layout/home_recyclerview_firstsection.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/home_recyclerview_secondsection.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/home_recyclerview_thirdsection.xml" value="0.2708333333333333" />
-        <entry key="app/src/main/res/layout/more_button_dialog.xml" value="0.3182291666666667" />
         <entry key="app/src/main/res/layout/title_history.xml" value="0.2708333333333333" />
         <entry key="app/src/main/res/layout/work_list.xml" value="0.1638888888888889" />
       </map>

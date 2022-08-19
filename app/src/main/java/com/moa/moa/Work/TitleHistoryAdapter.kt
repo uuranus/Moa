@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.moa.moa.Local.TitleHistory
+import com.moa.moa.Data.TitleHistory
+import com.moa.moa.Data.Work
 import com.moa.moa.databinding.TitleHistoryBinding
 
 class TitleHistoryAdapter (val workTitleListener:(String)->Unit) : ListAdapter<TitleHistory, TitleHistoryAdapter.HistoryViewHolder>(diffUtil) {
