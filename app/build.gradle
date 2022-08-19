@@ -93,7 +93,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
-
     //슬라이드 뷰 구현
     implementation 'com.github.hannesa2:AndroidSlidingUpPanel:4.2.1'
 
