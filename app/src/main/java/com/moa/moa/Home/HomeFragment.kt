@@ -48,30 +48,6 @@ class HomeFragment : Fragment() {
     private var _workClicked by Delegates.notNull<Int>()
     private lateinit var firebaseDatabase:DatabaseReference
 
-//    private val calenderMonthTextView: TextView by lazy{
-//        requireView().findViewById(R.id.homeCalendarMonthTextView)
-//    }
-
-//    // private val calendarView: CompactCalendarView by lazy{
-//        requireView().findViewById(R.id.homeCalendar)
-//    }
-
-    private val beforeMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.beforeMonth)
-    }
-
-    private val nextMonth:ImageButton by lazy{
-        requireView().findViewById(R.id.nextMonth)
-    }
-
-//    private val recyclerView: RecyclerView by lazy{
-//        requireView().findViewById(R.id.homeRecyclerView)
-//    }
-//
-//    private val notYetRecyclerView:RecyclerView by lazy{
-//        requireView().findViewById(R.id.homeNotYetRecyclerView)
-//    }
-
 
     private var workInfos= arrayOf<Work?>()//선택한 날짜의 집안일들 정보 인덱스=집안일 번호
 
@@ -79,8 +55,6 @@ class HomeFragment : Fragment() {
         HomeNotYetSection("아직 배정되지 않았어요!", mutableListOf<HomeNotYetSecondSection>()))
 
     private var workList= listOf<HomeFirstSection>(HomeFirstSection("가족들은 얼마나 했을까요?", mutableListOf())) //RecyclerView에 전달하기 위한 list
-
-    private val dateFormatForMonth: SimpleDateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault()) //달력의 월과 년도 표시용
 
     private fun init(){
         groupId= utility.getGroupId(requireActivity())
@@ -356,16 +330,14 @@ class HomeFragment : Fragment() {
                     return
                 }
 
-                Log.i("last",snapshot.key.toString())
                 val len=snapshot.children.last().key!!.toInt()
-                Log.i("len",len.toString())
+
                 workInfos= arrayOfNulls<Work>(len+1)
 
                 snapshot.children.forEach { dataSnapshot ->
 
                     dataSnapshot.getValue<Work>()?.let {it2->
                         workInfos.set(it2.workId,it2)
-                        Log.i("workInfooooo",workInfos.toString())
                     }
                 }
 

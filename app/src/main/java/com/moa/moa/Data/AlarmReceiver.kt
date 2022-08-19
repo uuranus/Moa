@@ -10,11 +10,14 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.room.Room
+import com.google.firebase.database.FirebaseDatabase
 import com.moa.moa.Local.AlarmHistory
 import com.moa.moa.Local.AppDatabase
 import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
+import com.moa.moa.Utility
 import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -26,6 +29,9 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val text = intent.getStringExtra("workTitle")
         val id = intent.getIntExtra("workId", 0)
+        val groupId=intent.getStringExtra("groupId")
+        val userKey=intent.getStringExtra("userKey")
+
         createNotificationChannel(context)
 
         val db = Room.databaseBuilder(
@@ -40,6 +46,23 @@ class AlarmReceiver : BroadcastReceiver() {
         Thread {
             db.alarmDao().insertHistory(AlarmHistory(null, text, Date(), 0))
         }.start()
+
+        //첫 알림이면 뱃지 추가
+
+        val database=FirebaseDatabase.getInstance().reference
+
+        val sharedPreferences=context.getSharedPreferences("Info", Context.MODE_PRIVATE)
+
+        val alarms=sharedPreferences.getInt("alarm",0)
+
+        if(alarms==0){
+            database.child("group").child(groupId!!).child("users").child(userKey!!)
+                .child("badges").child("3").child("get").setValue(true)
+        }
+
+        sharedPreferences.edit(true){
+            putInt("alarm",alarms+1)
+        }
     }
 
     private fun createNotificationChannel(context: Context) {
@@ -70,6 +93,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
             notify(id, build.build())
         }
+
 
 
     }

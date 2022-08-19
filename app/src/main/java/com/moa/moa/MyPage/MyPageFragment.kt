@@ -2,6 +2,7 @@ package com.moa.moa.MyPage
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -190,6 +191,18 @@ class MyPageFragment : Fragment() {
                         NaverIdLoginSDK.logout()
                         mGoogleSignInClient.signOut()
 
+                        //sharedPrefences 삭제
+                        val sharedPreferences=requireActivity().getSharedPreferences("Info",Context.MODE_PRIVATE).edit()
+                        sharedPreferences.clear()
+                        sharedPreferences.commit()
+
+                        //room database 삭제
+                        Thread{
+                            db.alarmDao().deleteAll()
+                            db.titleDao().deleteAll()
+                        }.start()
+
+
                         database.child("group").child(groupId).child("users").child(userKey).removeValue()
 
                         database.child("group").child(groupId).child("userNumber").get().addOnCompleteListener {
@@ -218,7 +231,6 @@ class MyPageFragment : Fragment() {
         Thread{
             val alarms=db.alarmDao().getNotRead()
 
-            Log.i("not read",alarms.toString())
             requireActivity().runOnUiThread {
                 if(alarms.isEmpty()) alarmCount.isVisible=false
                 else{

@@ -17,4 +17,7 @@ interface AlarmDao{
 
     @Query("UPDATE alarmHistory SET isChecked=1")
     fun setChecked()
+
+    @Query("DELETE FROM alarmHistory")
+    fun deleteAll()
 }

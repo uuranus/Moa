@@ -17,4 +17,7 @@ interface TitleDao{
 
     @Query("DELETE FROM titleHistory where title=:title")
     fun delete(title:String)
+
+    @Query("DELETE FROM titleHistory")
+    fun deleteAll()
 }

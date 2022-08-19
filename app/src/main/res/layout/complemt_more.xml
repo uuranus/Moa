@@ -14,24 +14,24 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="수정"
-        android:textColor="@color/design_default_color_on_secondary"/>
+        android:textColor="@color/textColorPrimary"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/design_default_color_on_secondary"/>
+        android:background="@color/textColorSecondary"/>
     <TextView
         android:id="@+id/complementDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="삭제"
-        android:textColor="@color/design_default_color_on_secondary"/>
+        android:textColor="@color/textColorPrimary"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/design_default_color_on_secondary"/>
+        android:background="@color/textColorSecondary"/>
 
     <TextView
         android:id="@+id/complementUse"
@@ -39,5 +39,5 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="보상 사용하기"
-        android:textColor="@color/design_default_color_on_secondary"/>
+        android:textColor="@color/textColorPrimary"/>
 </LinearLayout>
