@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Register.ProfileImageFragment">
+
+    <TextView
+        android:id="@+id/profileImageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필을 등록해주세요"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <ImageButton
+        android:id="@+id/editProfileImg"
+        android:layout_width="131dp"
+        android:layout_height="131dp"
+        android:src="@drawable/ic_baseline_person_add_alt_1_24"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileImageTextView"
+        android:layout_marginTop="44dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

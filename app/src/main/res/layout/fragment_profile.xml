@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".Register.RegisterActivity">
 
     <TextView
         android:id="@+id/nicknameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="사용하실 이름을 입력해주세요."
+        android:text="사용하실 \n이름을 입력해주세요."
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -18,31 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/editProfileImg"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/editNickname"
-        app:layout_constraintTop_toBottomOf="@id/nicknameTextView"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/default_img"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/purple_200"/>
-
     <EditText
         android:id="@+id/editNickname"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:hint="이름"
         android:inputType="text"
-        android:layout_marginLeft="30dp"
-
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/editProfileImg"
-        app:layout_constraintTop_toTopOf="@id/editProfileImg"
-        app:layout_constraintBottom_toBottomOf="@id/editProfileImg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nicknameTextView"
+        android:layout_marginTop="54dp"
         tools:text="닉네임" />
 
 

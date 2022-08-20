@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="33dp"
+    android:background="@drawable/round_btn"
+    android:backgroundTint="@color/white"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
@@ -12,19 +15,28 @@
         android:layout_width="0dp"
         android:layout_height="0dp" />
 
-    <CheckBox
-        android:id="@+id/workIsChecked"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="11dp" />
+    <View
+        android:id="@+id/workdColor"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/circle" />
 
     <TextView
         android:id="@+id/workTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
+        android:layout_marginEnd="11dp"
         android:gravity="center_vertical"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="14sp"
         tools:text="화분에 물 주기" />
+
+    <CheckBox
+        android:id="@+id/workIsChecked"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical" />
+
 </LinearLayout>

@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="5dp"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/round_btn"
+    android:backgroundTint="@color/white"
+    android:elevation="5dp"
+    android:layout_margin="5dp"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/homeSecondUserID"
             android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp" />
+
         <TextView
             android:id="@+id/homeSecondRecyclerViewText"
-            android:layout_marginRight="11dp"
-            tools:text="엄마"
-            android:textColor="@color/dark_grey"
-            android:textSize="14sp"
-            android:gravity="center_vertical"
+            android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginRight="11dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp"
+            tools:text="엄마" />
 
         <ImageButton
             android:id="@+id/homeSecondImageButton"
-            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"/>
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/homeSecondRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </LinearLayout>

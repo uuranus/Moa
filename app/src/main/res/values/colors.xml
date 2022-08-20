@@ -7,8 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary">#36E7B2</color>
+
+    <!-- custom color -->
+    <color name="colorPrimary">#36E7B2</color>
+    <color name="colorSecondary">#FF37E8D3</color>
+
+    <color name="backgroundWhite">#FFFFFFFF</color>
+    <color name="mainPageBackgroundColor">#FFF6F6F6</color>
+    <color name="textColorPrimary">#FF000000</color>
+    <color name="textColorSecondary">#FFB6B6B6</color>
+
     <color name="text_grey">#B0B0B0</color>
     <color name="red">#FFEF6E6E</color>
     <color name="dark_grey">#FF717171</color>
+    <color name="temp">#fff</color>
+    <color name="background_white">#F6F6F6</color>
 </resources>

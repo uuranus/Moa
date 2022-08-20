@@ -1,5 +1,9 @@
 package com.moa.moa.Data
 
-data class User(var email:String="", var nickName:String="", var profileImage:String=""){
-
-}
+data class User(
+    var userId:String="",
+    var userName:String="",
+    var profileImage:String="",
+    var starCount:ArrayList<Int>?=null,
+    var badges:ArrayList<Badge>?=null,
+)

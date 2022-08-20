@@ -3,6 +3,7 @@
     package="com.moa.moa">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -13,28 +14,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moa">
         <activity
+            android:name=".MyPage.BadgeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyPage.AlarmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Work.WorkActivity"
+            android:exported="false" />
+
+        <receiver
+            android:name=".Data.AlarmReceiver"
+            android:exported="false" />
+
+        <activity
+            android:name=".Main.ChartViewComposeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_chart_view_compose_activitu"
+            android:theme="@style/Theme.Moa" />
+        <activity
             android:name=".Main.HomeActivity"
-            android:exported="true" >
+            android:exported="true" />
+        <activity
+            android:name=".Register.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Register.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true">
-
-
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false">
-
         </activity>
     </application>
 
