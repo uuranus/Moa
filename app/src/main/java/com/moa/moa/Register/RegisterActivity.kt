@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -16,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -27,7 +25,6 @@ import com.moa.moa.Data.Work
 import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
 import com.moa.moa.Utility
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
 class RegisterActivity : FragmentActivity() {
@@ -125,7 +122,7 @@ class RegisterActivity : FragmentActivity() {
                     progressBar.visibility= View.VISIBLE
                     database.child("group").child(roomId!!).get().addOnSuccessListener {
                         Toast.makeText(this," group ID : $roomId",Toast.LENGTH_SHORT).show()
-                        Log.i("firebase", "Got value ${it.value}")
+
                         if(it.value!=null){
                             insertUser()
                         }
@@ -136,7 +133,6 @@ class RegisterActivity : FragmentActivity() {
 
                     }.addOnFailureListener{
                         Toast.makeText(this,"$roomId 방이 존재하지 않습니다. ",Toast.LENGTH_SHORT).show()
-                        Log.e("firebase", "Error getting data", it)
                         progressBar.visibility= View.GONE
                     }
                 }else{ //settingGroupName to homeActivity 방을 생성한 경우이므로 database 에 저장해야한다.
@@ -232,7 +228,6 @@ class RegisterActivity : FragmentActivity() {
         val key = database.root.child("group").push().key
         roomId =key
         if (key == null) {
-            Log.w("TAG", "Couldn't get push key for posts")
             return
         }
 
@@ -256,13 +251,11 @@ class RegisterActivity : FragmentActivity() {
     }
 
     private fun insertUser(){
-        Log.i("imageUri",imageUri.toString())
         if(imageUri!=null){
             val ref=FirebaseStorage.getInstance().reference.child("profileImages/"+userEmail+"_profileimg.jpg")
             ref.putFile(imageUri!!).addOnSuccessListener {
 
                 ref.downloadUrl.addOnSuccessListener {
-                    Log.i("result",it.toString())
                     val uri = it.toString()
 
                     val starCount = ArrayList<Int>()
@@ -279,7 +272,6 @@ class RegisterActivity : FragmentActivity() {
                     }
 
                     val user = User(userEmail,nickname!!, uri,starCount, badges)
-                    Log.i("user",user.toString())
 
                     val userKey=database.child("group").child(roomId!!).child("users").push().key!!
                     database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)

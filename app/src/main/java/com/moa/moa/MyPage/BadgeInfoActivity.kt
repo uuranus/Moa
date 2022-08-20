@@ -1,6 +1,5 @@
 package com.moa.moa.MyPage
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,7 +28,6 @@ class BadgeInfoActivity : AppCompatActivity() {
     private val indicator: WormDotsIndicator by lazy {
         findViewById(R.id.indicator)
     }
-
 
     private val utility = Utility()
     private lateinit var database: DatabaseReference

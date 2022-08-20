@@ -1,22 +1,13 @@
 package com.moa.moa.Home
 
-import android.content.Context
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.moa.moa.Data.HomeNotYetSecondSection
 import com.moa.moa.Data.HomeNotYetSection
-import com.moa.moa.Data.HomeThirdSection
-import com.moa.moa.HomeSecondSectionRecyclerViewAdapter
 import com.moa.moa.R
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import okhttp3.internal.notify
-import kotlin.properties.Delegates
 
 class HomeNotYetRecyclerViewAdapter (val list:List<HomeNotYetSection>): RecyclerView.Adapter<HomeNotYetRecyclerViewAdapter.HomeViewHolder>(){
 
@@ -31,11 +22,8 @@ class HomeNotYetRecyclerViewAdapter (val list:List<HomeNotYetSection>): Recycler
         fun bind(homeNotYetSection: HomeNotYetSection){
             homeListCategory.text=homeNotYetSection.title
 
-            Log.i("home adapater", homeNotYetSection.toString())
-
             val secondSection = HomeNotYetSecondRecyclerViewAdapter(homeNotYetSection.list)
             secondSection.onItemClickListener = {
-                Log.i("home adapter","$it clicked!")
 
                 itemNumber = it
             }

@@ -2,7 +2,6 @@ package com.moa.moa.MyPage
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -28,15 +26,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.moa.moa.Data.User
 import com.moa.moa.Local.AppDatabase
 import com.moa.moa.R
-import com.moa.moa.Register.RegisterActivity
 import com.moa.moa.Utility
 import com.navercorp.nid.NaverIdLoginSDK
-import org.w3c.dom.Text
 
 
 class MyPageFragment : Fragment() {
@@ -120,7 +114,6 @@ class MyPageFragment : Fragment() {
         userKey = utility.getUserKey(requireActivity())
         database = FirebaseDatabase.getInstance().reference
 
-        Log.i("infofofofo",groupId+" "+userKey)
         db = Room.databaseBuilder(
             requireActivity().applicationContext,
             AppDatabase::class.java,
@@ -153,6 +146,12 @@ class MyPageFragment : Fragment() {
                             }
 
                     }
+                    else{
+                        Glide.with(requireContext())
+                            .load(R.drawable.default_img)
+                            .circleCrop()
+                            .into(profileImg)
+                    }
 
                     nickname.text = snapshot.child("userName").value.toString()
                     emailId.text = snapshot.child("userId").value.toString()
@@ -184,7 +183,6 @@ class MyPageFragment : Fragment() {
 
             val dialog = builder.create()
             quit.setOnClickListener {
-                Log.i("quir","clicked")
                 AlertDialog.Builder(requireContext())
                     .setMessage("정말로 탈퇴하시겠습니까?")
                     .setPositiveButton("네"){ _,_->
@@ -305,7 +303,7 @@ class MyPageFragment : Fragment() {
                 val chooseGalleryTextView: TextView =profile_view.findViewById(R.id.profileChooseGallery)
 
                 chooseDefaultTextView.setOnClickListener {
-                    val uri= Uri.parse("android.resource://"+requireActivity().packageName+"/"+ R.drawable.ic_baseline_person_add_alt_1_24)
+                    val uri= Uri.parse("android.resource://"+requireActivity().packageName+"/"+ R.drawable.default_img)
                     editProfileImage.setImageURI(uri)
                     isDefaultImg=true
                     dialog.dismiss()

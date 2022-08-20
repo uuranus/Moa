@@ -1,7 +1,6 @@
 package com.moa.moa.MyPage
 
 import android.app.AlertDialog
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ class ComplementRecyclerViewAdapter(
 
     interface ComplementInterface{
         fun complementAdd(isEdit:Boolean,complement: Complement?)
-        fun complementUse(uid:String)
+        fun complementUse(uid:String,star:Int)
         fun complementDelete(uid:String)
     }
 
@@ -84,7 +83,7 @@ class ComplementRecyclerViewAdapter(
                     }
 
                     use.setOnClickListener {
-                        complementInterface?.complementUse(complement?.uid!!)
+                        complementInterface?.complementUse(complement?.uid!!,complement.star)
                         builder.dismiss()
                     }
 
@@ -104,7 +103,6 @@ class ComplementRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ComplementViewHolder, position: Int) {
-        Log.i("bind",position.toString())
         if (position == complementList.size) holder.bind(null, position)
         else holder.bind(complementList[position], position)
     }

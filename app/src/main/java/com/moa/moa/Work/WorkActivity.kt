@@ -6,10 +6,8 @@ import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -228,16 +226,13 @@ class WorkActivity : AppCompatActivity() {
         titleEditText.setOnFocusChangeListener { view, isFocused ->
 
             if (isFocused) {
-                Log.i("모션", "제목 터치함")
                 showHistoryView(titleEditText.text.toString())
             } else {
-                Log.i("모션", "제목 터치 떠남")
                 hideHistoryView()
             }
         }
 
         titleEditText.addTextChangedListener {
-            Log.i("textedit",it.toString())
             it?:return@addTextChangedListener
 
             showHistoryView(it.toString())
@@ -410,7 +405,6 @@ class WorkActivity : AppCompatActivity() {
         }
 
         val dateFormatForMonth: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()) //달력의 월과 년도 표시용
-        Log.i("alarm calendar",dateFormatForMonth.format(calendar.time))
         val alarmManager=getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent= Intent(this, AlarmReceiver::class.java)
         intent.putExtra("workTitle",titleEditText.text.toString())
@@ -458,7 +452,6 @@ class WorkActivity : AppCompatActivity() {
             else{
                 db.titleDao().getHistory(title).reversed()
             }
-            Log.i("history",keywords.toString())
 
             runOnUiThread {
                 titleHistoryRecyclerView.isVisible=true
@@ -476,7 +469,6 @@ class WorkActivity : AppCompatActivity() {
 
     //담당인원 최대 수를 위해 현 그룹의 인원 수 가져오기
     private fun getMaxPeople(){
-        Log.i("groupID", groupId)
         database.child("group").child(groupId).child("userNumber").get().addOnCompleteListener {
             if(it.isSuccessful){
                 maxPeople=it.result.value.toString().toInt()

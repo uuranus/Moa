@@ -2,35 +2,24 @@ package com.moa.moa.Home
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
-import com.github.sundeepk.compactcalendarview.CompactCalendarView
-import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.moa.moa.Data.*
 import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
-import com.moa.moa.Register.RegisterActivity
 import com.moa.moa.Utility
-import com.moa.moa.databinding.FragmentGroupBinding
 import com.moa.moa.databinding.FragmentHomeBinding
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -70,8 +59,6 @@ class HomeFragment : Fragment() {
         val slidePanel = binding.mainFrame
         binding.assignBtn.setOnClickListener {
             slidePanel.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-
-            Log.i("home", workList.size.toString())
 
             firebaseDatabase.child("group").child(groupId).child("log")
                 .child(getYear(_dateClicked)).child(getMonth(_dateClicked)).child(getDate(_dateClicked)).child(_workClicked.toString()).child("manager").get().addOnSuccessListener {
@@ -154,12 +141,11 @@ class HomeFragment : Fragment() {
         val userId=utility.getUserId(requireActivity())
 
         val calendar=Calendar.getInstance()
-        Log.i("year", "$year $month $groupId")
+
         firebaseDatabase.child("group").child(groupId).child("log").child(year).child(month).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 //선택된 월의 데이터를 가져오기
                 //캘린더에 데이터를 넣어주기
-                Log.i("eventssssss",snapshot.toString())
                 snapshot.value ?:return
 
 
@@ -192,7 +178,6 @@ class HomeFragment : Fragment() {
 
                 calendarView.setEvents(list)
 
-                Log.i("events",list.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -204,7 +189,6 @@ class HomeFragment : Fragment() {
 
     private fun getTodayWork(dateClicked:Date){ //사용자가 선택한 날짜에 해당하는 집안일 정보를 가져오는 메소드 <-- 리사이클러뷰에 뿌려줄 정보를 만듦
 
-        Log.i("todaywork","${getYear(dateClicked)}")
         firebaseDatabase.child("group").child(groupId).child("log").child(getYear(dateClicked)).child(getMonth(dateClicked)).child(getDate(dateClicked)).addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val tmpList= mutableListOf<HomeNotYetSecondSection>()
@@ -246,7 +230,6 @@ class HomeFragment : Fragment() {
 
                 val homeAdapter =HomeNotYetSecondRecyclerViewAdapter(tmpList)
                 homeAdapter.onItemClickListener = {
-                    Log.i("home adapter","$it clicked! in homefrag")
 
                     val slidePanel = binding.mainFrame
                     val state = slidePanel.panelState

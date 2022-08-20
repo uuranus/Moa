@@ -3,7 +3,6 @@ package com.moa.moa.MyPage
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.*
@@ -70,8 +69,6 @@ class BadgeFragment : Fragment() {
 
                 for(family in snapshot.children){
 
-                    Log.i("famvalue",family.child("badges").value.toString())
-                    Log.i("fam",family.child("badges").child(thisMonth.toString()).toString())
                     family.child("badges").value?:continue
                     if(family.key==userKey) {
                         family.child("badges").children.forEach {

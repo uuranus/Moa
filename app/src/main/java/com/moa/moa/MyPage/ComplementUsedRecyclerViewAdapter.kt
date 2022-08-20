@@ -1,12 +1,9 @@
 package com.moa.moa.MyPage
 
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.moa.moa.Local.Complement
 import com.moa.moa.R

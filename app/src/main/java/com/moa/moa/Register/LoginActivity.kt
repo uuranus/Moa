@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -23,7 +21,6 @@ import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.NidOAuthLoginState
 import com.navercorp.nid.oauth.OAuthLoginCallback
-import com.navercorp.nid.oauth.view.NidOAuthLoginButton
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 
@@ -149,7 +146,6 @@ class LoginActivity : AppCompatActivity() {
             goToRegisterActivity()
         }
         catch(e:ApiException){
-            Log.i("exception",e.toString())
             Toast.makeText(this,"로그인에 실패했습니다",Toast.LENGTH_SHORT).show()
         }
     }

@@ -7,15 +7,14 @@
     android:layout_marginBottom="14dp"
     android:background="@drawable/round_btn"
     android:backgroundTint="@color/backgroundWhite"
-    android:padding="6dp">
+    android:padding="10dp">
 
 
     <TextView
         android:id="@+id/complementStar"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:background="@drawable/ic_baseline_star_24"
-        android:backgroundTint="@color/textColorSecondary"
+        android:background="@drawable/design_star_grey"
         android:gravity="center"
         android:text="3"
         android:textColor="@color/backgroundWhite"
@@ -27,7 +26,7 @@
         android:id="@+id/complementTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/textColorSecondary"
         app:layout_constraintBottom_toTopOf="@id/complementDescription"
         app:layout_constraintStart_toEndOf="@id/complementStar"
@@ -49,7 +48,7 @@
         android:id="@+id/complementChecked"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_baseline_check_circle_24"
+        android:src="@drawable/design_check_circle_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

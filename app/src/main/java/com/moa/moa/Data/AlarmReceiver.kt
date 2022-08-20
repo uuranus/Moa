@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
@@ -17,20 +16,18 @@ import com.moa.moa.Local.AlarmHistory
 import com.moa.moa.Local.AppDatabase
 import com.moa.moa.Main.HomeActivity
 import com.moa.moa.R
-import com.moa.moa.Utility
 import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "1000"
-
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         val text = intent.getStringExtra("workTitle")
         val id = intent.getIntExtra("workId", 0)
-        val groupId=intent.getStringExtra("groupId")
-        val userKey=intent.getStringExtra("userKey")
+        val groupId = intent.getStringExtra("groupId")
+        val userKey = intent.getStringExtra("userKey")
 
         createNotificationChannel(context)
 
@@ -49,19 +46,19 @@ class AlarmReceiver : BroadcastReceiver() {
 
         //첫 알림이면 뱃지 추가
 
-        val database=FirebaseDatabase.getInstance().reference
+        val database = FirebaseDatabase.getInstance().reference
 
-        val sharedPreferences=context.getSharedPreferences("Info", Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences("Info", Context.MODE_PRIVATE)
 
-        val alarms=sharedPreferences.getInt("alarm",0)
+        val alarms = sharedPreferences.getInt("alarm", 0)
 
-        if(alarms==0){
+        if (alarms == 0) {
             database.child("group").child(groupId!!).child("users").child(userKey!!)
                 .child("badges").child("3").child("get").setValue(true)
         }
 
-        sharedPreferences.edit(true){
-            putInt("alarm",alarms+1)
+        sharedPreferences.edit(true) {
+            putInt("alarm", alarms + 1)
         }
     }
 
@@ -82,7 +79,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val pendingIntent =
             PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-
         with(NotificationManagerCompat.from(context)) {
             val build = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setContentTitle("집안일 알람")
@@ -93,8 +89,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
             notify(id, build.build())
         }
-
-
 
     }
 

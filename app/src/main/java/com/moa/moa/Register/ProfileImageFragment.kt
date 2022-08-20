@@ -13,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.moa.moa.R
-import de.hdodenhof.circleimageview.CircleImageView
 
 
 class ProfileImageFragment : Fragment() {

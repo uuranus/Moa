@@ -1,27 +1,21 @@
 package com.moa.moa.MyPage
 
 import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.compose.animation.core.snap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
-import com.moa.moa.Local.AppDatabase
 import com.moa.moa.Local.Complement
 import com.moa.moa.R
 import com.moa.moa.Utility
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class StarFragment : Fragment() {
 
@@ -82,7 +76,6 @@ class StarFragment : Fragment() {
                 var famCount=0
 
                 for(family in snapshot.children){
-                    Log.i("fam",family.child("starCount").child(thisMonth.toString()).toString())
                     if(family.key==userKey){
                         me=family.child("starCount").child(thisMonth.toString()).value.toString().toInt()
                     }
@@ -97,16 +90,13 @@ class StarFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
 
         })
     }
 
     private fun initRecyclerView(list:List<Complement>,usedList:List<Complement>){
-
-        Log.i("listttttt",list.toString())
-        Log.i("listttttt",usedList.toString())
 
         adapter=ComplementRecyclerViewAdapter(list)
         adapter.complementInterface=object:ComplementRecyclerViewAdapter.ComplementInterface{
@@ -115,8 +105,8 @@ class StarFragment : Fragment() {
                 showComplementDialog(isEdit,complement)
             }
 
-            override fun complementUse(uid: String) {
-                useComplement(uid)
+            override fun complementUse(uid: String,star:Int) {
+                useComplement(uid,star)
             }
 
             override fun complementDelete(uid: String) {
@@ -126,8 +116,6 @@ class StarFragment : Fragment() {
         }
         starRecyclerView.adapter=adapter
         starRecyclerView.layoutManager=LinearLayoutManager(requireContext())
-
-        Log.i("adaterSize",adapter.itemCount.toString())
 
         usedAdapter= ComplementUsedRecyclerViewAdapter(usedList)
         starUsedRecyclerView.adapter=usedAdapter
@@ -140,7 +128,7 @@ class StarFragment : Fragment() {
             .inflate(R.layout.complement_alrerdialog, null)
 
         val builder=AlertDialog.Builder(requireContext()).setView(view).create()
-
+        builder.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val title = view.findViewById<EditText>(R.id.complementAddTitle)
         val description = view.findViewById<EditText>(R.id.complementAddDescription)
@@ -217,7 +205,12 @@ class StarFragment : Fragment() {
 
     }
 
-    private fun useComplement(uid:String){
+    private fun useComplement(uid:String,star:Int){
+        if(star>thisStartCount.text.toString().toInt()){
+            Toast.makeText(requireContext(),"별 개수가 부족해서 사용할 수 없습니다",Toast.LENGTH_SHORT).show()
+            return
+        }
+
         database.child("group").child(groupId).child("users")
             .child(userKey).child("complements").child(uid).child("used").setValue(1)
 
@@ -239,9 +232,6 @@ class StarFragment : Fragment() {
                     val list= mutableListOf<Complement>()
                     val usedList= mutableListOf<Complement>()
 
-                    Log.i("recyclerview",snapshot.value.toString())
-                    Log.i("recyclerView",usedList.toString())
-
                     if(snapshot.value==null){
                         initRecyclerView(list,usedList)
                         return
@@ -249,7 +239,6 @@ class StarFragment : Fragment() {
 
 
                     snapshot.children.forEach { dataSnapshot ->
-                        Log.i("dataSnapshot",dataSnapshot.toString())
                         dataSnapshot.getValue<Complement>().let {
                             it?:return@let
 
@@ -257,14 +246,11 @@ class StarFragment : Fragment() {
                             else list.add(it)
                         }
                     }
-                    Log.i("recyclerview2",list.toString())
-                    Log.i("recyclerView2",usedList.toString())
-
                     initRecyclerView(list,usedList)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+
                 }
 
             })

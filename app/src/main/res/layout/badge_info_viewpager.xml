@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorSecondary">
+    android:background="@color/colorPrimary">
 
     <View
         android:id="@+id/pagerView"
@@ -21,7 +21,7 @@
         android:id="@+id/pagerBadgeImage"
         android:layout_width="127dp"
         android:layout_height="174dp"
-        android:scaleType="fitXY"
+        app:layout_constraintDimensionRatio="H2:1"
         app:layout_constraintStart_toStartOf="@id/pagerView"
         app:layout_constraintEnd_toEndOf="@id/pagerView"
         app:layout_constraintTop_toTopOf="@id/pagerView"
