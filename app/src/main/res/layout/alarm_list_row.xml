@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="14dp"
-    android:padding="6dp">
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/alarmImage"
@@ -21,7 +21,7 @@
         android:id="@+id/alarmTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@id/alarmDate"
         app:layout_constraintStart_toEndOf="@id/alarmImage"

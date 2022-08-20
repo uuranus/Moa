@@ -11,7 +11,7 @@
         android:layout_width="73dp"
         android:layout_height="73dp"
         android:layout_marginTop="11dp"
-        android:src="@drawable/ic_baseline_insert_emoticon_24"
+        android:src="@drawable/design_medalgrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -56,6 +56,14 @@ class AlarmReceiver : BroadcastReceiver() {
             database.child("group").child(groupId!!).child("users").child(userKey!!)
                 .child("badges").child("3").child("get").setValue(true)
         }
+        else if(alarms==10){
+            database.child("group").child(groupId!!).child("users").child(userKey!!)
+                .child("badges").child("4").child("get").setValue(true)
+        }
+        else if(alarms==50){
+            database.child("group").child(groupId!!).child("users").child(userKey!!)
+                .child("badges").child("5").child("get").setValue(true)
+        }
 
         sharedPreferences.edit(true) {
             putInt("alarm", alarms + 1)

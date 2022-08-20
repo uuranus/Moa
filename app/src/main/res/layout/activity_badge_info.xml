@@ -13,9 +13,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="27dp"
         android:layout_marginTop="24dp"
-        android:backgroundTint="@color/backgroundWhite"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+        android:src="@drawable/design_leftgray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,36 +55,31 @@
             android:layout_width="0dp"
             android:layout_height="59dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/backgroundWhite"
-            android:src="@drawable/ic_baseline_notifications_24_white" />
+            android:src="@drawable/design_medalwhite" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="59dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/backgroundWhite"
-            android:src="@drawable/ic_baseline_notifications_24_white" />
+            android:src="@drawable/design_medalwhite" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="59dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/backgroundWhite"
-            android:src="@drawable/ic_baseline_notifications_24_white" />
+            android:src="@drawable/design_medalwhite" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="59dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/backgroundWhite"
-            android:src="@drawable/ic_baseline_notifications_24_white" />
+            android:src="@drawable/design_medalwhite" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="59dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/backgroundWhite"
-            android:src="@drawable/ic_baseline_notifications_24_white" />
+            android:src="@drawable/design_medalwhite" />
     </LinearLayout>
 
     <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator

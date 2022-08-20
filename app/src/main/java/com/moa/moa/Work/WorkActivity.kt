@@ -355,7 +355,15 @@ class WorkActivity : AppCompatActivity() {
 
         if(works==0){
             database.child("group").child(groupId).child("users").child(userKey)
-                .child("badges").child("4").child("get").setValue(true)
+                .child("badges").child("6").child("get").setValue(true)
+        }
+        else if(works==5){
+            database.child("group").child(groupId).child("users").child(userKey)
+                .child("badges").child("7").child("get").setValue(true)
+        }
+        else if(works==10){
+            database.child("group").child(groupId).child("users").child(userKey)
+                .child("badges").child("8").child("get").setValue(true)
         }
 
         sharedPreferences.edit(true){

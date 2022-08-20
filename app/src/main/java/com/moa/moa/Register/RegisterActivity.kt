@@ -268,7 +268,11 @@ class RegisterActivity : FragmentActivity() {
                         add(Badge("중수","집안일 10개 이상 완료!",false))
                         add(Badge("고수","집안일 50개 이상 완료!",false))
                         add(Badge("알리미","알림 1번 이상 울림",false))
+                        add(Badge("알리미 프로","알림 10번 이상 울림",false))
+                        add(Badge("알리미 마스터","알림 50번 이상 울림",false))
                         add(Badge("이끔이","집안일 1개 이상 추가",false))
+                        add(Badge("이끔이 프로","집안일 5개 이상 추가",false))
+                        add(Badge("이끔이 마스터","집안일 10개 이상 추가",false))
                     }
 
                     val user = User(userEmail,nickname!!, uri,starCount, badges)
@@ -297,7 +301,11 @@ class RegisterActivity : FragmentActivity() {
                 add(Badge("중수","집안일 10개 이상 완료!",false))
                 add(Badge("고수","집안일 50개 이상 완료!",false))
                 add(Badge("알리미","알림 1번 이상 울림",false))
+                add(Badge("알리미 프로","알림 10번 이상 울림",false))
+                add(Badge("알리미 마스터","알림 50번 이상 울림",false))
                 add(Badge("이끔이","집안일 1개 이상 추가",false))
+                add(Badge("이끔이 프로","집안일 5개 이상 추가",false))
+                add(Badge("이끔이 마스터","집안일 10개 이상 추가",false))
             }
 
             val user = User(userEmail,nickname!!, "null",starCount, badges)

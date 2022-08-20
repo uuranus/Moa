@@ -56,8 +56,6 @@ class BadgeFragment : Fragment() {
 
     private fun initCount(){
 
-        val thisMonth=utility.getToday().substring(5,7).toInt()
-
         database.child("group").child(groupId).child("users").addListenerForSingleValueEvent(object:
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -92,7 +90,7 @@ class BadgeFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
 
         })
@@ -115,9 +113,9 @@ class BadgeFragment : Fragment() {
                 }
 
                 badgeGridLayout.adapter=GridAdapter(requireContext(),badges)
-                badgeGridLayout.setOnTouchListener { _, _ ->
-                    return@setOnTouchListener true
-                }
+//                badgeGridLayout.setOnTouchListener { _, _ ->
+//                    return@setOnTouchListener true
+//                }
 
                 badgeMoreButton.setOnClickListener {
                     val intent= Intent(requireContext(),BadgeInfoActivity::class.java)
@@ -127,7 +125,7 @@ class BadgeFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
 
         })
@@ -156,9 +154,21 @@ class BadgeFragment : Fragment() {
             if(view==null){
                 gridView=inflater.inflate(R.layout.badge_row,null)
 
-                val badeImage=gridView.findViewById<ImageView>(R.id.badgeImage)
-                if(badges[position].get) badeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
-                else badeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
+                val badgeImage=gridView.findViewById<ImageView>(R.id.badgeImage)
+                if(badges[position].get){
+                    when(position){
+                        0-> badgeImage.setImageResource(R.drawable.design_beginner)
+                        1-> badgeImage.setImageResource(R.drawable.design_pro)
+                        2-> badgeImage.setImageResource(R.drawable.design_master)
+                        3-> badgeImage.setImageResource(R.drawable.design_alimi1)
+                        4-> badgeImage.setImageResource(R.drawable.design_alimi2)
+                        5-> badgeImage.setImageResource(R.drawable.design_alimi3)
+                        6-> badgeImage.setImageResource(R.drawable.design_ikkeumi1)
+                        7-> badgeImage.setImageResource(R.drawable.design_ikkeumi2)
+                        8-> badgeImage.setImageResource(R.drawable.design_ikkeumi3)
+                    }
+                }
+                else badgeImage.setImageResource(R.drawable.design_medalgrey)
 
                 val badgeName=gridView.findViewById<TextView>(R.id.badgeName)
                 badgeName.text=badges[position].name

@@ -104,26 +104,23 @@ class BadgeInfoActivity : AppCompatActivity() {
 
 
             fun bind(badge: Badge, position: Int) {
-                when (position) {
-                    0 -> {
-                        badgeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
-                    }
-                    1 -> {
-                        badgeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
-                    }
-                    2 -> {
-                        badgeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
-                    }
-                    3 -> {
-                        badgeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
-                    }
-                    4 -> {
-                        badgeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
-                    }
-                    5 -> {
-                        badgeImage.setImageResource(R.drawable.ic_baseline_insert_emoticon_24)
+                if(badge.get){
+                    when(position){
+                        0-> badgeImage.setImageResource(R.drawable.design_beginner)
+                        1-> badgeImage.setImageResource(R.drawable.design_pro)
+                        2-> badgeImage.setImageResource(R.drawable.design_master)
+                        3-> badgeImage.setImageResource(R.drawable.design_alimi1)
+                        4-> badgeImage.setImageResource(R.drawable.design_alimi2)
+                        5-> badgeImage.setImageResource(R.drawable.design_alimi3)
+                        6-> badgeImage.setImageResource(R.drawable.design_ikkeumi1)
+                        7-> badgeImage.setImageResource(R.drawable.design_ikkeumi2)
+                        8-> badgeImage.setImageResource(R.drawable.design_ikkeumi3)
                     }
                 }
+                else{
+                    badgeImage.setImageResource(R.drawable.design_medalgrey)
+                }
+
 
                 badgeName.text = badge.name
                 badgeDescription.text = badge.description

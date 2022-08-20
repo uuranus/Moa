@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="@id/pagerView"
         app:layout_constraintTop_toTopOf="@id/pagerView"
         android:layout_marginTop="93dp"
-        android:src="@drawable/ic_baseline_insert_emoticon_24"/>
+        android:src="@drawable/design_medalgrey"/>
 
     <TextView
         android:id="@+id/pagerBadgeName"
