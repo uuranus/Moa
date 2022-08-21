@@ -59,7 +59,7 @@ class RegisterActivity : FragmentActivity() {
         findViewById(R.id.progressBar)
     }
 
-    private val PAGE_NUM=6
+    private val PAGE_NUM=5
 
     private var state:Int=0
         set(value) {
@@ -342,9 +342,9 @@ class RegisterActivity : FragmentActivity() {
 
                 3-> EnterGroupFragment()
 
-                4-> SettingGroupNumberFragment()
+                //4-> SettingGroupNumberFragment()
 
-                5-> SettingGroupNameFragment()
+                4-> SettingGroupNameFragment()
 
                 else -> ProfileFragment()
             }
