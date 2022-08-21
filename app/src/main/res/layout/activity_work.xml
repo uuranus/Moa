@@ -8,54 +8,42 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="35dp">
+        android:layout_height="match_parent">
 
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/headerLinearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/round_image" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="79dp"
+            android:layout_height="41dp"
+            android:src="@drawable/moa"
+            app:layout_constraintBottom_toTopOf="@+id/workListRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.311" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:paddingStart="35dp"
+            android:paddingEnd="35dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/workAddTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="집안일 추가"
-                android:textColor="@color/design_default_color_on_secondary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/backButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/backButton" />
-
-            <TextView
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_btn"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:text="저장"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@id/backButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/backButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,6 +57,8 @@
             android:paddingVertical="5dp"
             android:text="제목"
             android:textColor="@color/white"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/headerLinearLayout" />
 
@@ -77,10 +67,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:backgroundTint="@color/textColorSecondary"
             android:inputType="text"
             android:lines="1"
-            android:backgroundTint="@color/textColorSecondary"
+            android:layout_marginEnd="35dp
+"
             app:layout_constraintBottom_toBottomOf="@id/workTitleTextView"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/workTitleTextView"
             app:layout_constraintTop_toTopOf="@id/workTitleTextView" />
@@ -97,6 +90,8 @@
             android:paddingVertical="5dp"
             android:text="세부사항"
             android:textColor="@color/white"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workTitleTextView" />
 
@@ -110,6 +105,8 @@
             android:maxLines="6"
             android:background="@drawable/gray_round_box"
             android:padding="12dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/workDescriptionTextView" />
@@ -119,6 +116,8 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:visibility="gone"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintEnd_toEndOf="@id/workTitleEditText"
             app:layout_constraintStart_toStartOf="@id/workTitleEditText"
             app:layout_constraintTop_toBottomOf="@id/workTitleEditText" />
@@ -133,6 +132,8 @@
             android:paddingVertical="5dp"
             android:text="주기"
             android:textColor="@color/white"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workDescriptionEditText" />
 
@@ -156,6 +157,7 @@
             android:layout_marginStart="12dp"
             android:text="1일"
             app:layout_constraintBottom_toBottomOf="@id/workPeriodTextView"
+            android:layout_marginEnd="35dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/workPeriodSlider"
             app:layout_constraintTop_toTopOf="@id/workPeriodTextView" />
@@ -169,6 +171,8 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
             android:text="알람"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workPeriodTextView" />
@@ -192,6 +196,8 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
             android:text="알람"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workPeriodStartDayTextView" />
@@ -200,6 +206,8 @@
             android:id="@+id/workAlarmSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="35dp"
+
             app:layout_constraintBottom_toBottomOf="@id/workAlarmTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/workAlarmTextView" />
@@ -211,6 +219,8 @@
             android:layout_marginTop="25dp"
             android:theme="@style/CustomTimePicker"
             android:timePickerMode="spinner"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workAlarmTextView" />
@@ -225,6 +235,8 @@
             android:paddingVertical="5dp"
             android:text="담당인원"
             android:textColor="@color/white"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workAlarmPicker" />
 
@@ -270,6 +282,8 @@
             android:paddingVertical="5dp"
             android:text="별"
             android:textColor="@color/white"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             app:layout_constraintStart_toStartOf="@id/headerLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/workPeopleTextView" />
 
@@ -333,6 +347,33 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/workStarTextView" />
+
+        <TextView
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity = "center"
+            android:background="@drawable/round_btn"
+            android:layout_margin="30dp"
+            android:text="추가하기"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/star4" />
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.09"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
