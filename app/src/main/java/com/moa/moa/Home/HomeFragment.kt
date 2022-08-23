@@ -3,6 +3,7 @@ package com.moa.moa.Home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -85,6 +86,7 @@ class HomeFragment : Fragment() {
 
         for(section in workList[0].list){
             section.list= emptyList()
+
         }
     }
 
@@ -210,11 +212,12 @@ class HomeFragment : Fragment() {
                             tmpList.add(HomeNotYetSecondSection(0,workInfos[workId]!!.title,workId.toString()))
                             notYetWorkList[0].list=list
                         }
-
+                        Log.i("homefragment",person.toString())
                         for(prs in person){
                             for(element in workList[0].list){
                                 if(element.userId==prs.userId){
-                                    val list=element.list.toMutableList()
+                                    //val list=element.list.toMutableList()
+                                    val list=mutableListOf<HomeThirdSection>()
                                     list.add(HomeThirdSection(prs.isChecked,workId,
                                         workInfos[workId]!!.title))
                                     element.list=list
@@ -251,7 +254,9 @@ class HomeFragment : Fragment() {
 
                 //배정 목록 리사이클러뷰
                 binding.homeRecyclerView.adapter= HomeFirstSectionRecyclerViewAdapter(workList)
+                Log.i("homefragment", " binding!")
                 binding.homeRecyclerView.layoutManager=LinearLayoutManager(homeActivity)
+
 
 
             }
@@ -298,9 +303,11 @@ class HomeFragment : Fragment() {
         }
         firebaseDatabase.child("group").child(groupId).child("worklist").child(workNum.toString()).child("description").get().addOnSuccessListener {
             binding.workDetailContents.text = it.value.toString()
-
         }
 
+        binding.assignBtn.setOnClickListener {
+
+        }
     }
 
     private fun getWorkInfo() { //groupId->worklist에 저장되어 있는 집안일 정보를 가져옴
@@ -347,8 +354,7 @@ class HomeFragment : Fragment() {
 
                     dataSnapshot.getValue<User>()?.let {it2->
                         val list=workList[0].list.toMutableList()
-                        list.add(HomeSecondSection(it2.userId,it2.userName,
-                            mutableListOf()))
+                        list.add(HomeSecondSection(it2.userId,it2.userName, mutableListOf()))
                         workList[0].list=list
 
                     }
