@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -35,23 +36,23 @@ import com.navercorp.nid.NaverIdLoginSDK
 
 class MyPageFragment : Fragment() {
 
-    private lateinit var gso: GoogleSignInOptions
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+//    private lateinit var gso: GoogleSignInOptions
+//    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     private val utility = Utility()
     private lateinit var groupId: String
     private lateinit var userKey: String
     private lateinit var database: DatabaseReference
 
-    private val OAUTH_CLIENT_ID:String by lazy {
-        resources.getString(R.string.naver_client_id)
-    }
-    private val OAUTH_CLIENT_SECRET:String by lazy {
-        resources.getString(R.string.naver_client_secret)
-    }
-    private val OAUTH_CLIENT_NAME:String by lazy {
-        resources.getString(R.string.naver_client_name)
-    }
+//    private val OAUTH_CLIENT_ID:String by lazy {
+//        resources.getString(R.string.naver_client_id)
+//    }
+//    private val OAUTH_CLIENT_SECRET:String by lazy {
+//        resources.getString(R.string.naver_client_secret)
+//    }
+//    private val OAUTH_CLIENT_NAME:String by lazy {
+//        resources.getString(R.string.naver_client_name)
+//    }
 
     private lateinit var db:AppDatabase
 
@@ -101,13 +102,13 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        NaverIdLoginSDK.initialize(requireContext(),OAUTH_CLIENT_ID,OAUTH_CLIENT_SECRET,OAUTH_CLIENT_NAME)
-
-
-        gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+//        NaverIdLoginSDK.initialize(requireContext(),OAUTH_CLIENT_ID,OAUTH_CLIENT_SECRET,OAUTH_CLIENT_NAME)
+//
+//
+//        gso =
+//            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+//
+//        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
 
         groupId = utility.getGroupId(requireActivity())
@@ -186,28 +187,38 @@ class MyPageFragment : Fragment() {
                 AlertDialog.Builder(requireContext())
                     .setMessage("정말로 탈퇴하시겠습니까?")
                     .setPositiveButton("네"){ _,_->
-                        NaverIdLoginSDK.logout()
-                        mGoogleSignInClient.signOut()
+//                        NaverIdLoginSDK.logout()
+//                        mGoogleSignInClient.signOut()
 
-                        //sharedPrefences 삭제
-                        val sharedPreferences=requireActivity().getSharedPreferences("Info",Context.MODE_PRIVATE).edit()
-                        sharedPreferences.clear()
-                        sharedPreferences.commit()
+                        val sp=requireActivity().getSharedPreferences("Info",Context.MODE_PRIVATE)
 
-                        //room database 삭제
-                        Thread{
-                            db.alarmDao().deleteAll()
-                            db.titleDao().deleteAll()
-                        }.start()
+                        //둘러보기였으면
+                        if(sp.getString("userId","")=="-NBVsFcvYHQLfZOTqTqE"){
+                            sp.edit(true){
+                                putBoolean("isRegistered",false)
+                            }
+                        }
+                        else{
+                            //sharedPrefences 삭제
+                            val sharedPreferences=requireActivity().getSharedPreferences("Info",Context.MODE_PRIVATE).edit()
+                            sharedPreferences.clear()
+                            sharedPreferences.commit()
+
+                            //room database 삭제
+                            Thread{
+                                db.alarmDao().deleteAll()
+                                db.titleDao().deleteAll()
+                            }.start()
 
 
-                        database.child("group").child(groupId).child("users").child(userKey).removeValue()
+                            database.child("group").child(groupId).child("users").child(userKey).removeValue()
 
-                        database.child("group").child(groupId).child("userNumber").get().addOnCompleteListener {
-                            if(it.isSuccessful){
-                                val result = it.result.value.toString().toInt()-1
-                                database.child("group").child(groupId).child("userNumber").setValue(result)
+                            database.child("group").child(groupId).child("userNumber").get().addOnCompleteListener {
+                                if(it.isSuccessful){
+                                    val result = it.result.value.toString().toInt()-1
+                                    database.child("group").child(groupId).child("userNumber").setValue(result)
 
+                                }
                             }
                         }
 

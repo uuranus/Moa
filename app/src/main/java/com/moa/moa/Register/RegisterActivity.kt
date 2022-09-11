@@ -181,7 +181,7 @@ class RegisterActivity : FragmentActivity() {
                 .setMessage("프로필 설정을 종료하시겠습니까?")
                 .setPositiveButton("예") { _, _ ->
                     val intent=Intent(this,LoginActivity::class.java)
-                    intent.putExtra("cancelRegister",false)
+                    intent.putExtra("cancelRegister",true)
                     startActivity(intent)
                 }
                 .setNegativeButton("아니오") { _, _ ->
@@ -246,8 +246,6 @@ class RegisterActivity : FragmentActivity() {
             progressBar.visibility= View.GONE
         }
 
-
-        //database.root.child("users").child(userEmail).setValue(key)
     }
 
     private fun insertUser(){
@@ -275,13 +273,15 @@ class RegisterActivity : FragmentActivity() {
                         add(Badge("이끔이 마스터","집안일 10개 이상 추가",false))
                     }
 
-                    val user = User(userEmail,nickname!!, uri,starCount, badges)
+
 
                     val userKey=database.child("group").child(roomId!!).child("users").push().key!!
+                    val user = User(userKey,nickname!!, uri,starCount, badges)
                     database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)
                     val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
                     sharedPreference.edit(true){
                         putString("userKey",userKey)
+                        putString("userId",userKey)
                     }
 
                     startHomeActivity()
@@ -308,13 +308,16 @@ class RegisterActivity : FragmentActivity() {
                 add(Badge("이끔이 마스터","집안일 10개 이상 추가",false))
             }
 
-            val user = User(userEmail,nickname!!, "null",starCount, badges)
 
             val userKey=database.child("group").child(roomId!!).child("users").push().key!!
+            val user = User(userKey,nickname!!, "null",starCount, badges)
+
+
             database.child("group").child(roomId!!).child("users").child(userKey).setValue(user)
             val sharedPreference=getSharedPreferences("Info",Context.MODE_PRIVATE)
             sharedPreference.edit(true){
                 putString("userKey",userKey)
+                putString("userId",userKey)
             }
             startHomeActivity()
         }
